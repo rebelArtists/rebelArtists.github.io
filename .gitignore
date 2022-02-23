@@ -1,14 +1,16 @@
+node_modules
 .DS_Store
-.vite-ssg-dist
-.vite-ssg-temp
+dist
+dist-ssr
+*.local
+.vscode
+.idea
+
 *.local
 dist
 dist-ssr
-node_modules
-.idea/
 *.log
 
-node_modules
 .env
 coverage
 coverage.json
