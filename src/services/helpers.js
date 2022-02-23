@@ -49,6 +49,10 @@ export const isVideo = (type) => {
   return type.indexOf("video") >= 0;
 }
 
+export const getImgUrl = (hash) => {
+  return `https://ipfs.io/ipfs/${hash}`
+}
+
 /**
  * Generate IPFS Gateway link
  *

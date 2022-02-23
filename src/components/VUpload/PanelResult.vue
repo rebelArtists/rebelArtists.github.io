@@ -18,6 +18,14 @@
               <span class="item-detail--title" :title="item.file.name">{{ item.file.name }}</span>
               <span class="item-detail--subtitle">{{ fileSize(item.file.size) }} • {{ item.file.type }}</span>
             </div>
+            <div class="item-hash">
+              <span class="item-hash-meta">
+                <img
+                   :src="getImgUrl(item.fileCid)"
+                   class="image-fit"
+                />
+              </span>
+            </div>
             <div class="item-action">
               <a v-if="!!item.shorten" title="Open Shorten Link" target="_blank" :href="generateLink(item, true)" rel="noopener">
                 <i-ri-link-unlink-m class="icon-color" />
@@ -50,7 +58,7 @@
 import { ref, computed, inject } from "vue";
 
 import { useStore } from "@src/store";
-import { fileSize, copyToClipboard, generateLink, generateShortLink } from "@src/services/helpers";
+import { fileSize, copyToClipboard, generateLink, generateShortLink, getImgUrl } from "@src/services/helpers";
 
 import SearchResult from "@src/components/VUpload/SearchResult.vue";
 
@@ -113,7 +121,8 @@ export default {
       shortenLink,
       copyFileLink,
       generateLink,
-      onSearchChanged
+      onSearchChanged,
+      getImgUrl
     }
   }
 }
@@ -240,6 +249,12 @@ section#panel-result {
       }
     }
   }
+}
+
+.image-fit{
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 }
 
 body.dark-theme {
