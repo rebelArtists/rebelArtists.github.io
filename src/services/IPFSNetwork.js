@@ -5,9 +5,12 @@ export default class IPFSNetwork {
 
   /**
    * @param {Blob|File} blob
+   * @property {String} name
+   * @property {String} description
+   * @property {Array} attributes
    * @returns {Promise<String|Error>, Promise<String|Error>}
    */
-  async storeBlob(blob) {
+  async storeBlob(blob, name, description, attributes) {
     const url = new URL('/api/v0/add?stream-channels=true', this.endpoint)
 
     if (blob.size === 0) {
@@ -29,24 +32,11 @@ export default class IPFSNetwork {
     // next, add media hash along with all metadata to ipfs
     // conforms to erc721 key/value standards
     const metadata = {
-        "name": "me duh",
-        "description": "jus chillin",
+        "name": name,
+        "description": description,
         "image": `https://ipfs.io/ipfs/${resultFile.Hash}`,
         "external_url": `https://ipfs.io/ipfs/${resultFile.Hash}`,
-        "attributes":[
-          {
-            "trait_type": "Base",
-            "value": "Starfish"
-          },
-          {
-            "trait_type": "Mouth",
-            "value": "Surprised"
-          },
-          {
-            "trait_type": "Level",
-            "value": 5
-          },
-        ]
+        "attributes": attributes,
     }
 
     // alter to blob format and send metadata to ipfs

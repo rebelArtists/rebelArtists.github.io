@@ -1,14 +1,15 @@
 <template>
+  <MetaName :name="name" @onChanged="onNameChanged" />
+  <MetaDescription :description="description" @onChanged="onDescriptionChanged" />
+  <MetaAttributes :attributes="attributes" @onChanged="onAttributesChanged" />
   <section id="panel-upload">
     <div class="content panel-upload--content">
       <div class="panel-upload--dropzone" :class="{ active: isDragged }" @dragenter="onDragEnter" @dragleave="onDragLeave" @drop.prevent="onDropHandler" @dragover.prevent>
-        <input type="file" multiple ref="fileRef" @change="onFileChangedHandler" />
-
+        <input type="file" ref="fileRef" @change="onFileChangedHandler" />
         <div class="dropzone-label" @click="openSelectFile">
           <i-mdi-timer-sand v-if="(fileCount > 0)" class="icon-color" />
           <i-mdi-upload v-else class="icon-color" />
-
-          <span>Drop files here or click to select files.</span>
+          <span>Drop file here or click to select file.</span>
 
           <div class="dropzone-is-loading" :class="{ active: (fileCount > 0) }">
             <div class="dropzone-loading--bar"></div>
@@ -33,9 +34,17 @@ import { uploadBlob } from "@src/services/ipfs.js"
 import { fileSize } from "@src/services/helpers";
 import { useInstaStore } from '@src/store/index';
 import { storeToRefs } from 'pinia'
+import MetaName from "@src/components/VUpload/MetaName.vue";
+import MetaAttributes from "@src/components/VUpload/MetaAttributes.vue";
+import MetaDescription from "@src/components/VUpload/MetaDescription.vue";
 
 export default {
   name: "PanelUpload",
+  components: {
+    MetaName,
+    MetaAttributes,
+    MetaDescription
+  },
   setup() {
     const notyf = inject("notyf");
     const fileRef = ref(null);
@@ -45,8 +54,26 @@ export default {
     const { postContent, getContent, getNftIndex } = useInstaStore()
     const instaStore = useInstaStore()
     const { indexCount, postedItem } = storeToRefs(instaStore)
+    const name = ref("");
+    const description = ref("");
+    const attributes = ref([]);
 
     const store = useStore();
+
+    const onNameChanged = ($event) => {
+      name.value = $event.target.value;
+      console.log(name.value)
+    }
+
+    const onDescriptionChanged = ($event) => {
+      description.value = $event.target.value;
+      console.log(description.value)
+    }
+
+    const onAttributesChanged = ($event) => {
+      attributes.value = $event.target.value;
+      console.log(attributes.value)
+    }
 
     const onDropHandler = ($event) => {
       if (isUploading.value) return false;
@@ -73,7 +100,8 @@ export default {
      * @param {File} file
      */
     const uploadFileHandler = async (file) => {
-      const result = await uploadBlob(file);
+      console.log(name.value, description.value, attributes.value)
+      const result = await uploadBlob(file, name.value, description.value, attributes.value);
       const { data } = result;
       postContent(data.fileCid, data.metaCid);
 
@@ -139,6 +167,12 @@ export default {
       onDropHandler,
       openSelectFile,
       onFileChangedHandler,
+      name,
+      description,
+      attributes,
+      onNameChanged,
+      onDescriptionChanged,
+      onAttributesChanged
     }
   },
 }

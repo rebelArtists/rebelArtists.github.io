@@ -8,9 +8,12 @@ import IPFSNetwork from "@src/services/IPFSNetwork";
  * @property {FileDetail} data
  *
  * @param {File} file
+ * @property {String} name
+ * @property {String} description
+ * @property {Array} attributes
  * @returns {Promise<SafeAsync>}
  */
-export const uploadBlob = async (file) => {
+export const uploadBlob = async (file, name, description, attributes) => {
   const client = new IPFSNetwork();
 
   let detail = getCidDetail({ metaCid: null, fileCid: null, file });
@@ -21,7 +24,7 @@ export const uploadBlob = async (file) => {
   }
 
   try {
-    let ipfsHashes = await client.storeBlob(file);
+    let ipfsHashes = await client.storeBlob(file, name, description, attributes);
     let metaHash = ipfsHashes.metaHash,
         fileHash  = ipfsHashes.fileHash;
     // const cid = await client.storeBlob(file);
