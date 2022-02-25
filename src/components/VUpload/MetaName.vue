@@ -23,17 +23,18 @@ export default {
 
 .meta-name {
   padding-left: 20px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 15px;
+  padding-bottom: 10px;
 }
 
 .name-span {
-  padding-bottom: 5px;
+  padding-bottom: 10px;
   font-size: 13px;
 }
 
 .name-input {
   width: 90%;
+  font-size: 11px;
   outline: none;
   border: none;
   padding: 0.8rem 0.8rem 0.8rem 0.8rem;

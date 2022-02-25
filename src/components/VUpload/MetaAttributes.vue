@@ -24,16 +24,16 @@ export default {
 .meta-attributes{
   padding-left: 20px;
   padding-top: 5px;
-  padding-bottom: 5px;
 }
 
 .attributes-span {
-  padding-bottom: 5px;
+  padding-bottom: 10px;
   font-size: 13px;
 }
 
 .attributes-input {
   width: 90%;
+  font-size: 11px;
   outline: none;
   border: none;
   padding: 0.8rem 0.8rem 0.8rem 0.8rem;

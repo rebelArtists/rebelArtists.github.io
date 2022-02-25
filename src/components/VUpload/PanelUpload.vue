@@ -182,7 +182,7 @@ section#panel-upload {
   .panel-upload--content,
   .panel-upload--content .panel-upload--dropzone {
     width: 100%;
-    height: 75%;
+    height: 70%;
   }
 
   .panel-upload--dropzone {

@@ -1,13 +1,7 @@
 <template>
   <section id="panel-result">
     <div class="panel-result--content">
-      <SearchResult :search="search" :count="files.length" @onChanged="onSearchChanged" />
-
       <div class="content-file--items">
-        <div class="content-file--item empty" v-if="files.length === 0">
-          <span v-if="search !== ''">No results. Try other file name.</span>
-          <span v-else>List of files that you upload will appear here.</span>
-        </div>
 
         <div class="content-file--item" v-for="(item, index) in files" :key="index">
           <div class="item-content">
@@ -20,7 +14,9 @@
             </div>
             <div class="item-hash">
               <span class="item-hash-meta">
+                <video v-if="isVideo(item.file.type)" class="vid-fit" controls :src="getImgUrl(item.fileCid)" />
                 <img
+                   v-if="!isVideo(item.file.type)"
                    :src="getImgUrl(item.fileCid)"
                    class="image-fit"
                 />
@@ -58,7 +54,7 @@
 import { ref, computed, inject } from "vue";
 
 import { useStore } from "@src/store";
-import { fileSize, copyToClipboard, generateLink, generateShortLink, getImgUrl } from "@src/services/helpers";
+import { fileSize, copyToClipboard, generateLink, generateShortLink, getImgUrl, isVideo } from "@src/services/helpers";
 
 import SearchResult from "@src/components/VUpload/SearchResult.vue";
 
@@ -122,7 +118,8 @@ export default {
       copyFileLink,
       generateLink,
       onSearchChanged,
-      getImgUrl
+      getImgUrl,
+      isVideo
     }
   }
 }
@@ -252,6 +249,12 @@ section#panel-result {
 }
 
 .image-fit{
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.vid-fit{
   height: 100%;
   width: 100%;
   object-fit: cover;
