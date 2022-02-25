@@ -1,8 +1,8 @@
 <template>
-  <MetaName :name="name" @onChanged="onNameChanged" />
-  <MetaDescription :description="description" @onChanged="onDescriptionChanged" />
-  <MetaAttributes :attributes="attributes" @onChanged="onAttributesChanged" />
   <section id="panel-upload">
+    <MetaName :name="name" @onChanged="onNameChanged" />
+    <MetaDescription :description="description" @onChanged="onDescriptionChanged" />
+    <MetaAttributes :attributes="attributes" @onChanged="onAttributesChanged" />
     <div class="content panel-upload--content">
       <div class="panel-upload--dropzone" :class="{ active: isDragged }" @dragenter="onDragEnter" @dragleave="onDragLeave" @drop.prevent="onDropHandler" @dragover.prevent>
         <input type="file" ref="fileRef" @change="onFileChangedHandler" />
@@ -15,11 +15,6 @@
             <div class="dropzone-loading--bar"></div>
           </div>
           <span v-show="(fileCount > 0)">{{ (fileCount - finished) }} of {{ fileCount }} files being transfered.</span>
-        </div>
-
-        <div class="dropzone-details">
-          <div class="dropzone-detail">{{ result.count }} files</div>
-          <div class="dropzone-detail">{{ fileSize(result.size) }}</div>
         </div>
       </div>
     </div>
@@ -187,7 +182,7 @@ section#panel-upload {
   .panel-upload--content,
   .panel-upload--content .panel-upload--dropzone {
     width: 100%;
-    height: 100%;
+    height: 75%;
   }
 
   .panel-upload--dropzone {

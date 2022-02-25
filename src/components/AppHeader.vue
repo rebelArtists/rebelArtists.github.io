@@ -37,10 +37,12 @@ export default {
     }
     const toggleAnimation = () => {
       const element = document.querySelector("section#content .main");
-
-      element.classList.remove("animated");
-      void element.offsetWidth;
-      element.classList.add("animated");
+      try {
+        element.classList.remove("animated");
+        void element.offsetWidth;
+        element.classList.add("animated");
+      } catch (error) {
+      }
     }
 
     return {
