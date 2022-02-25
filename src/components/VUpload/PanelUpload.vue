@@ -178,6 +178,8 @@ section#panel-upload {
   background-color: var(--gradient-100);
   border-top-left-radius: 1rem;
   border-bottom-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
 
   .panel-upload--content,
   .panel-upload--content .panel-upload--dropzone {

@@ -157,8 +157,8 @@ section#content {
       box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1),0 4px 6px -2px rgba(0,0,0,0.05);
 
       section {
-        width: 414px;
-        height: 414px;
+        width: 70vw;
+        height: 70vh;
         flex-direction: column;
 
         overflow-y: scroll;

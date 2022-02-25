@@ -11,8 +11,8 @@
       </div>
     </div>
     <div v-if="account" class="main animated">
-      <div class="main-content--shadow s-index-1"></div>
-      <div class="main-content--shadow s-index-2"></div>
+      <!-- <div class="main-content--shadow s-index-1"></div>
+      <div class="main-content--shadow s-index-2"></div> -->
       <div class="main-content">
         <PanelUpload />
       </div>
@@ -159,8 +159,8 @@ section#content {
       box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1),0 4px 6px -2px rgba(0,0,0,0.05);
 
       section {
-        width: 750px;
-        height: 414px;
+        width: 70vw;
+        height: 70vh;
         flex-direction: column;
 
         overflow-y: scroll;
