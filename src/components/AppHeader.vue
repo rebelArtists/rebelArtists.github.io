@@ -11,6 +11,7 @@
         <router-link :to="{ name: 'about' }" active-class="active" exact>About</router-link>
 
         <router-link :to="{ name: 'mint' }" active-class="active" exact>Mint</router-link>
+        <router-link :to="{ name: 'gallery' }" active-class="active" exact>Gallery</router-link>
         <i :title="`Switch to ${isDark ? 'Light' : 'Dark'} Theme`">
           <i-mdi-brightness-7 v-if="isDark" class="icon-color" @click="toggleTheme" />
           <i-mdi-brightness-4 v-else class="icon-color" @click="toggleTheme" />

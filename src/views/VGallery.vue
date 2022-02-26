@@ -12,7 +12,7 @@
     </div>
     <div v-if="account" class="main animated">
       <div class="main-content">
-        <PanelResult />
+        <Gallery />
       </div>
     </div>
   </section>
@@ -22,17 +22,15 @@
 import { provide } from "vue";
 import { Notyf } from "notyf";
 
-import PanelUpload from "@src/components/VUpload/PanelUpload.vue";
-import PanelResult from "@src/components/VUpload/PanelResult.vue";
+import Gallery from "@src/components/VUpload/Gallery.vue";
 import { storeToRefs } from 'pinia'
 import { useInstaStore } from '@src/store/index'
 
 
 export default {
-  name: "VUpload",
+  name: "VGallery",
   components: {
-    PanelUpload,
-    PanelResult
+    Gallery
   },
   setup() {
     const NotfyProvider = new Notyf({
@@ -73,6 +71,12 @@ export default {
 section#content {
   position: relative;
   height: 100%;
+
+  .gallery {
+    position: relative;
+    justify-content: center;
+    z-index: 1;
+  }
 
   .divConnect {
     position: relative;
@@ -146,7 +150,7 @@ section#content {
     align-items: center;
     justify-content: center;
 
-    height: 100%;
+    height: 100vh;
 
     .main-content {
       position: absolute;
