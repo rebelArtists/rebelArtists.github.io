@@ -3,6 +3,9 @@
     <div class="gallery-panel" v-for="(item, index) in postedItems" :key="index">
       <div class="media-wrap">
         <MDBCard class="card-style">
+          <p>
+            {{ getImgUrl(item.img) }}
+          </p>
           <MDBCardImg
             :src="getImgUrl(item.img)"
             top
