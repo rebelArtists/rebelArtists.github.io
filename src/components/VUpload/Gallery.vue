@@ -1,13 +1,23 @@
 <template>
   <div class="wrapper">
-    <div class="gallery-panel" v-for="(item, index) in files" :key="index">
+    <div class="gallery-panel" v-for="(item, index) in postedItems" :key="index">
       <div class="media-wrap">
-      <video v-if="isVideo(item.file.type)" class="vid-fit" controls :src="getImgUrl(item.fileCid)" />
-      <img
-         v-if="!isVideo(item.file.type)"
-         :src="getImgUrl(item.fileCid)"
-         class="image-fit"
-      />
+        <MDBCard class="card-style">
+          <MDBCardImg
+            :src="getImgUrl(item.img)"
+            top
+            alt="..."
+            class="card-img-style"
+          />
+          <!-- <video v-if="isVideo(item.file.type)" class="vid-fit" controls :src="getImgUrl(item.fileCid)" /> -->
+          <MDBCardBody class="card-body">
+            <MDBCardTitle>Name: </MDBCardTitle>
+            <MDBCardText>
+              IPFS meta link: {{ item.text }}
+            </MDBCardText>
+          </MDBCardBody>
+        </MDBCard>
+
     </div>
     </div>
   </div>
@@ -29,20 +39,30 @@
 import { ref, computed, inject } from "vue";
 
 import { useStore } from "@src/store";
-import { fileSize, copyToClipboard, generateLink, generateShortLink, getImgUrl, isVideo } from "@src/services/helpers";
+import { fileSize, copyToClipboard, generateLink, generateShortLink, getImgUrl, isVideo} from "@src/services/helpers";
 
-import SearchResult from "@src/components/VUpload/SearchResult.vue";
+import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardImg, MDBBtn, MDBCardVideo } from "mdb-vue-ui-kit";
+import { useInstaStore } from '@src/store/index';
+import { storeToRefs } from 'pinia'
 
 export default {
   name: "Gallery",
   components: {
-    SearchResult
+    MDBCard,
+    MDBCardBody,
+    MDBCardTitle,
+    MDBCardText,
+    MDBCardImg,
+    MDBBtn,
+    MDBCardVideo,
   },
   setup() {
     const notyf = inject("notyf");
     const store = useStore();
 
     const search = ref("");
+    const instaStore = useInstaStore()
+    const { postedItems } = storeToRefs(instaStore)
 
     const shortenLink = async (item) => {
       const url = generateLink(item);
@@ -94,7 +114,8 @@ export default {
       generateLink,
       onSearchChanged,
       getImgUrl,
-      isVideo
+      isVideo,
+      postedItems
     }
   }
 }
@@ -102,11 +123,22 @@ export default {
 
 <style lang="scss">
 
+.card-style {
+  background-image: var(--liniear-gradient-color-2);
+  border-radius: 0.8rem;
+}
+
+.card-body {
+  padding-right: 10px;
+  padding-left: 10px;
+  padding-bottom: 10px;
+}
+
 .wrapper {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   grid-auto-rows: repeat(3, 1fr);
-  width: 100vw;
+  width: 94vw;
   grid-gap: 1rem;
   max-width: 80rem;
 }
@@ -137,12 +169,16 @@ export default {
   height: 100%;
   width: 100%;
   object-fit: cover;
+  width: 300px; /*set the width or max-width*/
+  height: auto; /*this makes sure to maintain the aspect ratio*/
+  text-align: center; /*for centering images inside*/
 }
 
 .vid-fit{
   height: 100%;
   width: 100%;
   object-fit: cover;
+  border-radius: 0.8rem;
 }
 
 body.dark-theme {

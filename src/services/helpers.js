@@ -53,6 +53,12 @@ export const getImgUrl = (hash) => {
   return `https://ipfs.io/ipfs/${hash}`
 }
 
+export const fetchIpfsMeta = async (item) => {
+  const response = await fetch(`https://ipfs.io/ipfs/${item.metaCid}`);
+  const data = await response.json();
+  return data
+}
+
 /**
  * Generate IPFS Gateway link
  *

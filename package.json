@@ -16,6 +16,8 @@
     "ethereum-waffle": "^3.4.0",
     "ethers": "^5.5.4",
     "hardhat": "^2.8.4",
+    "mdb-vue-ui-kit": "^1.9.0",
+    "mdbvue": "^6.7.3",
     "notyf": "^3.10.0",
     "pinia": "^2.0.0-rc.6",
     "vue": "^3.2.4",

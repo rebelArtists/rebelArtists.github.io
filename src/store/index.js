@@ -57,7 +57,7 @@ export const useStore = defineStore({
 export const useInstaStore = defineStore('insta', () => {
   const account = ref(null)
   const indexCount = ref(0)
-  const postedItem = ref(null)
+  const postedItems = ref([])
 
   async function postContent(imgHash, textHash) {
     try {
@@ -84,14 +84,33 @@ export const useInstaStore = defineStore('insta', () => {
         const provider = new ethers.providers.Web3Provider(ethereum)
         const signer = provider.getSigner()
         const instaContract = new ethers.Contract(contractAddressInsta, contractABInsta.abi, signer)
-        const post = (await instaContract.getHash(postIndex))
-        postedItem.value = post;
+        const post = (await instaContract.getHash(postIndex));
+        postedItems.value.push(post);
+        console.log("got post", post.img)
       }
     }
     catch (e) {
       console.log('e', e)
     }
   }
+
+async function getAllPosts() {
+  try {
+    const { ethereum } = window
+    if (ethereum) {
+      const provider = new ethers.providers.Web3Provider(ethereum)
+      const signer = provider.getSigner()
+      const instaContract = new ethers.Contract(contractAddressInsta, contractABInsta.abi, signer)
+      console.log("got here")
+      for (let i = 0; i < indexCount.value; i++) {
+        await getContent(i);
+      }
+    }
+  }
+  catch (e) {
+    console.log('e', e)
+  }
+}
 
   async function getNftIndex() {
     try {
@@ -101,6 +120,7 @@ export const useInstaStore = defineStore('insta', () => {
         const signer = provider.getSigner()
         const instaContract = new ethers.Contract(contractAddressInsta, contractABInsta.abi, signer)
         indexCount.value = (await instaContract.getCounter()).toNumber()
+        console.log("got index count", indexCount.value)
       }
     }
     catch (e) {
@@ -119,6 +139,8 @@ export const useInstaStore = defineStore('insta', () => {
 
       console.log('Connected: ', myAccounts[0])
       account.value = myAccounts[0]
+      await getNftIndex();
+      await getAllPosts();
     }
     catch (error) {
       console.log(error)
@@ -132,6 +154,6 @@ export const useInstaStore = defineStore('insta', () => {
     getContent,
     getNftIndex,
     indexCount,
-    postedItem
+    postedItems
   }
 });

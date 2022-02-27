@@ -48,7 +48,7 @@ export default {
     const isUploading = ref(false);
     const { postContent, getContent, getNftIndex } = useInstaStore()
     const instaStore = useInstaStore()
-    const { indexCount, postedItem } = storeToRefs(instaStore)
+    const { indexCount, postedItems } = storeToRefs(instaStore)
     const name = ref("");
     const description = ref("");
     const attributes = ref([]);
