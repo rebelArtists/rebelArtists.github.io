@@ -27,8 +27,30 @@ contract SocialHelper is PostFactory, UserFactory {
   }
 
   function likePost(uint _postId) external payable {
-    require(msg.value == txFee);
+    require(msg.value >= txFee);
     posts[_postId].likes = posts[_postId].likes.add(1);
+    address postOwner = postToOwner[_postId];
+    uint fundsForOwner = msg.value.div(50) // 2% cut for dao
+    (bool sent, bytes memory data) = postOwner.call{value: fundsForOwner}("");
+    require(sent, "Failed to send Ether");
+  }
+
+  function unlikePost(uint _postId) external {
+    posts[_postId].likes = posts[_postId].likes.sub(1);
+  }
+
+  function followUser(uint _userId) external payable {
+    require(msg.value >= txFee);
+    users[_userId].followers = users[_userId].followers.add(1);
+    ownerToUser[msg.sender].following = ownerToUser[msg.sender].following.add(1);
+    uint fundsForOwner = msg.value.div(50) // 2% cut for dao
+    (bool sent, bytes memory data) = postOwner.call{value: fundsForOwner}("");
+    require(sent, "Failed to send Ether");
+  }
+
+  function unfollowUser(uint _userId) external {
+    users[_userId].followers = users[_userId].followers.sub(1);
+    ownerToUser[msg.sender].following = ownerToUser[msg.sender].following.sub(1);
   }
 
   function changeName(uint _userId, string _newName) external onlyOwnerOf(_userId) {
@@ -73,12 +95,11 @@ contract SocialHelper is PostFactory, UserFactory {
     return result;
   }
 
-  function getUserByOwner(address _owner) external view returns(User[]) {
-    User[] memory result = new User[](ownerUserCount[_owner]);
-    uint counter = 0;
+  function getUserByOwner(address _owner) external view returns(User) {
+    User memory result = new User;
     for (uint i = 0; i < users.length; i++) {
       if (userToOwner[i] == _owner) {
-        result[counter] = users[i];
+        result = users[i];
         return result;
       }
     }
