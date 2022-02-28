@@ -1,9 +1,14 @@
-pragma solidity ^0.4.25;
+pragma solidity ^0.8.0;
 
 import "./postfactory.sol";
 import "./userfactory.sol";
+import "./safemath.sol";
 
 contract SocialHelper is PostFactory, UserFactory {
+
+  using SafeMath for uint256;
+  using SafeMath32 for uint32;
+  using SafeMath16 for uint16;
 
   uint txFee = 0.01 ether;
 
@@ -19,7 +24,7 @@ contract SocialHelper is PostFactory, UserFactory {
 
   function withdraw() external onlyOwner {
     address _owner = owner();
-    _owner.transfer(address(this).balance);
+    payable(_owner).transfer(address(this).balance);
   }
 
   function setTxFee(uint _fee) external onlyOwner {
@@ -30,9 +35,8 @@ contract SocialHelper is PostFactory, UserFactory {
     require(msg.value >= txFee);
     posts[_postId].likes = posts[_postId].likes.add(1);
     address postOwner = postToOwner[_postId];
-    uint fundsForOwner = msg.value.div(50) // 2% cut for dao
-    (bool sent, bytes memory data) = postOwner.call{value: fundsForOwner}("");
-    require(sent, "Failed to send Ether");
+    uint fundsForOwner = msg.value.div(50);
+    payable(postOwner).transfer(fundsForOwner);
   }
 
   function unlikePost(uint _postId) external {
@@ -43,9 +47,9 @@ contract SocialHelper is PostFactory, UserFactory {
     require(msg.value >= txFee);
     users[_userId].followers = users[_userId].followers.add(1);
     ownerToUser[msg.sender].following = ownerToUser[msg.sender].following.add(1);
-    uint fundsForOwner = msg.value.div(50) // 2% cut for dao
-    (bool sent, bytes memory data) = postOwner.call{value: fundsForOwner}("");
-    require(sent, "Failed to send Ether");
+    address userOwner = userToOwner[_userId];
+    uint fundsForOwner = msg.value.div(50);
+    payable(userOwner).transfer(fundsForOwner);
   }
 
   function unfollowUser(uint _userId) external {
@@ -53,15 +57,15 @@ contract SocialHelper is PostFactory, UserFactory {
     ownerToUser[msg.sender].following = ownerToUser[msg.sender].following.sub(1);
   }
 
-  function changeName(uint _userId, string _newName) external onlyOwnerOf(_userId) {
+  function changeName(uint _userId, string memory _newName) external onlyOwner() {
     users[_userId].name = _newName;
   }
 
-  function changeBio(uint _userId, string _newBio) external onlyOwnerOf(_userId) {
+  function changeBio(uint _userId, string memory _newBio) external onlyOwner() {
     users[_userId].bio = _newBio;
   }
 
-  function getPostIdsByOwner(address _owner) external view returns(uint[]) {
+  function getPostIdsByOwner(address _owner) external view returns(uint[] memory postIds) {
     uint[] memory result = new uint[](ownerPostCount[_owner]);
     uint counter = 0;
     for (uint i = 0; i < posts.length; i++) {
@@ -73,7 +77,7 @@ contract SocialHelper is PostFactory, UserFactory {
     return result;
   }
 
-  function getPostsByOwner(address _owner) external view returns(Post[]) {
+  function getPostsByOwner(address _owner) external view returns(Post[] memory posts) {
     Post[] memory result = new Post[](ownerPostCount[_owner]);
     uint counter = 0;
     for (uint i = 0; i < posts.length; i++) {
@@ -85,7 +89,7 @@ contract SocialHelper is PostFactory, UserFactory {
     return result;
   }
 
-  function getPostsByIds(uint[] _postIds) external view returns(Post[]) {
+  function getPostsByIds(uint[] memory _postIds) external view returns(Post[] memory posts) {
     Post[] memory result = new Post[](_postIds.length);
     uint counter = 0;
     for (uint i = 0; i < _postIds.length; i++) {
@@ -95,15 +99,12 @@ contract SocialHelper is PostFactory, UserFactory {
     return result;
   }
 
-  function getUserByOwner(address _owner) external view returns(User) {
-    User memory result = new User;
+  function getUserByOwner(address _owner) external view returns(User memory user) {
     for (uint i = 0; i < users.length; i++) {
       if (userToOwner[i] == _owner) {
-        result = users[i];
-        return result;
+        return users[i];
       }
     }
-    return result;
   }
 
 }

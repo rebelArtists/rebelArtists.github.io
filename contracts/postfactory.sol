@@ -1,4 +1,4 @@
-pragma solidity ^0.4.25;
+pragma solidity ^0.8.0;
 
 import "./ownable.sol";
 import "./safemath.sol";
@@ -24,8 +24,9 @@ contract PostFactory is Ownable {
   mapping (uint => address) public postToOwner;
   mapping (address => uint) ownerPostCount;
 
-  function _createPost(string _name, string _mediaHash, string _metaHash) public {
-    uint id = posts.push(Post(_name, _mediaHash, _metaHash, 0, false)) - 1;
+  function _createPost(string memory _name, string memory _mediaHash, string memory _metaHash) public {
+    posts.push(Post(_name, _mediaHash, _metaHash, 0, false));
+    uint id = posts.length - 1;
     postToOwner[id] = msg.sender;
     ownerPostCount[msg.sender] = ownerPostCount[msg.sender].add(1);
     emit NewPost(id, _name, _mediaHash, _metaHash);

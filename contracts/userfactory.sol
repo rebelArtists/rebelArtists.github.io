@@ -1,4 +1,4 @@
-pragma solidity ^0.4.25;
+pragma solidity ^0.8.0;
 
 import "./ownable.sol";
 import "./safemath.sol";
@@ -9,7 +9,7 @@ contract UserFactory is Ownable {
   using SafeMath32 for uint32;
   using SafeMath16 for uint16;
 
-  event NewUser(uint userId, string userName);
+  event NewUser(uint userId, string userName, string bio, string profPicHash);
 
   struct User {
     string name;
@@ -26,9 +26,10 @@ contract UserFactory is Ownable {
   mapping (address => uint) ownerUserCount;
   mapping (address => User) ownerToUser;
 
-  function _createUser(string _name, string _bio, string _profPicHash) public {
+  function _createUser(string memory _name, string memory _bio, string memory _profPicHash) public {
     require(ownerUserCount[msg.sender] == 0);
-    uint id = users.push(User(_name, _bio, 0, 0, _profPicHash, false)) - 1;
+    users.push(User(_name, _bio, 0, 0, _profPicHash, false));
+    uint id = users.length - 1;
     userToOwner[id] = msg.sender;
     ownerToUser[msg.sender] = users[id];
     ownerUserCount[msg.sender] = ownerUserCount[msg.sender].add(1);
