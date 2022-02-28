@@ -27,6 +27,7 @@ contract UserFactory is Ownable {
   mapping (uint => address) public userToOwner;
   mapping (address => uint) ownerUserCount;
   mapping (address => User) ownerToUser;
+  mapping (address => uint) ownerToUserId;
 
   function createUser(string memory _name, string memory _bio, string memory _profPicHash) public {
     require(ownerUserCount[msg.sender] == 0);
@@ -34,6 +35,7 @@ contract UserFactory is Ownable {
     uint id = users.length - 1;
     userToOwner[id] = msg.sender;
     ownerToUser[msg.sender] = users[id];
+    ownerToUserId[msg.sender] = id;
     ownerUserCount[msg.sender] = ownerUserCount[msg.sender].add(1);
     emit NewUser(id, _name, _bio, _profPicHash);
   }

@@ -7,7 +7,8 @@ import contractABIrebel from '../artifacts/contracts/SocialHelper.sol/SocialHelp
 
 const db = new Storage("app");
 const contractAddressInsta = '0x279608E8F8cE4FbE02726B3ef999e0DA92153E43';
-const contractAddressRebel = '0x3F899516c4562Bb74fFeb6246d1848ae9E9e6927';
+// const contractAddressRebel = '0x3F899516c4562Bb74fFeb6246d1848ae9E9e6927';
+const contractAddressRebel = '0x7306BB8b0B6e19D09ddEfD9762Fc587eA8D0E9e5';
 
 db.read();
 db.data ||= { version: "0.0.1", results: [] };
@@ -33,7 +34,6 @@ export const useStore = defineStore({
 
       db.data.results = [ ...this.results ];
       db.write();
-      console.log(...files)
     },
     /**
      * Update Shorten Link for File
@@ -172,7 +172,6 @@ export const useRebelStore = defineStore('rebel', () => {
         const provider = new ethers.providers.Web3Provider(ethereum)
         const signer = provider.getSigner()
         const rebelContract = new ethers.Contract(contractAddressRebel, contractABIrebel.abi, signer)
-        console.log(name, mediaHash, metaHash)
         const posted = (await rebelContract.createPost(name, mediaHash, metaHash))
         console.log('Mining...', posted.hash)
         await posted.wait()
@@ -192,6 +191,7 @@ async function getPostsByUser() {
       const signer = provider.getSigner()
       const rebelContract = new ethers.Contract(contractAddressRebel, contractABIrebel.abi, signer)
       const userPosts = (await rebelContract.getPostsByOwner(account.value))
+      postedItems.value = [];
       for (let i = 0; i < userPosts.namesArray.length; i++) {
         const postObj = new Object();
         postObj.name = userPosts.namesArray[i];

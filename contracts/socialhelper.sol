@@ -37,7 +37,7 @@ contract SocialHelper is PostFactory, UserFactory {
     require(msg.value >= txFee);
     posts[_postId].likes = posts[_postId].likes.add(1);
     address postOwner = postToOwner[_postId];
-    uint fundsForOwner = msg.value.div(50);
+    uint fundsForOwner = msg.value.div(100).mul(98);
     payable(postOwner).transfer(fundsForOwner);
   }
 
@@ -50,7 +50,7 @@ contract SocialHelper is PostFactory, UserFactory {
     users[_userId].followers = users[_userId].followers.add(1);
     ownerToUser[msg.sender].following = ownerToUser[msg.sender].following.add(1);
     address userOwner = userToOwner[_userId];
-    uint fundsForOwner = msg.value.div(50);
+    uint fundsForOwner = msg.value.div(100).mul(98);
     payable(userOwner).transfer(fundsForOwner);
   }
 
@@ -67,16 +67,8 @@ contract SocialHelper is PostFactory, UserFactory {
     users[_userId].bio = _newBio;
   }
 
-  function getPostIdsByOwner(address _owner) external view returns(uint[] memory postIds) {
-    uint[] memory result = new uint[](ownerPostCount[_owner]);
-    uint counter = 0;
-    for (uint i = 0; i < posts.length; i++) {
-      if (postToOwner[i] == _owner) {
-        result[counter] = i;
-        counter++;
-      }
-    }
-    return result;
+  function changeProfPic(uint _userId, string memory _profPicHash) external onlyOwner() {
+    users[_userId].profPicHash = _profPicHash;
   }
 
   function getPostsByOwner(address _owner) external view returns(
@@ -84,7 +76,8 @@ contract SocialHelper is PostFactory, UserFactory {
     string[] memory mediaHashesArray,
     string[] memory metaHashesArray,
     uint[] memory likesArray,
-    bool[] memory blacklistedArray
+    bool[] memory blacklistedArray,
+    uint[] memory idArray
     ) {
     uint[] memory postIds = ownerToPostIds[_owner];
     string[] memory names = new string[](postIds.length);
@@ -102,25 +95,78 @@ contract SocialHelper is PostFactory, UserFactory {
         blacklisted[i] = post.blacklisted;
     }
 
-    return (names, mediaHashes, metaHashes, likes, blacklisted);
+    return (names, mediaHashes, metaHashes, likes, blacklisted, postIds);
   }
 
-  function getPostsByIds(uint[] memory _postIds) external pure returns(Post[] memory posts) {
-    Post[] memory result = new Post[](_postIds.length);
-    uint counter = 0;
-    for (uint i = 0; i < _postIds.length; i++) {
-      result[counter] = posts[_postIds[i]];
-      counter++;
+  function getPostsByIds(uint[] memory _postIds) external view returns(
+    string[] memory namesArray,
+    string[] memory mediaHashesArray,
+    string[] memory metaHashesArray,
+    uint[] memory likesArray,
+    bool[] memory blacklistedArray,
+    uint[] memory idArray
+  ) {
+    string[] memory names = new string[](_postIds.length);
+    string[] memory mediaHashes = new string[](_postIds.length);
+    string[] memory metaHashes = new string[](_postIds.length);
+    uint[] memory likes = new uint[](_postIds.length);
+    bool[] memory blacklisted = new bool[](_postIds.length);
+    uint[] memory ids = _postIds;
+
+    for (uint i = 0; i < ids.length; i++) {
+      Post memory post = posts[ids[i]];
+      names[i] = post.name;
+      mediaHashes[i] = post.mediaHash;
+      metaHashes[i] = post.metaHash;
+      likes[i] = post.likes;
+      blacklisted[i] = post.blacklisted;
     }
-    return result;
+
+    return (names, mediaHashes, metaHashes, likes, blacklisted, ids);
   }
 
-  function getUserByOwner(address _owner) external view returns(User memory user) {
-    for (uint i = 0; i < users.length; i++) {
-      if (userToOwner[i] == _owner) {
-        return users[i];
-      }
+  function getUserByOwner(address _owner) external view returns(
+    string memory name,
+    string memory bio,
+    uint followers,
+    uint following,
+    string memory profPicHash,
+    bool blacklisted,
+    uint id
+  ) {
+    User memory user = ownerToUser[_owner];
+    uint userId = ownerToUserId[_owner];
+    return (user.name, user.bio, user.followers, user.following, user.profPicHash, user.blacklisted, userId);
+  }
+
+  function getUsersByIds(uint[] memory _userIds) external view returns(
+    string[] memory nameArray,
+    string[] memory bioArray,
+    uint[] memory followersArray,
+    uint[] memory followingArray,
+    string[] memory profPicHashArray,
+    bool[] memory blacklistArray,
+    uint[] memory idArray
+  ) {
+    string[] memory names = new string[](_userIds.length);
+    string[] memory bios = new string[](_userIds.length);
+    uint[] memory followers = new uint[](_userIds.length);
+    uint[] memory following = new uint[](_userIds.length);
+    string[] memory profPicHashes = new string[](_userIds.length);
+    bool[] memory blacklist = new bool[](_userIds.length);
+    uint[] memory ids = _userIds;
+
+    for (uint i = 0; i < ids.length; i++) {
+      User memory user = users[ids[i]];
+      names[i] = user.name;
+      bios[i] = user.bio;
+      followers[i] = user.followers;
+      following[i] = user.following;
+      profPicHashes[i] = user.profPicHash;
+      blacklist[i] = user.blacklisted;
     }
+
+    return (names, bios, followers, following, profPicHashes, blacklist, ids);
   }
 
 }

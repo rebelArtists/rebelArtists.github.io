@@ -92,11 +92,9 @@ export default {
      * @param {File} file
      */
     const uploadFileHandler = async (file) => {
-      console.log(name.value, description.value, attributes.value)
       const result = await uploadBlob(file, name.value, description.value, attributes.value);
       const { data } = result;
-      console.log(name.value, data.fileCid, data.metaCid);
-      postContent(name.value, data.fileCid, data.metaCid);
+      await postContent(name.value, data.fileCid, data.metaCid);
       getPostsByUser(account.value);
 
       finished.value++;
