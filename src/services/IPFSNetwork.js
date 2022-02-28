@@ -7,7 +7,7 @@ export default class IPFSNetwork {
    * @param {Blob|File} blob
    * @property {String} name
    * @property {String} description
-   * @property {Array} attributes
+   * @property {String} attributes
    * @returns {Promise<String|Error>, Promise<String|Error>}
    */
   async storeBlob(blob, name, description, attributes) {
@@ -36,7 +36,7 @@ export default class IPFSNetwork {
         "description": description,
         "image": `https://ipfs.io/ipfs/${resultFile.Hash}`,
         "external_url": `https://ipfs.io/ipfs/${resultFile.Hash}`,
-        "attributes": attributes,
+        "attributes": JSON.parse(attributes),
     }
 
     // alter to blob format and send metadata to ipfs

@@ -9,14 +9,14 @@
 <script>
 import { ref } from "vue";
 import { storeToRefs } from 'pinia'
-import { useInstaStore } from '@src/store/index'
+import { useRebelStore } from '@src/store/index'
 
 export default {
-  name: "InstaTest",
+  name: "Rebel",
   setup() {
-    const instaStore = useInstaStore()
-    const { postContent, connectWallet } = useInstaStore()
-    const { account } = storeToRefs(instaStore)
+    const rebelStore = useRebelStore()
+    const { postContent, connectWallet } = useRebelStore()
+    const { account } = storeToRefs(rebelStore)
 
     return {
       postContent,

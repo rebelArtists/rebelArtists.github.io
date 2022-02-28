@@ -10,7 +10,7 @@ import IPFSNetwork from "@src/services/IPFSNetwork";
  * @param {File} file
  * @property {String} name
  * @property {String} description
- * @property {Array} attributes
+ * @property {String} attributes
  * @returns {Promise<SafeAsync>}
  */
 export const uploadBlob = async (file, name, description, attributes) => {

@@ -27,7 +27,7 @@ import { computed, inject, ref } from "vue";
 import { useStore } from "@src/store";
 import { uploadBlob } from "@src/services/ipfs.js"
 import { fileSize } from "@src/services/helpers";
-import { useInstaStore } from '@src/store/index';
+import { useRebelStore } from '@src/store/index';
 import { storeToRefs } from 'pinia'
 import MetaName from "@src/components/VUpload/MetaName.vue";
 import MetaAttributes from "@src/components/VUpload/MetaAttributes.vue";
@@ -46,28 +46,25 @@ export default {
     const isDragged = ref(false);
     const finished = ref(0);
     const isUploading = ref(false);
-    const { postContent, getContent, getNftIndex } = useInstaStore()
-    const instaStore = useInstaStore()
-    const { indexCount, postedItems } = storeToRefs(instaStore)
+    const { postContent, getPostsByUser } = useRebelStore()
+    const rebelStore = useRebelStore()
+    const { account } = storeToRefs(rebelStore)
     const name = ref("");
     const description = ref("");
-    const attributes = ref([]);
+    const attributes = ref('[{"trait_type": "Type","value": "Single"},...]');
 
     const store = useStore();
 
     const onNameChanged = ($event) => {
       name.value = $event.target.value;
-      console.log(name.value)
     }
 
     const onDescriptionChanged = ($event) => {
       description.value = $event.target.value;
-      console.log(description.value)
     }
 
     const onAttributesChanged = ($event) => {
       attributes.value = $event.target.value;
-      console.log(attributes.value)
     }
 
     const onDropHandler = ($event) => {
@@ -98,15 +95,17 @@ export default {
       console.log(name.value, description.value, attributes.value)
       const result = await uploadBlob(file, name.value, description.value, attributes.value);
       const { data } = result;
-      postContent(data.fileCid, data.metaCid);
+      console.log(name.value, data.fileCid, data.metaCid);
+      postContent(name.value, data.fileCid, data.metaCid);
+      getPostsByUser(account.value);
 
       finished.value++;
 
       const { error } = result;
       if (error && error instanceof Error) notyf.error(error.message);
 
-      await getNftIndex();
-      getContent(indexCount.value);
+      // await getNftIndex();
+      // getContent(indexCount.value);
 
       return result;
     }

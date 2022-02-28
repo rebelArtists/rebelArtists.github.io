@@ -1,8 +1,10 @@
+// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.8.0;
 
 import "./postfactory.sol";
 import "./userfactory.sol";
-import "./safemath.sol";
+import "./safemaths.sol";
 
 contract SocialHelper is PostFactory, UserFactory {
 
@@ -77,19 +79,33 @@ contract SocialHelper is PostFactory, UserFactory {
     return result;
   }
 
-  function getPostsByOwner(address _owner) external view returns(Post[] memory posts) {
-    Post[] memory result = new Post[](ownerPostCount[_owner]);
-    uint counter = 0;
-    for (uint i = 0; i < posts.length; i++) {
-      if (postToOwner[i] == _owner) {
-        result[counter] = posts[i];
-        counter++;
-      }
+  function getPostsByOwner(address _owner) external view returns(
+    string[] memory namesArray,
+    string[] memory mediaHashesArray,
+    string[] memory metaHashesArray,
+    uint[] memory likesArray,
+    bool[] memory blacklistedArray
+    ) {
+    uint[] memory postIds = ownerToPostIds[_owner];
+    string[] memory names = new string[](postIds.length);
+    string[] memory mediaHashes = new string[](postIds.length);
+    string[] memory metaHashes = new string[](postIds.length);
+    uint[] memory likes = new uint[](postIds.length);
+    bool[] memory blacklisted = new bool[](postIds.length);
+
+    for (uint i = 0; i < postIds.length; i++) {
+        Post memory post = posts[postIds[i]];
+        names[i] = post.name;
+        mediaHashes[i] = post.mediaHash;
+        metaHashes[i] = post.metaHash;
+        likes[i] = post.likes;
+        blacklisted[i] = post.blacklisted;
     }
-    return result;
+
+    return (names, mediaHashes, metaHashes, likes, blacklisted);
   }
 
-  function getPostsByIds(uint[] memory _postIds) external view returns(Post[] memory posts) {
+  function getPostsByIds(uint[] memory _postIds) external pure returns(Post[] memory posts) {
     Post[] memory result = new Post[](_postIds.length);
     uint counter = 0;
     for (uint i = 0; i < _postIds.length; i++) {

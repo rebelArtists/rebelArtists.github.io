@@ -12,8 +12,8 @@ export default {
   name: "MetaAttributes",
   props: {
     attributes: {
-      type: Array,
-      default: []
+      type: String,
+      default: '[{"trait_type": "Type","value": "Single"},...]',
     },
   },
 }

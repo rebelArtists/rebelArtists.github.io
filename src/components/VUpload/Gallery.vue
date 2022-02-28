@@ -3,20 +3,20 @@
     <div class="gallery-panel" v-for="(item, index) in postedItems" :key="index">
       <div class="media-wrap">
         <MDBCard class="card-style">
-          <p>
-            {{ getImgUrl(item.img) }}
-          </p>
           <MDBCardImg
-            :src="getImgUrl(item.img)"
+            :src="getImgUrl(item.mediaHash)"
             top
             alt="..."
             class="card-img-style"
           />
           <!-- <video v-if="isVideo(item.file.type)" class="vid-fit" controls :src="getImgUrl(item.fileCid)" /> -->
           <MDBCardBody class="card-body">
-            <MDBCardTitle>Name: </MDBCardTitle>
+            <MDBCardTitle>Name: {{ item.name }} </MDBCardTitle>
             <MDBCardText>
-              IPFS meta link: {{ item.text }}
+              IPFS metadata: {{ item.metaHash }}
+            </MDBCardText>
+            <MDBCardText>
+              Likes: {{ item.likes }}
             </MDBCardText>
           </MDBCardBody>
         </MDBCard>
@@ -45,7 +45,7 @@ import { useStore } from "@src/store";
 import { fileSize, copyToClipboard, generateLink, generateShortLink, getImgUrl, isVideo} from "@src/services/helpers";
 
 import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardImg, MDBBtn, MDBCardVideo } from "mdb-vue-ui-kit";
-import { useInstaStore } from '@src/store/index';
+import { useRebelStore } from '@src/store/index';
 import { storeToRefs } from 'pinia'
 
 export default {
@@ -64,8 +64,8 @@ export default {
     const store = useStore();
 
     const search = ref("");
-    const instaStore = useInstaStore()
-    const { postedItems } = storeToRefs(instaStore)
+    const rebelStore = useRebelStore()
+    const { postedItems } = storeToRefs(rebelStore)
 
     const shortenLink = async (item) => {
       const url = generateLink(item);

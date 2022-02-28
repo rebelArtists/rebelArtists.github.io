@@ -1,7 +1,9 @@
+// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.8.0;
 
 import "./ownable.sol";
-import "./safemath.sol";
+import "./safemaths.sol";
 
 contract PostFactory is Ownable {
 
@@ -23,12 +25,14 @@ contract PostFactory is Ownable {
 
   mapping (uint => address) public postToOwner;
   mapping (address => uint) ownerPostCount;
+  mapping (address => uint[]) public ownerToPostIds;
 
-  function _createPost(string memory _name, string memory _mediaHash, string memory _metaHash) public {
+  function createPost(string memory _name, string memory _mediaHash, string memory _metaHash) public {
     posts.push(Post(_name, _mediaHash, _metaHash, 0, false));
     uint id = posts.length - 1;
     postToOwner[id] = msg.sender;
     ownerPostCount[msg.sender] = ownerPostCount[msg.sender].add(1);
+    ownerToPostIds[msg.sender].push(id);
     emit NewPost(id, _name, _mediaHash, _metaHash);
   }
 

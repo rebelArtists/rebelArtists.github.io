@@ -27,7 +27,7 @@ import { Notyf } from "notyf";
 import PanelUpload from "@src/components/VUpload/PanelUpload.vue";
 import PanelResult from "@src/components/VUpload/PanelResult.vue";
 import { storeToRefs } from 'pinia'
-import { useInstaStore } from '@src/store/index'
+import { useRebelStore } from '@src/store/index'
 
 
 export default {
@@ -57,9 +57,9 @@ export default {
       ]
     })
 
-    const instaStore = useInstaStore()
-    const { connectWallet } = useInstaStore()
-    const { account } = storeToRefs(instaStore)
+    const rebelStore = useRebelStore()
+    const { connectWallet } = useRebelStore()
+    const { account } = storeToRefs(rebelStore)
 
     provide("notyf", NotfyProvider);
 

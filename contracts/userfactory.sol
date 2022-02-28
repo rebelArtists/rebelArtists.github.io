@@ -1,7 +1,9 @@
+// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.8.0;
 
 import "./ownable.sol";
-import "./safemath.sol";
+import "./safemaths.sol";
 
 contract UserFactory is Ownable {
 
@@ -26,7 +28,7 @@ contract UserFactory is Ownable {
   mapping (address => uint) ownerUserCount;
   mapping (address => User) ownerToUser;
 
-  function _createUser(string memory _name, string memory _bio, string memory _profPicHash) public {
+  function createUser(string memory _name, string memory _bio, string memory _profPicHash) public {
     require(ownerUserCount[msg.sender] == 0);
     users.push(User(_name, _bio, 0, 0, _profPicHash, false));
     uint id = users.length - 1;
