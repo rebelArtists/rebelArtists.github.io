@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import VUpload from "@src/views/VUpload.vue";
+import VProfile from "@src/views/VProfile.vue";
 
 // Async Component
 const VAbout = () => import("@src/views/VAbout.vue");
@@ -14,7 +14,7 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: VUpload
+    component: VProfile
   },
   {
     path: "/about",
