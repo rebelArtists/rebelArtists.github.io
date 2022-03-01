@@ -219,6 +219,7 @@ async function getPostsByUser() {
         postObj.metaHash = userPosts.metaHashesArray[i];
         postObj.likes = userPosts.likesArray[i].toNumber();
         postObj.blacklisted = userPosts.blacklistedArray[i];
+        postObj.id = userPosts.idArray[i];
         postedItems.value.push(postObj);
       }
     }
@@ -256,6 +257,43 @@ async function getUserByOwner() {
   }
 }
 
+
+  async function followUser(userId) {
+    try {
+      const { ethereum } = window
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum)
+        const signer = provider.getSigner()
+        const rebelContract = new ethers.Contract(contractAddressRebel, contractABIrebel.abi, signer)
+        const follow = (await rebelContract.followUser(userId, {value: ethers.utils.parseEther(".02")}))
+        console.log('Following user...', user.hash)
+        await follow.wait()
+        console.log('Followed user -- ', user.hash)
+      }
+    }
+    catch (e) {
+      console.log('e', e)
+    }
+  }
+
+  async function likePost(postId) {
+    try {
+      const { ethereum } = window
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum)
+        const signer = provider.getSigner()
+        const rebelContract = new ethers.Contract(contractAddressRebel, contractABIrebel.abi, signer)
+        const like = (await rebelContract.likePost(postId, {value: ethers.utils.parseEther(".02")}))
+        console.log('Following user...', like.hash)
+        await like.wait()
+        console.log('Followed user -- ', like.hash)
+      }
+    }
+    catch (e) {
+      console.log('e', e)
+    }
+  }
+
   async function connectWallet() {
     try {
       const { ethereum } = window
@@ -285,6 +323,8 @@ async function getUserByOwner() {
     postedItems,
     createUser,
     getUserByOwner,
-    user
+    user,
+    followUser,
+    likePost
   }
 });

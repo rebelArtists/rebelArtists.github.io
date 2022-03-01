@@ -125,9 +125,15 @@ body,
       .main-content {
         position: relative;
 
-        width: 95%;
+        width: 60%;
         flex-direction: column;
         box-shadow: none;
+
+        // .wrapper {
+        //   width: 50%;
+        //   justify-content: center;
+        //   align-content: end;
+        // }
 
         section {
           width: 100%;

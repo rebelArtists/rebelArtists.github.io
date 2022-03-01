@@ -37,7 +37,7 @@ contract SocialHelper is PostFactory, UserFactory {
     require(msg.value >= txFee);
     postsMap[_postId].likes = postsMap[_postId].likes.add(1);
     address postOwner = postToOwner[_postId];
-    uint fundsForOwner = msg.value.div(100).mul(98);
+    uint fundsForOwner = msg.value.div(100).mul(98); // 2% cut for rebel
     payable(postOwner).transfer(fundsForOwner);
   }
 
@@ -52,7 +52,7 @@ contract SocialHelper is PostFactory, UserFactory {
     User storage user = usersMap[followeeId];
     user.following = user.following.add(1);
     address userOwner = userToOwner[_userId];
-    uint fundsForOwner = msg.value.div(100).mul(98);
+    uint fundsForOwner = msg.value.div(100).mul(98); // 2% cut for rebel
     payable(userOwner).transfer(fundsForOwner);
   }
 

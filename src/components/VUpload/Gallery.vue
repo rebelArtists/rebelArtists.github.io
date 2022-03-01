@@ -11,16 +11,15 @@
           />
           <!-- <video v-if="isVideo(item.file.type)" class="vid-fit" controls :src="getImgUrl(item.fileCid)" /> -->
           <MDBCardBody class="card-body">
-            <MDBCardTitle>Name: {{ item.name }} </MDBCardTitle>
-            <MDBCardText>
-              IPFS metadata: {{ item.metaHash }}
-            </MDBCardText>
+            <MDBCardText>Name: {{ item.name }} </MDBCardText>
             <MDBCardText>
               Likes: {{ item.likes }}
+              <div id="favoriting">
+                <ToggleFavorite  :id="item.id" />
+              </div>
             </MDBCardText>
           </MDBCardBody>
         </MDBCard>
-
     </div>
     </div>
   </div>
@@ -46,7 +45,8 @@ import { fileSize, copyToClipboard, generateLink, generateShortLink, getImgUrl, 
 
 import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardImg, MDBBtn, MDBCardVideo } from "mdb-vue-ui-kit";
 import { useRebelStore } from '@src/store/index';
-import { storeToRefs } from 'pinia'
+import { storeToRefs } from 'pinia';
+import ToggleFavorite from "@src/components/VUpload/ToggleFavorite.vue";
 
 export default {
   name: "Gallery",
@@ -58,6 +58,7 @@ export default {
     MDBCardImg,
     MDBBtn,
     MDBCardVideo,
+    ToggleFavorite
   },
   setup() {
     const notyf = inject("notyf");
@@ -135,13 +136,14 @@ export default {
   padding-right: 10px;
   padding-left: 10px;
   padding-bottom: 10px;
+  font-size: 13px;
 }
 
 .wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-auto-rows: repeat(3, 1fr);
-  width: 94vw;
+  width: 100%;
   grid-gap: 1rem;
   max-width: 80rem;
 }
@@ -183,6 +185,24 @@ export default {
   width: 100%;
   object-fit: cover;
   border-radius: 0.8rem;
+}
+
+#favoriting {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: -15px;
+  margin-left: 85%;
+}
+
+button {
+  background: none;
+  border: none;
+  padding: 0;
+  outline: inherit;
+  cursor: pointer;
 }
 
 body.dark-theme {

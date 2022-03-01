@@ -13,7 +13,7 @@
         {{ user.name }}
       </div>
       <div class="box item8">
-        <button class="buttonConnectProfile" @click="connectWallet">
+        <button class="buttonConnectProfile" @click="followUser(user.id)">
           Follow
         </button>
       </div>
@@ -43,12 +43,14 @@ export default {
   setup() {
 
     const rebelStore = useRebelStore()
+    const { followUser } = useRebelStore()
     const { postedItems, user } = storeToRefs(rebelStore)
 
     return {
       postedItems,
       user,
-      getImgUrl
+      getImgUrl,
+      followUser
     }
 }
 }
@@ -59,7 +61,7 @@ export default {
 .wrapper2 {
   font-size: 13px;
   margin: 15px 0 35px 0;
-  width: 90vw;
+  width: 100%;
   height: 20%;
   display: grid;
   grid-gap: 10px;
