@@ -12,6 +12,7 @@
     </div>
     <div v-if="account" class="main animated">
       <div class="main-content">
+        <ProfileHeader />
         <Gallery />
       </div>
     </div>
@@ -23,6 +24,7 @@ import { provide } from "vue";
 import { Notyf } from "notyf";
 
 import Gallery from "@src/components/VUpload/Gallery.vue";
+import ProfileHeader from "@src/components/VUpload/ProfileHeader.vue";
 import { storeToRefs } from 'pinia'
 import { useRebelStore } from '@src/store/index'
 
@@ -30,7 +32,8 @@ import { useRebelStore } from '@src/store/index'
 export default {
   name: "VProfile",
   components: {
-    Gallery
+    Gallery,
+    ProfileHeader
   },
   setup() {
     const NotfyProvider = new Notyf({

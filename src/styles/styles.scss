@@ -67,7 +67,8 @@ body,
   #header {
     padding: 0 0 .8em 0;
     border-bottom: none;
-    flex-direction: column;
+    padding-left: 3vw;
+    // flex-direction: row;
 
     .header-title {
       width: 100%;
@@ -83,7 +84,7 @@ body,
     }
 
     .header-menu {
-      width: 100%;
+      width: 35vw;
 
       nav {
         text-align: left;
@@ -102,6 +103,7 @@ body,
           flex: 1;
           display: flex;
           justify-content: flex-end;
+          padding-right: 7vw;
         }
 
       }
@@ -122,7 +124,8 @@ body,
 
       .main-content {
         position: relative;
-        width: 100%;
+
+        width: 95%;
         flex-direction: column;
         box-shadow: none;
 
