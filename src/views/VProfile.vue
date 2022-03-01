@@ -12,8 +12,13 @@
     </div>
     <div v-if="account" class="main animated">
       <div class="main-content">
-        <ProfileHeader />
-        <Gallery />
+        <div v-if="user">
+          <ProfileHeader />
+          <Gallery />
+        </div>
+        <div v-if="!user">
+          <CreateProfile />
+        </div>
       </div>
     </div>
   </section>
@@ -25,6 +30,7 @@ import { Notyf } from "notyf";
 
 import Gallery from "@src/components/VUpload/Gallery.vue";
 import ProfileHeader from "@src/components/VUpload/ProfileHeader.vue";
+import CreateProfile from "@src/components/VUpload/CreateProfile.vue";
 import { storeToRefs } from 'pinia'
 import { useRebelStore } from '@src/store/index'
 
@@ -33,7 +39,8 @@ export default {
   name: "VProfile",
   components: {
     Gallery,
-    ProfileHeader
+    ProfileHeader,
+    CreateProfile
   },
   setup() {
     const NotfyProvider = new Notyf({
@@ -58,13 +65,14 @@ export default {
 
     const rebelStore = useRebelStore()
     const { connectWallet } = useRebelStore()
-    const { account } = storeToRefs(rebelStore)
+    const { account, user } = storeToRefs(rebelStore)
 
     provide("notyf", NotfyProvider);
 
     return {
       connectWallet,
       account,
+      user,
     }
   }
 }

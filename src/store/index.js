@@ -162,6 +162,7 @@ async function getAllPosts() {
 
 export const useRebelStore = defineStore('rebel', () => {
   const account = ref(null)
+  const user = ref(null)
   const indexCount = ref(0)
   const postedItems = ref([])
 
@@ -176,6 +177,24 @@ export const useRebelStore = defineStore('rebel', () => {
         console.log('Mining...', posted.hash)
         await posted.wait()
         console.log('Mined -- ', posted.hash)
+      }
+    }
+    catch (e) {
+      console.log('e', e)
+    }
+  }
+
+  async function createUser(name, bio, profPicHash) {
+    try {
+      const { ethereum } = window
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum)
+        const signer = provider.getSigner()
+        const rebelContract = new ethers.Contract(contractAddressRebel, contractABIrebel.abi, signer)
+        const user = (await rebelContract.createUser(name, bio, profPicHash))
+        console.log('Creating user...', user.hash)
+        await user.wait()
+        console.log('Mined user -- ', user.hash)
       }
     }
     catch (e) {
@@ -208,6 +227,33 @@ async function getPostsByUser() {
   }
 }
 
+async function getUserByOwner() {
+  try {
+    const { ethereum } = window
+    if (ethereum) {
+      const provider = new ethers.providers.Web3Provider(ethereum)
+      const signer = provider.getSigner()
+      const rebelContract = new ethers.Contract(contractAddressRebel, contractABIrebel.abi, signer)
+      const userResp = (await rebelContract.getUserByOwner(account.value))
+      console.log(userResp);
+      if (userResp.profPicHash != "") {
+        const userObj = new Object();
+        userObj.name = userResp.name;
+        userObj.bio = userResp.bio;
+        userObj.followers = userResp.followers.toNumber();
+        userObj.following = userResp.following.toNumber();
+        userObj.profPicHash = userResp.profPicHash;
+        userObj.blacklisted = userResp.blacklisted;
+        userObj.id = userResp.id;
+        user.value = userObj;
+      }
+    }
+  }
+  catch (e) {
+    console.log('e', e)
+  }
+}
+
   async function connectWallet() {
     try {
       const { ethereum } = window
@@ -219,7 +265,10 @@ async function getPostsByUser() {
 
       console.log('Connected: ', myAccounts[0])
       account.value = myAccounts[0]
-      await getPostsByUser(account.value);
+      await getUserByOwner();
+      if (user.value) {
+        await getPostsByUser(account.value);
+      }
     }
     catch (error) {
       console.log(error)
@@ -231,6 +280,9 @@ async function getPostsByUser() {
     account,
     postContent,
     getPostsByUser,
-    postedItems
+    postedItems,
+    createUser,
+    getUserByOwner,
+    user
   }
 });

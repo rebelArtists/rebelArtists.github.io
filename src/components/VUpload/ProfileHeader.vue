@@ -4,25 +4,25 @@
       <div class="box item2">
         <div>
           <img
-             src="https://cdnwp-s3.benzinga.com/wp-content/uploads/2021/08/09145118/punk.png"
+             :src="getImgUrl(user.profPicHash)"
              class="round-image"
           />
         </div>
       </div>
       <div class="box item3">
-        NAME
+        {{ user.name }}
       </div>
       <div class="box item5">
-        FOLLOWERS
+        {{ user.followers }} followers
       </div>
       <div class="box item6">
-        FOLLOWING
+        {{ user.following }} following
       </div>
       <div class="box item4">
-        POSTS
+        3 posts
       </div>
       <div class="box item7">
-        BIO
+        {{ user.bio }}
       </div>
   </div>
 </template>
@@ -31,16 +31,19 @@
 
 import { useRebelStore } from '@src/store/index';
 import { storeToRefs } from 'pinia'
+import { getImgUrl } from "@src/services/helpers";
 
 export default {
   name: "ProfileHeader",
   setup() {
 
     const rebelStore = useRebelStore()
-    const { postedItems } = storeToRefs(rebelStore)
+    const { postedItems, user } = storeToRefs(rebelStore)
 
     return {
-      postedItems
+      postedItems,
+      user,
+      getImgUrl
     }
 }
 }
@@ -49,7 +52,7 @@ export default {
 <style lang="scss">
 
 .wrapper2 {
-  font-size: 1vw;
+  font-size: 10px;
   margin: 15px 0 35px 0;
   width: 90vw;
   height: 20%;
