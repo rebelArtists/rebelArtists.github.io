@@ -8,7 +8,8 @@ import contractABIrebel from '../artifacts/contracts/SocialHelper.sol/SocialHelp
 const db = new Storage("app");
 const contractAddressInsta = '0x279608E8F8cE4FbE02726B3ef999e0DA92153E43';
 // const contractAddressRebel = '0x3F899516c4562Bb74fFeb6246d1848ae9E9e6927';
-const contractAddressRebel = '0x7306BB8b0B6e19D09ddEfD9762Fc587eA8D0E9e5';
+// const contractAddressRebel = '0x7306BB8b0B6e19D09ddEfD9762Fc587eA8D0E9e5';
+const contractAddressRebel = '0x75099A61816CC30E8249E29f92C9880DB5d37185';
 
 db.read();
 db.data ||= { version: "0.0.1", results: [] };
@@ -244,7 +245,8 @@ async function getUserByOwner() {
         userObj.following = userResp.following.toNumber();
         userObj.profPicHash = userResp.profPicHash;
         userObj.blacklisted = userResp.blacklisted;
-        userObj.id = userResp.id;
+        userObj.postCount = userResp.postCount.toNumber();
+        userObj.id = userResp.id.toNumber();
         user.value = userObj;
       }
     }

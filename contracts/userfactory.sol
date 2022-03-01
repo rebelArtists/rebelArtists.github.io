@@ -20,24 +20,33 @@ contract UserFactory is Ownable {
     uint following;
     string profPicHash;
     bool blacklisted;
+    mapping (uint => bool) followersMap;
+    mapping (uint => bool) followingMap;
   }
 
-  User[] public users;
+  uint userCounter;
+  mapping (uint => User) usersMap;
 
   mapping (uint => address) public userToOwner;
   mapping (address => uint) ownerUserCount;
-  mapping (address => User) ownerToUser;
   mapping (address => uint) ownerToUserId;
 
   function createUser(string memory _name, string memory _bio, string memory _profPicHash) public {
     require(ownerUserCount[msg.sender] == 0);
-    users.push(User(_name, _bio, 0, 0, _profPicHash, false));
-    uint id = users.length - 1;
-    userToOwner[id] = msg.sender;
-    ownerToUser[msg.sender] = users[id];
-    ownerToUserId[msg.sender] = id;
+
+    userCounter = userCounter.add(1);
+    User storage newUser = usersMap[userCounter];
+    newUser.name = _name;
+    newUser.bio = _bio;
+    newUser.followers = 0;
+    newUser.following = 0;
+    newUser.profPicHash = _profPicHash;
+    newUser.blacklisted = false;
+
+    userToOwner[userCounter] = msg.sender;
+    ownerToUserId[msg.sender] = userCounter;
     ownerUserCount[msg.sender] = ownerUserCount[msg.sender].add(1);
-    emit NewUser(id, _name, _bio, _profPicHash);
+    emit NewUser(userCounter, _name, _bio, _profPicHash);
   }
 
 }

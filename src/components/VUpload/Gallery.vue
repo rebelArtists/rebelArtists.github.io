@@ -149,6 +149,7 @@ export default {
 .media-wrap {
   overflow: hidden;
   position: relative;
+  max-width: 80rem;
 }
 
 .gallery {

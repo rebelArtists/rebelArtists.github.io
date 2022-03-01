@@ -15,12 +15,12 @@ contract SocialHelper is PostFactory, UserFactory {
   uint txFee = 0.01 ether;
 
   modifier aboveLikes(uint _likes, uint _postId) {
-    require(posts[_postId].likes >= _likes);
+    require(postsMap[_postId].likes >= _likes);
     _;
   }
 
   modifier aboveFollowers(uint _followers, uint _userId) {
-    require(users[_userId].followers >= _followers);
+    require(usersMap[_userId].followers >= _followers);
     _;
   }
 
@@ -35,40 +35,44 @@ contract SocialHelper is PostFactory, UserFactory {
 
   function likePost(uint _postId) external payable {
     require(msg.value >= txFee);
-    posts[_postId].likes = posts[_postId].likes.add(1);
+    postsMap[_postId].likes = postsMap[_postId].likes.add(1);
     address postOwner = postToOwner[_postId];
     uint fundsForOwner = msg.value.div(100).mul(98);
     payable(postOwner).transfer(fundsForOwner);
   }
 
   function unlikePost(uint _postId) external {
-    posts[_postId].likes = posts[_postId].likes.sub(1);
+    postsMap[_postId].likes = postsMap[_postId].likes.sub(1);
   }
 
   function followUser(uint _userId) external payable {
     require(msg.value >= txFee);
-    users[_userId].followers = users[_userId].followers.add(1);
-    ownerToUser[msg.sender].following = ownerToUser[msg.sender].following.add(1);
+    usersMap[_userId].followers = usersMap[_userId].followers.add(1);
+    uint followeeId = ownerToUserId[msg.sender];
+    User storage user = usersMap[followeeId];
+    user.following = user.following.add(1);
     address userOwner = userToOwner[_userId];
     uint fundsForOwner = msg.value.div(100).mul(98);
     payable(userOwner).transfer(fundsForOwner);
   }
 
   function unfollowUser(uint _userId) external {
-    users[_userId].followers = users[_userId].followers.sub(1);
-    ownerToUser[msg.sender].following = ownerToUser[msg.sender].following.sub(1);
+    usersMap[_userId].followers = usersMap[_userId].followers.sub(1);
+    uint followeeId = ownerToUserId[msg.sender];
+    User storage user = usersMap[followeeId];
+    user.following = user.following.sub(1);
   }
 
   function changeName(uint _userId, string memory _newName) external onlyOwner() {
-    users[_userId].name = _newName;
+    usersMap[_userId].name = _newName;
   }
 
   function changeBio(uint _userId, string memory _newBio) external onlyOwner() {
-    users[_userId].bio = _newBio;
+    usersMap[_userId].bio = _newBio;
   }
 
   function changeProfPic(uint _userId, string memory _profPicHash) external onlyOwner() {
-    users[_userId].profPicHash = _profPicHash;
+    usersMap[_userId].profPicHash = _profPicHash;
   }
 
   function getPostsByOwner(address _owner) external view returns(
@@ -87,7 +91,7 @@ contract SocialHelper is PostFactory, UserFactory {
     bool[] memory blacklisted = new bool[](postIds.length);
 
     for (uint i = 0; i < postIds.length; i++) {
-        Post memory post = posts[postIds[i]];
+        Post storage post = postsMap[postIds[i]];
         names[i] = post.name;
         mediaHashes[i] = post.mediaHash;
         metaHashes[i] = post.metaHash;
@@ -114,7 +118,7 @@ contract SocialHelper is PostFactory, UserFactory {
     uint[] memory ids = _postIds;
 
     for (uint i = 0; i < ids.length; i++) {
-      Post memory post = posts[ids[i]];
+      Post storage post = postsMap[ids[i]];
       names[i] = post.name;
       mediaHashes[i] = post.mediaHash;
       metaHashes[i] = post.metaHash;
@@ -132,11 +136,13 @@ contract SocialHelper is PostFactory, UserFactory {
     uint following,
     string memory profPicHash,
     bool blacklisted,
+    uint postCount,
     uint id
   ) {
-    User memory user = ownerToUser[_owner];
     uint userId = ownerToUserId[_owner];
-    return (user.name, user.bio, user.followers, user.following, user.profPicHash, user.blacklisted, userId);
+    User storage user = usersMap[userId];
+    uint postTotal = ownerPostCount[_owner];
+    return (user.name, user.bio, user.followers, user.following, user.profPicHash, user.blacklisted, postTotal, userId);
   }
 
   function getUsersByIds(uint[] memory _userIds) external view returns(
@@ -157,7 +163,7 @@ contract SocialHelper is PostFactory, UserFactory {
     uint[] memory ids = _userIds;
 
     for (uint i = 0; i < ids.length; i++) {
-      User memory user = users[ids[i]];
+      User storage user = usersMap[ids[i]];
       names[i] = user.name;
       bios[i] = user.bio;
       followers[i] = user.followers;

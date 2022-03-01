@@ -12,6 +12,11 @@
       <div class="box item3">
         {{ user.name }}
       </div>
+      <div class="box item8">
+        <button class="buttonConnectProfile" @click="connectWallet">
+          Follow
+        </button>
+      </div>
       <div class="box item5">
         {{ user.followers }} followers
       </div>
@@ -19,7 +24,7 @@
         {{ user.following }} following
       </div>
       <div class="box item4">
-        3 posts
+        {{ user.postCount }} posts
       </div>
       <div class="box item7">
         {{ user.bio }}
@@ -52,13 +57,13 @@ export default {
 <style lang="scss">
 
 .wrapper2 {
-  font-size: 10px;
+  font-size: 13px;
   margin: 15px 0 35px 0;
   width: 90vw;
   height: 20%;
   display: grid;
   grid-gap: 10px;
-  grid-template-columns: repeat(5, 12vw);
+  grid-template-columns: repeat(6, minmax(12vw, 100));
   grid-auto-rows: repeat(3, 1fr);
   justify-content: center;
   align-content: end;
@@ -69,7 +74,24 @@ export default {
   // color: #fff;
   border-radius: 5px;
   padding: 10px;
-  font-size: 150%;
+}
+
+.buttonConnectProfile {
+  transition-duration: 0.6s;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-image: var(--liniear-gradient-color-2);
+}
+
+.buttonConnectProfile:hover {
+  background-color: #4CAF50; /* Green */
+  color: white;
 }
 
 .item2 {
@@ -77,11 +99,13 @@ export default {
   grid-row: 1 / 4;
   justify-content: center;
   align-content: end;
-  padding-left: 8vw;
+  // padding-left: 4vw;
 }
 
 .item3 {
-  grid-column: 3 / 6;
+  font-size: 15px;
+  grid-column: 3 / 5;
+  font-weight: 900;
 }
 
 .item7 {
@@ -90,9 +114,10 @@ export default {
 
 .round-image {
   object-fit: cover;
-  width: 90%;
-  max-height: 100%;
- border-radius: 125px;
+  width: 150px;
+  height: 150px;
+  // max-height: 100%;
+ border-radius: 50%;
 }
 
 </style>
