@@ -13,8 +13,11 @@
         {{ user.name }}
       </div>
       <div class="box item8">
-        <button class="buttonConnectProfile" @click="followUser(user.id)">
+        <button v-if="!isFollowingUser" class="buttonConnectProfile" @click="followUser(user.id)">
           Follow
+        </button>
+        <button v-if="isFollowingUser" class="buttonConnectProfile" @click="followUser(user.id)">
+          Unfollow
         </button>
       </div>
       <div class="box item5">
@@ -40,17 +43,33 @@ import { getImgUrl } from "@src/services/helpers";
 
 export default {
   name: "ProfileHeader",
+  mounted() {
+    this.$nextTick(() => {
+      this.checkIsFollowing();
+    });
+  },
+  methods: {
+    async checkIsFollowing() {
+      const { isFollowing, getUserByOwner } = useRebelStore()
+      const rebelStore = useRebelStore()
+      const { user, isFollowingUser } = storeToRefs(rebelStore)
+      await getUserByOwner();
+      await isFollowing(user.value.id);
+      console.log(isFollowingUser.value);
+    }
+  },
   setup() {
 
     const rebelStore = useRebelStore()
     const { followUser } = useRebelStore()
-    const { postedItems, user } = storeToRefs(rebelStore)
+    const { postedItems, user, isFollowingUser } = storeToRefs(rebelStore)
 
     return {
       postedItems,
       user,
       getImgUrl,
-      followUser
+      followUser,
+      isFollowingUser
     }
 }
 }

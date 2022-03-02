@@ -9,7 +9,8 @@ const db = new Storage("app");
 const contractAddressInsta = '0x279608E8F8cE4FbE02726B3ef999e0DA92153E43';
 // const contractAddressRebel = '0x3F899516c4562Bb74fFeb6246d1848ae9E9e6927';
 // const contractAddressRebel = '0x7306BB8b0B6e19D09ddEfD9762Fc587eA8D0E9e5';
-const contractAddressRebel = '0x75099A61816CC30E8249E29f92C9880DB5d37185';
+// const contractAddressRebel = '0x75099A61816CC30E8249E29f92C9880DB5d37185';
+const contractAddressRebel = '0x1D0Dde0c9b75d401d5B4B33B1c7Cf306da1ca35B';
 
 db.read();
 db.data ||= { version: "0.0.1", results: [] };
@@ -166,6 +167,7 @@ export const useRebelStore = defineStore('rebel', () => {
   const user = ref(null)
   const indexCount = ref(0)
   const postedItems = ref([])
+  const isFollowingUser = ref(false)
 
   async function postContent(name, mediaHash, metaHash) {
     try {
@@ -237,7 +239,6 @@ async function getUserByOwner() {
       const signer = provider.getSigner()
       const rebelContract = new ethers.Contract(contractAddressRebel, contractABIrebel.abi, signer)
       const userResp = (await rebelContract.getUserByOwner(account.value))
-      console.log(userResp);
       if (userResp.profPicHash != "") {
         const userObj = new Object();
         userObj.name = userResp.name;
@@ -266,9 +267,9 @@ async function getUserByOwner() {
         const signer = provider.getSigner()
         const rebelContract = new ethers.Contract(contractAddressRebel, contractABIrebel.abi, signer)
         const follow = (await rebelContract.followUser(userId, {value: ethers.utils.parseEther(".02")}))
-        console.log('Following user...', user.hash)
+        console.log('Following user...')
         await follow.wait()
-        console.log('Followed user -- ', user.hash)
+        console.log('Followed user successfully ')
       }
     }
     catch (e) {
@@ -287,6 +288,22 @@ async function getUserByOwner() {
         console.log('Following user...', like.hash)
         await like.wait()
         console.log('Followed user -- ', like.hash)
+      }
+    }
+    catch (e) {
+      console.log('e', e)
+    }
+  }
+
+  async function isFollowing(userId) {
+    try {
+      const { ethereum } = window
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum)
+        const signer = provider.getSigner()
+        const rebelContract = new ethers.Contract(contractAddressRebel, contractABIrebel.abi, signer)
+        const liked = (await rebelContract.isFollowing(userId))
+        isFollowingUser.value = liked;
       }
     }
     catch (e) {
@@ -325,6 +342,8 @@ async function getUserByOwner() {
     getUserByOwner,
     user,
     followUser,
-    likePost
+    likePost,
+    isFollowing,
+    isFollowingUser
   }
 });

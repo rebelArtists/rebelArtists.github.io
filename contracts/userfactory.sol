@@ -34,7 +34,6 @@ contract UserFactory is Ownable {
   function createUser(string memory _name, string memory _bio, string memory _profPicHash) public {
     require(ownerUserCount[msg.sender] == 0);
 
-    userCounter = userCounter.add(1);
     User storage newUser = usersMap[userCounter];
     newUser.name = _name;
     newUser.bio = _bio;
@@ -47,6 +46,7 @@ contract UserFactory is Ownable {
     ownerToUserId[msg.sender] = userCounter;
     ownerUserCount[msg.sender] = ownerUserCount[msg.sender].add(1);
     emit NewUser(userCounter, _name, _bio, _profPicHash);
+    userCounter = userCounter.add(1);
   }
 
 }

@@ -30,7 +30,7 @@ contract PostFactory is Ownable {
   mapping (address => uint[]) public ownerToPostIds;
 
   function createPost(string memory _name, string memory _mediaHash, string memory _metaHash) public {
-    postCounter = postCounter.add(1);
+
     Post storage newPost = postsMap[postCounter];
     newPost.name = _name;
     newPost.mediaHash = _mediaHash;
@@ -42,6 +42,8 @@ contract PostFactory is Ownable {
     ownerPostCount[msg.sender] = ownerPostCount[msg.sender].add(1);
     ownerToPostIds[msg.sender].push(postCounter);
     emit NewPost(postCounter, _name, _mediaHash, _metaHash);
+    
+    postCounter = postCounter.add(1);
 
   }
 

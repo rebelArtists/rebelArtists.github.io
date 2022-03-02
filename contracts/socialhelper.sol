@@ -37,6 +37,10 @@ contract SocialHelper is PostFactory, UserFactory {
     require(msg.value >= txFee);
     postsMap[_postId].likes = postsMap[_postId].likes.add(1);
     address postOwner = postToOwner[_postId];
+
+    uint callerUserId = ownerToUserId[msg.sender];
+    postsMap[_postId].likesMap[callerUserId] = true;
+
     uint fundsForOwner = msg.value.div(100).mul(98); // 2% cut for rebel
     payable(postOwner).transfer(fundsForOwner);
   }
@@ -52,6 +56,10 @@ contract SocialHelper is PostFactory, UserFactory {
     User storage user = usersMap[followeeId];
     user.following = user.following.add(1);
     address userOwner = userToOwner[_userId];
+
+    usersMap[_userId].followersMap[followeeId] = true;
+    usersMap[followeeId].followingMap[_userId] = true;
+
     uint fundsForOwner = msg.value.div(100).mul(98); // 2% cut for rebel
     payable(userOwner).transfer(fundsForOwner);
   }
@@ -142,6 +150,7 @@ contract SocialHelper is PostFactory, UserFactory {
     uint userId = ownerToUserId[_owner];
     User storage user = usersMap[userId];
     uint postTotal = ownerPostCount[_owner];
+
     return (user.name, user.bio, user.followers, user.following, user.profPicHash, user.blacklisted, postTotal, userId);
   }
 
@@ -173,6 +182,29 @@ contract SocialHelper is PostFactory, UserFactory {
     }
 
     return (names, bios, followers, following, profPicHashes, blacklist, ids);
+  }
+
+  function isFollowing(uint userId) external view returns(
+    bool following
+  ) {
+    User storage user = usersMap[userId];
+    uint callerUserId = ownerToUserId[msg.sender];
+
+    return (user.followersMap[callerUserId]);
+  }
+
+  function isLiked(uint[] memory postIds) external view returns(
+    bool[] memory likedArray
+  ) {
+    bool[] memory likesList = new bool[](postIds.length);
+
+    for (uint i = 0; i < postIds.length; i++) {
+      Post storage post = postsMap[postIds[i]];
+      uint callerUserId = ownerToUserId[msg.sender];
+      likesList[i] = post.likesMap[callerUserId];
+    }
+
+    return (likesList);
   }
 
 }

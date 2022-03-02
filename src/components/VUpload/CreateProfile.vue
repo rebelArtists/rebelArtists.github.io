@@ -110,10 +110,10 @@ export default {
         let results = await Promise.all(files);
         const successfully = results.filter(({ error }) => !error);
 
-        store.addResults(...successfully.map(({ error, data: file }) => file));
-        store.resetFiles();
-
-        fileRef.value.value = null;
+        // store.addResults(...successfully.map(({ error, data: file }) => file));
+        // store.resetFiles();
+        //
+        // fileRef.value.value = null;
 
         if (successfully.length > 0) {
           notyf.success(`${successfully.length} files successfully processed.`);
