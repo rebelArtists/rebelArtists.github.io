@@ -19,6 +19,9 @@
         <button v-if="isFollowingUser" class="buttonConnectProfile" @click="fireUnfollowUser(user.id)">
           Unfollow
         </button>
+        <button class="loading animated fadeIn">Loading
+           <div class="bg"></div>
+       </button>
       </div>
       <div class="box item5">
         {{ user.followers }} followers
@@ -153,6 +156,71 @@ export default {
   height: 150px;
   // max-height: 100%;
  border-radius: 50%;
+}
+
+
+@-webkit-keyframes MOVE-BG {
+	from {
+		-webkit-transform: translateX(0);
+	}
+	to {
+		-webkit-transform: translateX(46px);
+	}
+}
+
+@keyframes MOVE-BG {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(46px);
+	}
+}
+
+
+.loading {
+	height: auto;
+    text-align: center;
+    color: black;
+    position: relative;
+    overflow: hidden;
+	padding: 1rem;
+	margin: 3%;
+	font-style: italic;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.bg{
+    position: absolute;
+    left: -46px;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: -1;
+
+  background: repeating-linear-gradient(
+    -55deg,
+    #6366f1 1px,
+    #a855f7 12px,
+    #a855f7 20px,
+	);
+
+    -webkit-animation-name: MOVE-BG;
+	-webkit-animation-duration: .6s;
+	-webkit-animation-timing-function: linear;
+	-webkit-animation-iteration-count: infinite;
+
+    animation-name: MOVE-BG;
+	animation-duration: .6s;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
 }
 
 </style>
