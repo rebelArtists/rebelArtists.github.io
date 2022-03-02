@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="gallery-panel" v-for="(item, index) in postedItems" :key="index">
       <div class="media-wrap">
-        <MDBCard class="card-style">
+        <MDBCard class="card-style hover-overlay">
           <MDBCardImg
             :src="getImgUrl(item.mediaHash)"
             top
@@ -85,6 +85,7 @@ export default {
     async updateparent(variable) {
       const { getPostsByUser } = useRebelStore()
       await getPostsByUser();
+      await isLiked(postsArray._rawValue);
       this.componentKey += 1;
     }
   },

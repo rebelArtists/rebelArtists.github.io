@@ -229,7 +229,6 @@ async function getPostsByUser() {
         postsArray.value.push(userPosts.idArray[i].toNumber());
         postedItems.value.push(postObj);
       }
-      console.log(postedItems.value)
     }
   }
   catch (e) {

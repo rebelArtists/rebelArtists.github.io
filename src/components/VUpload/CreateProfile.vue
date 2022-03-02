@@ -1,5 +1,5 @@
 <template>
-  <section id="panel-upload" v-if="!user">
+  <section id="panel-upload">
     <ProfileName :profname="profname" @onChanged="onProfNameChanged" />
     <ProfileBio :profbio="profbio" @onChanged="onProfBioChanged" />
     <div class="content panel-upload--content">
@@ -45,7 +45,6 @@ export default {
     const isUploading = ref(false);
     const { createUser, getUserByOwner } = useRebelStore()
     const rebelStore = useRebelStore()
-    const { account, user } = storeToRefs(rebelStore)
     const profname = ref("");
     const profbio = ref("");
 
@@ -155,7 +154,6 @@ export default {
       profbio,
       onProfNameChanged,
       onProfBioChanged,
-      user
     }
   },
 }

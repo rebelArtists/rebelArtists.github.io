@@ -12,6 +12,8 @@ body {
   --contrast-color: black;
   --liniear-gradient-color-1: linear-gradient(to bottom right,#db2777,#db2777);
   --liniear-gradient-color-2: linear-gradient(to bottom right,#facc15,#f97316);
+  --loader-color-primary: #facc15;
+  --loader-color-secondary: #f97316;
   --icon-color: #f97316;
 
   --gradient-50: rgb(255, 242, 203);
@@ -38,6 +40,8 @@ body {
     --contrast-color: white;
     --liniear-gradient-color-1: linear-gradient(to bottom right,#1ce7b4,#2ad4f5);
     --liniear-gradient-color-2: linear-gradient(to bottom right,#a855f7,#6366f1);
+    --loader-color-primary: #a855f7;
+    --loader-color-secondary: #6366f1;
     --icon-color: #1ce7b4;
 
     --gradient-100: rgb(234, 240, 255);

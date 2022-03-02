@@ -24,14 +24,16 @@ export default {
   data() {
     return {
       favorited: this.intialFavorited,
-      animating: false
+      animating: false,
+      loading: false
     };
   },
   computed: {
     iconClasses() {
       return {
         "toggle-favorite__icon--favorited": this.favorited,
-        "toggle-favorite__icon--animate": this.animating
+        "toggle-favorite__icon--animate": this.animating,
+        "toggle-favorite__icon--loading": this.loading
       };
     }
   },
@@ -41,15 +43,18 @@ export default {
       // Only animate on favoriting.
       if (!this.favorited) {
         this.animating = true;
+        this.loading = true;
         await likePost(this.id);
       }
 
       if (this.favorited) {
+        this.loading = true;
         await unlikePost(this.id);
       }
 
       this.$emit('likeEvent', this.favorited);
-      this.favorited = !this.favorited;
+      this.loading = false;
+      // this.favorited = !this.favorited;
     },
     onIconAnimationEnds() {
       this.animating = false;
@@ -127,6 +132,38 @@ $icon-border-color: hsl(0, 0%, 10%);
       stroke: $icon-color;
     }
 
+    &--loading {
+      fill-opacity: .5;
+      stroke: $icon-color;
+      transform: rotate(45deg);
+      animation-name: animateHeart;
+    	animation-duration: 10s;
+      animation-timing-function: steps(24);
+    	animation-iteration-count: infinite;
+    }
+
+    @keyframes animateHeart  {
+      // scale down and scale up faster in irregular intervals to get the throbbing effect
+      0% {
+        transform: rotate(45deg) scale(0.8);
+      }
+      5% {
+        transform: rotate(45deg) scale(0.9);
+      }
+      10% {
+        transform: rotate(45deg) scale(0.8);
+      }
+      15% {
+        transform: rotate(45deg) scale(1);
+      }
+      50% {
+        transform: rotate(45deg) scale(0.8);
+      }
+      100% {
+        transform: rotate(45deg) scale(0.8);
+      }
+    }
+
     // Icon animation
     &--animate {
       opacity: 0;
@@ -146,4 +183,5 @@ $icon-border-color: hsl(0, 0%, 10%);
     height: 3em;
   }
 }
+
 </style>

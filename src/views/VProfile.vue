@@ -1,7 +1,7 @@
 <template>
   <section id="content">
     <div class="divConnect">
-      <button v-if="!account" class="buttonConnect" @click="connectWallet">
+      <button v-if="!account" class="buttonConnect" @click="fireConnectWallet">
         connect wallet and enter
       </button>
       <div v-if="!account" class="arrow">
@@ -10,14 +10,14 @@
           <span></span>
       </div>
     </div>
-    <div v-if="account" class="main animated">
+    <div v-if="this.ready" class="main animated" v-cloak>
       <div class="main-content">
-        <div v-if="user">
+        <div v-if="!user" v-cloak>
+          <CreateProfile />
+        </div>
+        <div v-if="user" v-cloak>
           <ProfileHeader />
           <Gallery />
-        </div>
-        <div v-if="!user">
-          <CreateProfile />
         </div>
       </div>
     </div>
@@ -42,6 +42,21 @@ export default {
     ProfileHeader,
     CreateProfile
   },
+  data() {
+    return {
+      ready: false,
+    };
+  },
+  methods: {
+    async fireConnectWallet() {
+      const { connectWallet, getUserByOwner } = useRebelStore()
+      const rebelStore = useRebelStore()
+      const { user } = storeToRefs(rebelStore)
+      await connectWallet();
+      await getUserByOwner();
+      this.ready = true;
+    }
+  },
   setup() {
     const NotfyProvider = new Notyf({
       duration: 2000,
@@ -64,13 +79,11 @@ export default {
     })
 
     const rebelStore = useRebelStore()
-    const { connectWallet } = useRebelStore()
     const { account, user } = storeToRefs(rebelStore)
 
     provide("notyf", NotfyProvider);
 
     return {
-      connectWallet,
       account,
       user,
     }
@@ -79,6 +92,11 @@ export default {
 </script>
 
 <style lang="scss">
+
+[v-cloak] {
+    display: none;
+}
+
 section#content {
   position: relative;
   height: 100%;

@@ -12,16 +12,23 @@
       <div class="box item3">
         {{ user.name }}
       </div>
-      <div class="box item8">
+      <div class="box item8" v-if="!loading">
         <button v-if="!isFollowingUser" class="buttonConnectProfile" @click="fireFollowUser(user.id)">
           Follow
         </button>
         <button v-if="isFollowingUser" class="buttonConnectProfile" @click="fireUnfollowUser(user.id)">
           Unfollow
         </button>
-        <button class="loading animated fadeIn">Loading
-           <div class="bg"></div>
-       </button>
+      </div>
+      <div class="box item8" v-if="loading">
+        <button v-if="!isFollowingUser" class="loading animated fadeIn">
+          Follow
+          <div class="bg"></div>
+        </button>
+        <button v-if="isFollowingUser" class="loading animated fadeIn">
+          Unfollow
+          <div class="bg"></div>
+        </button>
       </div>
       <div class="box item5">
         {{ user.followers }} followers
@@ -49,6 +56,7 @@ export default {
   data() {
     return {
       componentKey: 0,
+      loading: false,
     };
   },
   mounted() {
@@ -65,16 +73,20 @@ export default {
       await isFollowing(user.value.id);
     },
     async fireFollowUser(userId) {
+      this.loading = true;
       const { followUser } = useRebelStore()
       await followUser(userId);
       await this.checkIsFollowing();
       this.componentKey += 1;
+      this.loading = false;
     },
     async fireUnfollowUser(userId) {
+      this.loading = true;
       const { unfollowUser } = useRebelStore()
       await unfollowUser(userId);
       await this.checkIsFollowing();
       this.componentKey += 1;
+      this.loading = false;
     }
   },
   setup() {
@@ -180,13 +192,10 @@ export default {
 
 .loading {
 	height: auto;
-    text-align: center;
-    color: black;
-    position: relative;
-    overflow: hidden;
-	padding: 1rem;
-	margin: 3%;
-	font-style: italic;
+  text-align: center;
+  color: black;
+  position: relative;
+  overflow: hidden;
   border-radius: 8px;
   cursor: pointer;
   display: flex;
@@ -207,9 +216,9 @@ export default {
 
   background: repeating-linear-gradient(
     -55deg,
-    #6366f1 1px,
-    #a855f7 12px,
-    #a855f7 20px,
+    var(--loader-color-secondary) 1px,
+    var(--loader-color-primary) 12px,
+    var(--loader-color-primary) 20px,
 	);
 
     -webkit-animation-name: MOVE-BG;
