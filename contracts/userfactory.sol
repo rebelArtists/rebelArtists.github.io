@@ -19,6 +19,7 @@ contract UserFactory is Ownable {
     uint followers;
     uint following;
     string profPicHash;
+    uint amtEarned;
     bool blacklisted;
     mapping (uint => bool) followersMap;
     mapping (uint => bool) followingMap;
@@ -40,6 +41,7 @@ contract UserFactory is Ownable {
     newUser.followers = 0;
     newUser.following = 0;
     newUser.profPicHash = _profPicHash;
+    newUser.amtEarned = 0;
     newUser.blacklisted = false;
 
     userToOwner[userCounter] = msg.sender;

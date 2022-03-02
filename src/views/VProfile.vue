@@ -49,11 +49,10 @@ export default {
   },
   methods: {
     async fireConnectWallet() {
-      const { connectWallet, getUserByOwner } = useRebelStore()
+      const { connectWallet } = useRebelStore()
       const rebelStore = useRebelStore()
       const { user } = storeToRefs(rebelStore)
       await connectWallet();
-      await getUserByOwner();
       this.ready = true;
     }
   },

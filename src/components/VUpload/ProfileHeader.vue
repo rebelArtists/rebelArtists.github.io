@@ -42,6 +42,9 @@
       <div class="box item7">
         {{ user.bio }}
       </div>
+      <div class="box item9">
+        {{ user.amtEarned }} MATIC earned
+      </div>
   </div>
 </template>
 
@@ -66,10 +69,9 @@ export default {
   },
   methods: {
     async checkIsFollowing() {
-      const { isFollowing, getUserByOwner } = useRebelStore()
+      const { isFollowing } = useRebelStore()
       const rebelStore = useRebelStore()
       const { user, isFollowingUser } = storeToRefs(rebelStore)
-      await getUserByOwner();
       await isFollowing(user.value.id);
     },
     async fireFollowUser(userId) {
@@ -114,7 +116,7 @@ export default {
   display: grid;
   grid-gap: 10px;
   grid-template-columns: repeat(6, minmax(12vw, 100));
-  grid-auto-rows: repeat(3, 1fr);
+  grid-auto-rows: repeat(4, 1fr);
   justify-content: center;
   align-content: end;
 }
@@ -146,7 +148,7 @@ export default {
 
 .item2 {
   grid-column: 1 / 3;
-  grid-row: 1 / 4;
+  grid-row: 1 / 5;
   justify-content: center;
   align-content: end;
   // padding-left: 4vw;
@@ -159,7 +161,13 @@ export default {
 }
 
 .item7 {
-  grid-column: 3 / 6;
+  grid-column: 3 / 5;
+  grid-row: 3 / 5;
+}
+
+.item9 {
+  grid-column: 5 / 6;
+  grid-row: 3 / 5;
 }
 
 .round-image {

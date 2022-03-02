@@ -24,6 +24,12 @@ contract SocialHelper is PostFactory, UserFactory {
     _;
   }
 
+  modifier canOnlyLikeOnce(uint _postId) {
+    uint followeeId = ownerToUserId[msg.sender];
+    require(postsMap[_postId].likesMap[followeeId] = false);
+    _;
+  }
+
   function withdraw() external onlyOwner {
     address _owner = owner();
     payable(_owner).transfer(address(this).balance);
@@ -33,16 +39,18 @@ contract SocialHelper is PostFactory, UserFactory {
     txFee = _fee;
   }
 
-  function likePost(uint _postId) external payable {
+  function likePost(uint _postId) external payable canOnlyLikeOnce(_postId) {
     require(msg.value >= txFee);
     postsMap[_postId].likes = postsMap[_postId].likes.add(1);
     address postOwner = postToOwner[_postId];
+    uint postOwnerUserId = ownerToUserId[postOwner];
 
     uint callerUserId = ownerToUserId[msg.sender];
     postsMap[_postId].likesMap[callerUserId] = true;
 
     uint fundsForOwner = msg.value.div(100).mul(98); // 2% cut for rebel
     payable(postOwner).transfer(fundsForOwner);
+    usersMap[postOwnerUserId].amtEarned = usersMap[postOwnerUserId].amtEarned.add(fundsForOwner);
   }
 
   function unlikePost(uint _postId) external {
@@ -65,6 +73,8 @@ contract SocialHelper is PostFactory, UserFactory {
 
     uint fundsForOwner = msg.value.div(100).mul(98); // 2% cut for rebel
     payable(userOwner).transfer(fundsForOwner);
+
+    usersMap[_userId].amtEarned = usersMap[_userId].amtEarned.add(fundsForOwner);
   }
 
   function unfollowUser(uint _userId) external {
@@ -149,6 +159,7 @@ contract SocialHelper is PostFactory, UserFactory {
     uint followers,
     uint following,
     string memory profPicHash,
+    uint amtEarned,
     bool blacklisted,
     uint postCount,
     uint id
@@ -157,7 +168,7 @@ contract SocialHelper is PostFactory, UserFactory {
     User storage user = usersMap[userId];
     uint postTotal = ownerPostCount[_owner];
 
-    return (user.name, user.bio, user.followers, user.following, user.profPicHash, user.blacklisted, postTotal, userId);
+    return (user.name, user.bio, user.followers, user.following, user.profPicHash, user.amtEarned, user.blacklisted, postTotal, userId);
   }
 
   function getUsersByIds(uint[] memory _userIds) external view returns(

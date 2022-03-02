@@ -1,5 +1,19 @@
 <template>
+  <div class="container">
+    <div class="bg"></div>
+    <button class="modalButton" id="show-modal" @click="showModal = true">+</button>
+    <Teleport to="body">
+      <!-- use the modal component, pass in the prop -->
+      <modal :show="showModal" @close="showModal = false">
+        <template #header>
+          <h3>custom header</h3>
+        </template>
+      </modal>
+    </Teleport>
+  </div>
+
   <div class="wrapper">
+
     <div class="gallery-panel" v-for="(item, index) in postedItems" :key="index">
       <div class="media-wrap">
         <MDBCard class="card-style hover-overlay">
@@ -50,6 +64,7 @@ import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardImg, MDBBtn, MD
 import { useRebelStore } from '@src/store/index';
 import { storeToRefs } from 'pinia';
 import ToggleFavorite from "@src/components/VUpload/ToggleFavorite.vue";
+import Modal from '@src/components/VUpload/Modal.vue'
 
 export default {
   name: "Gallery",
@@ -61,11 +76,13 @@ export default {
     MDBCardImg,
     MDBBtn,
     MDBCardVideo,
-    ToggleFavorite
+    ToggleFavorite,
+    Modal
   },
   data() {
     return {
       componentKey: 0,
+      showModal: false
     };
   },
   mounted() {
@@ -75,10 +92,9 @@ export default {
   },
   methods: {
     async checkIsLiked() {
-      const { isLiked, getPostsByUser, getUserByOwner } = useRebelStore()
+      const { isLiked, getPostsByUser } = useRebelStore()
       const rebelStore = useRebelStore()
       const { postsArray } = storeToRefs(rebelStore)
-      await getUserByOwner();
       await getPostsByUser();
       await isLiked(postsArray._rawValue);
     },
@@ -156,6 +172,82 @@ export default {
 </script>
 
 <style lang="scss">
+
+.bg,
+.modalButton {
+  position: relative;
+  width: 75px;
+  height: 75px;
+  border-radius: 100%;
+}
+
+.container {
+  height: 30vh;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+}
+
+.bg {
+  animation: pulse 1.2s ease infinite;
+  background: var(--loader-color-primary);
+  margin-left: 92px;
+}
+
+.modalButton {
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  z-index: 99;
+  border: none;
+  background: var(--loader-color-secondary);
+  background-size: 18px;
+  cursor: pointer;
+  outline: none;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1, 1);
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+//
+// .test {
+//   height: 30vh;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+// }
+//
+// .modalButton {
+//   transition-duration: 0.6s;
+//   border-radius: 8px;
+//   width: 40%;
+//   height: 50%;
+//   cursor: pointer;
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   padding: 5px;
+//   padding-left: 20px;
+//   padding-right: 20px;
+//   background-image: var(--liniear-gradient-color-2);
+// }
+//
+// .modalButton:hover {
+//   background-color: #4CAF50; /* Green */
+//   color: white;
+// }
 
 .card-style {
   background-image: var(--liniear-gradient-color-2);
