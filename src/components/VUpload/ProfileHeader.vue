@@ -55,7 +55,6 @@ export default {
       const { user, isFollowingUser } = storeToRefs(rebelStore)
       await getUserByOwner();
       await isFollowing(user.value.id);
-      console.log(isFollowingUser.value);
     }
   },
   setup() {

@@ -14,7 +14,7 @@
             <MDBCardText>Name: {{ item.name }} </MDBCardText>
             <MDBCardText>
               Likes: {{ item.likes }}
-              <div id="favoriting">
+              <div v-if="!likedArray[index]" id="favoriting">
                 <ToggleFavorite  :id="item.id" />
               </div>
             </MDBCardText>
@@ -60,13 +60,27 @@ export default {
     MDBCardVideo,
     ToggleFavorite
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.checkIsLiked();
+    });
+  },
+  methods: {
+    async checkIsLiked() {
+      const { isLiked, getUserByOwner } = useRebelStore()
+      const rebelStore = useRebelStore()
+      const { postsArray } = storeToRefs(rebelStore)
+      await getUserByOwner();
+      await isLiked(postsArray.value);
+    }
+  },
   setup() {
     const notyf = inject("notyf");
     const store = useStore();
 
     const search = ref("");
     const rebelStore = useRebelStore()
-    const { postedItems } = storeToRefs(rebelStore)
+    const { postedItems, likedArray } = storeToRefs(rebelStore)
 
     const shortenLink = async (item) => {
       const url = generateLink(item);
@@ -119,7 +133,8 @@ export default {
       onSearchChanged,
       getImgUrl,
       isVideo,
-      postedItems
+      postedItems,
+      likedArray
     }
   }
 }

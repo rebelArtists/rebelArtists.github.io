@@ -167,7 +167,9 @@ export const useRebelStore = defineStore('rebel', () => {
   const user = ref(null)
   const indexCount = ref(0)
   const postedItems = ref([])
+  const postsArray = ref([])
   const isFollowingUser = ref(false)
+  const likedArray = ref([])
 
   async function postContent(name, mediaHash, metaHash) {
     try {
@@ -222,6 +224,7 @@ async function getPostsByUser() {
         postObj.likes = userPosts.likesArray[i].toNumber();
         postObj.blacklisted = userPosts.blacklistedArray[i];
         postObj.id = userPosts.idArray[i];
+        postsArray.value.push(userPosts.idArray[i]);
         postedItems.value.push(postObj);
       }
     }
@@ -302,8 +305,26 @@ async function getUserByOwner() {
         const provider = new ethers.providers.Web3Provider(ethereum)
         const signer = provider.getSigner()
         const rebelContract = new ethers.Contract(contractAddressRebel, contractABIrebel.abi, signer)
-        const liked = (await rebelContract.isFollowing(userId))
-        isFollowingUser.value = liked;
+        const following = (await rebelContract.isFollowing(userId))
+        isFollowingUser.value = following;
+      }
+    }
+    catch (e) {
+      console.log('e', e)
+    }
+  }
+
+
+  async function isLiked(postIds) {
+    try {
+      const { ethereum } = window
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum)
+        const signer = provider.getSigner()
+        const rebelContract = new ethers.Contract(contractAddressRebel, contractABIrebel.abi, signer)
+        const liked = (await rebelContract.isLiked(postIds))
+        likedArray.value = liked;
+        console.log(likedArray.value);
       }
     }
     catch (e) {
@@ -344,6 +365,9 @@ async function getUserByOwner() {
     followUser,
     likePost,
     isFollowing,
-    isFollowingUser
+    isFollowingUser,
+    isLiked,
+    likedArray,
+    postsArray
   }
 });
