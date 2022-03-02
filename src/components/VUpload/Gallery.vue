@@ -67,11 +67,13 @@ export default {
   },
   methods: {
     async checkIsLiked() {
-      const { isLiked, getUserByOwner } = useRebelStore()
+      const { isLiked, getPostsByUser, getUserByOwner } = useRebelStore()
       const rebelStore = useRebelStore()
       const { postsArray } = storeToRefs(rebelStore)
       await getUserByOwner();
-      await isLiked(postsArray.value);
+      await getPostsByUser();
+      console.log(postsArray._rawValue);
+      await isLiked(postsArray._rawValue);
     }
   },
   setup() {

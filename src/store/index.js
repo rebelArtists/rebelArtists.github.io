@@ -216,6 +216,7 @@ async function getPostsByUser() {
       const rebelContract = new ethers.Contract(contractAddressRebel, contractABIrebel.abi, signer)
       const userPosts = (await rebelContract.getPostsByOwner(account.value))
       postedItems.value = [];
+      postsArray.value = [];
       for (let i = 0; i < userPosts.namesArray.length; i++) {
         const postObj = new Object();
         postObj.name = userPosts.namesArray[i];
@@ -223,8 +224,8 @@ async function getPostsByUser() {
         postObj.metaHash = userPosts.metaHashesArray[i];
         postObj.likes = userPosts.likesArray[i].toNumber();
         postObj.blacklisted = userPosts.blacklistedArray[i];
-        postObj.id = userPosts.idArray[i];
-        postsArray.value.push(userPosts.idArray[i]);
+        postObj.id = userPosts.idArray[i].toNumber();
+        postsArray.value.push(userPosts.idArray[i].toNumber());
         postedItems.value.push(postObj);
       }
     }
@@ -324,7 +325,6 @@ async function getUserByOwner() {
         const rebelContract = new ethers.Contract(contractAddressRebel, contractABIrebel.abi, signer)
         const liked = (await rebelContract.isLiked(postIds))
         likedArray.value = liked;
-        console.log(likedArray.value);
       }
     }
     catch (e) {
