@@ -10,7 +10,8 @@ const contractAddressInsta = '0x279608E8F8cE4FbE02726B3ef999e0DA92153E43';
 // const contractAddressRebel = '0x3F899516c4562Bb74fFeb6246d1848ae9E9e6927';
 // const contractAddressRebel = '0x7306BB8b0B6e19D09ddEfD9762Fc587eA8D0E9e5';
 // const contractAddressRebel = '0x75099A61816CC30E8249E29f92C9880DB5d37185';
-const contractAddressRebel = '0x1D0Dde0c9b75d401d5B4B33B1c7Cf306da1ca35B';
+// const contractAddressRebel = '0x1D0Dde0c9b75d401d5B4B33B1c7Cf306da1ca35B';
+const contractAddressRebel = '0x8404cC8D5634d9E53eAE5F860F34c8A61F73fA75';
 
 db.read();
 db.data ||= { version: "0.0.1", results: [] };
@@ -228,6 +229,7 @@ async function getPostsByUser() {
         postsArray.value.push(userPosts.idArray[i].toNumber());
         postedItems.value.push(postObj);
       }
+      console.log(postedItems.value)
     }
   }
   catch (e) {
@@ -255,6 +257,7 @@ async function getUserByOwner() {
         userObj.id = userResp.id.toNumber();
         user.value = userObj;
       }
+      isFollowing
     }
   }
   catch (e) {
@@ -281,6 +284,24 @@ async function getUserByOwner() {
     }
   }
 
+  async function unfollowUser(userId) {
+    try {
+      const { ethereum } = window
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum)
+        const signer = provider.getSigner()
+        const rebelContract = new ethers.Contract(contractAddressRebel, contractABIrebel.abi, signer)
+        const unfollow = (await rebelContract.unfollowUser(userId))
+        console.log('Unfollowing user...')
+        await unfollow.wait()
+        console.log('Unfollowed user successfully ')
+      }
+    }
+    catch (e) {
+      console.log('e', e)
+    }
+  }
+
   async function likePost(postId) {
     try {
       const { ethereum } = window
@@ -289,9 +310,27 @@ async function getUserByOwner() {
         const signer = provider.getSigner()
         const rebelContract = new ethers.Contract(contractAddressRebel, contractABIrebel.abi, signer)
         const like = (await rebelContract.likePost(postId, {value: ethers.utils.parseEther(".02")}))
-        console.log('Following user...', like.hash)
+        console.log('Liking post...', like.hash)
         await like.wait()
-        console.log('Followed user -- ', like.hash)
+        console.log('Liked post successfully', like.hash)
+      }
+    }
+    catch (e) {
+      console.log('e', e)
+    }
+  }
+
+  async function unlikePost(postId) {
+    try {
+      const { ethereum } = window
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum)
+        const signer = provider.getSigner()
+        const rebelContract = new ethers.Contract(contractAddressRebel, contractABIrebel.abi, signer)
+        const unlike = (await rebelContract.unlikePost(postId))
+        console.log('Unliking post...', unlike.hash)
+        await unlike.wait()
+        console.log('Unliked post successfully', unlike.hash)
       }
     }
     catch (e) {
@@ -368,6 +407,8 @@ async function getUserByOwner() {
     isFollowingUser,
     isLiked,
     likedArray,
-    postsArray
+    postsArray,
+    unlikePost,
+    unfollowUser
   }
 });

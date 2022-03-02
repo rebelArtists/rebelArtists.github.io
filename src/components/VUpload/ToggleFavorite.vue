@@ -20,10 +20,10 @@ export default {
   components: {
     FavoriteIcon
   },
-  props: ['id'],
+  props: ['id', 'intialFavorited'],
   data() {
     return {
-      favorited: false,
+      favorited: this.intialFavorited,
       animating: false
     };
   },
@@ -37,13 +37,18 @@ export default {
   },
   methods: {
     async toggle() {
-      const { likePost } = useRebelStore()
+      const { likePost, unlikePost } = useRebelStore()
       // Only animate on favoriting.
       if (!this.favorited) {
         this.animating = true;
         await likePost(this.id);
       }
 
+      if (this.favorited) {
+        await unlikePost(this.id);
+      }
+
+      this.$emit('likeEvent', this.favorited);
       this.favorited = !this.favorited;
     },
     onIconAnimationEnds() {

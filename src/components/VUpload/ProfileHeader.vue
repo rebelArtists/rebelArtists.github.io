@@ -13,10 +13,10 @@
         {{ user.name }}
       </div>
       <div class="box item8">
-        <button v-if="!isFollowingUser" class="buttonConnectProfile" @click="followUser(user.id)">
+        <button v-if="!isFollowingUser" class="buttonConnectProfile" @click="fireFollowUser(user.id)">
           Follow
         </button>
-        <button v-if="isFollowingUser" class="buttonConnectProfile" @click="followUser(user.id)">
+        <button v-if="isFollowingUser" class="buttonConnectProfile" @click="fireUnfollowUser(user.id)">
           Unfollow
         </button>
       </div>
@@ -43,6 +43,11 @@ import { getImgUrl } from "@src/services/helpers";
 
 export default {
   name: "ProfileHeader",
+  data() {
+    return {
+      componentKey: 0,
+    };
+  },
   mounted() {
     this.$nextTick(() => {
       this.checkIsFollowing();
@@ -55,19 +60,29 @@ export default {
       const { user, isFollowingUser } = storeToRefs(rebelStore)
       await getUserByOwner();
       await isFollowing(user.value.id);
+    },
+    async fireFollowUser(userId) {
+      const { followUser } = useRebelStore()
+      await followUser(userId);
+      await this.checkIsFollowing();
+      this.componentKey += 1;
+    },
+    async fireUnfollowUser(userId) {
+      const { unfollowUser } = useRebelStore()
+      await unfollowUser(userId);
+      await this.checkIsFollowing();
+      this.componentKey += 1;
     }
   },
   setup() {
 
     const rebelStore = useRebelStore()
-    const { followUser } = useRebelStore()
     const { postedItems, user, isFollowingUser } = storeToRefs(rebelStore)
 
     return {
       postedItems,
       user,
       getImgUrl,
-      followUser,
       isFollowingUser
     }
 }

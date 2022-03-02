@@ -47,6 +47,9 @@ contract SocialHelper is PostFactory, UserFactory {
 
   function unlikePost(uint _postId) external {
     postsMap[_postId].likes = postsMap[_postId].likes.sub(1);
+
+    uint callerUserId = ownerToUserId[msg.sender];
+    postsMap[_postId].likesMap[callerUserId] = false;
   }
 
   function followUser(uint _userId) external payable {
@@ -69,6 +72,9 @@ contract SocialHelper is PostFactory, UserFactory {
     uint followeeId = ownerToUserId[msg.sender];
     User storage user = usersMap[followeeId];
     user.following = user.following.sub(1);
+
+    usersMap[_userId].followersMap[followeeId] = false;
+    usersMap[followeeId].followingMap[_userId] = false;
   }
 
   function changeName(uint _userId, string memory _newName) external onlyOwner() {

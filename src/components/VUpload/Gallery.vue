@@ -17,6 +17,9 @@
               <div v-if="!likedArray[index]" id="favoriting">
                 <ToggleFavorite  :id="item.id" />
               </div>
+              <div v-if="likedArray[index]" id="favoriting">
+                <ToggleFavorite  :id="item.id" :intialFavorited="true" @likeEvent="updateparent"/>
+              </div>
             </MDBCardText>
           </MDBCardBody>
         </MDBCard>
@@ -60,6 +63,11 @@ export default {
     MDBCardVideo,
     ToggleFavorite
   },
+  data() {
+    return {
+      componentKey: 0,
+    };
+  },
   mounted() {
     this.$nextTick(() => {
       this.checkIsLiked();
@@ -72,8 +80,12 @@ export default {
       const { postsArray } = storeToRefs(rebelStore)
       await getUserByOwner();
       await getPostsByUser();
-      console.log(postsArray._rawValue);
       await isLiked(postsArray._rawValue);
+    },
+    async updateparent(variable) {
+      const { getPostsByUser } = useRebelStore()
+      await getPostsByUser();
+      this.componentKey += 1;
     }
   },
   setup() {
