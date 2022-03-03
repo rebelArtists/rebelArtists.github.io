@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="!postedItems">
     <div class="bg"></div>
     <button class="modalButton" id="show-modal" @click="showModal = true">+</button>
     <Teleport to="body">
@@ -13,7 +13,6 @@
   </div>
 
   <div class="wrapper">
-
     <div class="gallery-panel" v-for="(item, index) in postedItems" :key="index">
       <div class="media-wrap">
         <MDBCard class="card-style hover-overlay">

@@ -1,7 +1,12 @@
 <script>
+import PanelUpload from "@src/components/VUpload/PanelUpload.vue";
+
 export default {
   props: {
     show: Boolean
+  },
+  components: {
+    PanelUpload
   }
 }
 </script>
@@ -11,21 +16,14 @@ export default {
     <div v-if="show" class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
-          <div class="modal-header">
-            <slot name="header">default header</slot>
-          </div>
 
-          <div class="modal-body">
-            <slot name="body">default body</slot>
-          </div>
-
+          <PanelUpload />
           <div class="modal-footer">
             <slot name="footer">
-              default footer
               <button
                 class="modal-default-button"
                 @click="$emit('close')"
-              >OK</button>
+              >x</button>
             </slot>
           </div>
         </div>
@@ -53,12 +51,13 @@ export default {
 }
 
 .modal-container {
-  width: 300px;
+  width: 45vw;
+  height: 70%;
   margin: 0px auto;
   padding: 20px 30px;
-  background-color: #fff;
+  /* background-color: #fff; */
   border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33); */
   transition: all 0.3s ease;
 }
 
@@ -69,6 +68,20 @@ export default {
 
 .modal-body {
   margin: 20px 0;
+}
+
+.modal-default-button {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  z-index: 9999;
+  cursor: pointer;
+  display: flex;
+  margin-top: 10px;
+  padding-bottom: 3px;
+  justify-content: center;
+  align-items: center;
+  background-image: var(--liniear-gradient-color-2);
 }
 
 .modal-default-button {
