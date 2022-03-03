@@ -92,7 +92,6 @@ export default {
       const { postsArray } = storeToRefs(rebelStore)
       await getPostsByUser();
       await isLiked(postsArray._rawValue);
-      console.log("gotEvent")
       this.componentKey += 1;
       this.$emit('likeEvent', true);
     }

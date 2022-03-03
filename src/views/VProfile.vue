@@ -1,15 +1,5 @@
 <template>
   <section id="content">
-    <div class="divConnect">
-      <button v-if="!account" class="buttonConnect" @click="fireConnectWallet">
-        connect wallet and enter
-      </button>
-      <div v-if="!account" class="arrow">
-          <span></span>
-          <span></span>
-          <span></span>
-      </div>
-    </div>
     <div v-if="this.ready" class="main animated" v-cloak>
       <div class="main-content">
         <div v-if="!user" v-cloak>
@@ -42,9 +32,9 @@ export default {
     ProfileHeader,
     CreateProfile
   },
+  props: ['ready'],
   data() {
     return {
-      ready: false,
       componentKey: 0,
     };
   },

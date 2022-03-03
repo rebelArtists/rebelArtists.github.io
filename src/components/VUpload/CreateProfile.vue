@@ -113,7 +113,7 @@ export default {
         store.addResults(...successfully.map(({ error, data: file }) => file));
         store.resetFiles();
 
-        fileRef.value = null;
+        fileRef.value = ref(null);
 
         if (successfully.length > 0) {
           notyf.success(`Profile successfully created!`);

@@ -10,6 +10,9 @@ const VMint = () => import("@src/views/VMint.vue");
 // Async Component
 const VGallery = () => import("@src/views/VGallery.vue");
 
+// Async Component
+const VPost = () => import("@src/views/VPost.vue");
+
 const routes = [
   {
     path: "/",
@@ -26,11 +29,16 @@ const routes = [
     name: "mint",
     component: VMint
   },
-{
-  path: "/gallery",
-  name: "gallery",
-  component: VGallery
-}
+  {
+    path: "/gallery",
+    name: "gallery",
+    component: VGallery
+  },
+  {
+      path: '/post/:id',
+      name: 'Post',
+      component: VPost,
+  }
 ];
 
 const router = createRouter({

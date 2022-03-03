@@ -132,13 +132,15 @@ contract SocialHelper is PostFactory, UserFactory {
     string[] memory metaHashesArray,
     uint[] memory likesArray,
     bool[] memory blacklistedArray,
-    uint[] memory idArray
+    uint[] memory idArray,
+    address[] memory addressesArray
   ) {
     string[] memory names = new string[](_postIds.length);
     string[] memory mediaHashes = new string[](_postIds.length);
     string[] memory metaHashes = new string[](_postIds.length);
     uint[] memory likes = new uint[](_postIds.length);
     bool[] memory blacklisted = new bool[](_postIds.length);
+    address[] memory addresses = new address[](_postIds.length);
     uint[] memory ids = _postIds;
 
     for (uint i = 0; i < ids.length; i++) {
@@ -148,9 +150,10 @@ contract SocialHelper is PostFactory, UserFactory {
       metaHashes[i] = post.metaHash;
       likes[i] = post.likes;
       blacklisted[i] = post.blacklisted;
+      addresses[i] = postToOwner[ids[i]];
     }
 
-    return (names, mediaHashes, metaHashes, likes, blacklisted, ids);
+    return (names, mediaHashes, metaHashes, likes, blacklisted, ids, addresses);
   }
 
   function getUserByOwner(address _owner) external view returns(

@@ -78,6 +78,8 @@ export default {
       const { followUser } = useRebelStore()
       await followUser(userId);
       await this.checkIsFollowing();
+      const { getUserByOwner } = useRebelStore()
+      await getUserByOwner();
       this.componentKey += 1;
       this.loading = false;
     },
@@ -86,6 +88,8 @@ export default {
       const { unfollowUser } = useRebelStore()
       await unfollowUser(userId);
       await this.checkIsFollowing();
+      const { getUserByOwner } = useRebelStore()
+      await getUserByOwner();
       this.componentKey += 1;
       this.loading = false;
     }

@@ -2,6 +2,7 @@
 import PanelUpload from "@src/components/VUpload/PanelUpload.vue";
 import { provide } from "vue";
 import { Notyf } from "notyf";
+import { useRebelStore } from '@src/store/index';
 
 export default {
   props: {
@@ -9,6 +10,19 @@ export default {
   },
   components: {
     PanelUpload
+  },
+  data() {
+    return {
+      componentKey: 0,
+    };
+  },
+  methods: {
+    async updateparent(variable) {
+      const { getUserByOwner } = useRebelStore()
+      await getUserByOwner();
+      console.log("gotEventatModal")
+      this.componentKey += 1;
+    }
   },
   setup() {
     const NotfyProvider = new Notyf({
@@ -43,7 +57,7 @@ export default {
       <div class="modal-wrapper">
         <div class="modal-container">
 
-          <PanelUpload />
+          <PanelUpload @postEvent="updateparent" />
           <div class="modal-footer">
             <slot name="footer">
               <button
