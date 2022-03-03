@@ -1,6 +1,5 @@
 <template>
   <div class="wrapper2">
-      <!-- <div class="box item1">One</div> -->
       <div class="box item2">
         <div>
           <img

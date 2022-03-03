@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-if="!postedItems">
+  <div class="container" v-if="!postedItems[0]">
     <div class="bg"></div>
     <button class="modalButton" id="show-modal" @click="showModal = true">+</button>
     <Teleport to="body">
@@ -28,10 +28,10 @@
             <MDBCardText>
               Likes: {{ item.likes }}
               <div v-if="!likedArray[index]" id="favoriting">
-                <ToggleFavorite  :id="item.id" />
+                <ToggleFavorite  :id="item.id" @likeEvent="updateparent" />
               </div>
               <div v-if="likedArray[index]" id="favoriting">
-                <ToggleFavorite  :id="item.id" :intialFavorited="true" @likeEvent="updateparent"/>
+                <ToggleFavorite  :id="item.id" :intialFavorited="true"  @likeEvent="updateparent" />
               </div>
             </MDBCardText>
           </MDBCardBody>
@@ -39,18 +39,6 @@
     </div>
     </div>
   </div>
-  <!-- <div class="container">
-  <div class="gallery">
-    <div class="gallery-panel" v-for="(item, index) in files" :key="index">
-      <video v-if="isVideo(item.file.type)" class="vid-fit" controls :src="getImgUrl(item.fileCid)" />
-      <img
-         v-if="!isVideo(item.file.type)"
-         :src="getImgUrl(item.fileCid)"
-         class="image-fit"
-      />
-    </div>
-  </div>
-</div> -->
 </template>
 
 <script>
@@ -67,6 +55,7 @@ import Modal from '@src/components/VUpload/Modal.vue'
 
 export default {
   name: "Gallery",
+  emits: ["likeEvent"],
   components: {
     MDBCard,
     MDBCardBody,
@@ -98,10 +87,14 @@ export default {
       await isLiked(postsArray._rawValue);
     },
     async updateparent(variable) {
-      const { getPostsByUser } = useRebelStore()
+      const { isLiked, getPostsByUser } = useRebelStore()
+      const rebelStore = useRebelStore()
+      const { postsArray } = storeToRefs(rebelStore)
       await getPostsByUser();
       await isLiked(postsArray._rawValue);
+      console.log("gotEvent")
       this.componentKey += 1;
+      this.$emit('likeEvent', true);
     }
   },
   setup() {
@@ -192,7 +185,6 @@ export default {
 .bg {
   animation: pulse 1.2s ease infinite;
   background: var(--loader-color-primary);
-  margin-left: 92px;
 }
 
 .modalButton {

@@ -12,7 +12,8 @@ const contractAddressInsta = '0x279608E8F8cE4FbE02726B3ef999e0DA92153E43';
 // const contractAddressRebel = '0x75099A61816CC30E8249E29f92C9880DB5d37185';
 // const contractAddressRebel = '0x1D0Dde0c9b75d401d5B4B33B1c7Cf306da1ca35B';
 // const contractAddressRebel = '0x8404cC8D5634d9E53eAE5F860F34c8A61F73fA75';
-const contractAddressRebel = '0xa75Bf88B61426ed0A515756C1D10D0BA41c87C5e';
+// const contractAddressRebel = '0xa75Bf88B61426ed0A515756C1D10D0BA41c87C5e';
+const contractAddressRebel = '0xfd3b4CD00977310D1AFf01B754C4245116FcBa34';
 
 db.read();
 db.data ||= { version: "0.0.1", results: [] };

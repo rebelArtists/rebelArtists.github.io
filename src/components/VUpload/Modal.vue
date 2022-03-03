@@ -1,5 +1,7 @@
 <script>
 import PanelUpload from "@src/components/VUpload/PanelUpload.vue";
+import { provide } from "vue";
+import { Notyf } from "notyf";
 
 export default {
   props: {
@@ -7,6 +9,30 @@ export default {
   },
   components: {
     PanelUpload
+  },
+  setup() {
+    const NotfyProvider = new Notyf({
+      duration: 2000,
+      position: {
+        x: 'center',
+        y: 'bottom'
+      },
+      types: [
+        {
+          type: 'loading',
+          background: 'orange',
+          duration: 0,
+          dismissible: true,
+          icon: {
+            className: 'icon icon-loading',
+            tagName: 'i'
+          }
+        },
+      ]
+    })
+
+    provide("notyf", NotfyProvider);
+
   }
 }
 </script>

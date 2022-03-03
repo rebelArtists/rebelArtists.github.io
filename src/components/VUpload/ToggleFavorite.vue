@@ -48,11 +48,12 @@ export default {
       }
 
       if (this.favorited) {
+        this.animating = true;
         this.loading = true;
         await unlikePost(this.id);
       }
 
-      this.$emit('likeEvent', this.favorited);
+      this.$emit('likeEvent', true);
       this.loading = false;
       // this.favorited = !this.favorited;
     },

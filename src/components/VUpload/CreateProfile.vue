@@ -8,12 +8,12 @@
         <div class="dropzone-label" @click="openSelectFile">
           <i-mdi-timer-sand v-if="(fileCount > 0)" class="icon-color" />
           <i-mdi-upload v-else class="icon-color" />
-          <span>Drop prof pic here or click to select file.</span>
+          <span>Drop profile pic here or click to select file.</span>
 
           <div class="dropzone-is-loading" :class="{ active: (fileCount > 0) }">
             <div class="dropzone-loading--bar"></div>
           </div>
-          <span v-show="(fileCount > 0)">{{ (fileCount - finished) }} of {{ fileCount }} files being transfered.</span>
+          <span v-show="(fileCount > 0)"> Profile being created... </span>
         </div>
       </div>
     </div>
@@ -96,6 +96,7 @@ export default {
       // await getNftIndex();
       // getContent(indexCount.value);
 
+      fileCount = 0;
       return result;
     }
     const onFileChangedHandler = async () => {
@@ -109,17 +110,17 @@ export default {
         let results = await Promise.all(files);
         const successfully = results.filter(({ error }) => !error);
 
-        // store.addResults(...successfully.map(({ error, data: file }) => file));
-        // store.resetFiles();
-        //
-        // fileRef.value.value = null;
+        store.addResults(...successfully.map(({ error, data: file }) => file));
+        store.resetFiles();
+
+        fileRef.value = null;
 
         if (successfully.length > 0) {
-          notyf.success(`${successfully.length} files successfully processed.`);
+          notyf.success(`Profile successfully created!`);
         }
       } catch (error) {
         console.log(error)
-        notyf.error(`Opss!, something error while processing your files.`);
+        notyf.error(`Damn! There was an issue creating profile.`);
       } finally {
         finished.value = 0;
         isUploading.value = false;

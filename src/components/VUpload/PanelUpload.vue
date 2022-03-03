@@ -14,7 +14,7 @@
           <div class="dropzone-is-loading" :class="{ active: (fileCount > 0) }">
             <div class="dropzone-loading--bar"></div>
           </div>
-          <span v-show="(fileCount > 0)">{{ (fileCount - finished) }} of {{ fileCount }} files being transfered.</span>
+          <span v-show="(fileCount > 0)"> NFT being created... </span>
         </div>
       </div>
     </div>
@@ -35,12 +35,13 @@ import MetaDescription from "@src/components/VUpload/MetaDescription.vue";
 
 export default {
   name: "PanelUpload",
+  emit: ["postEvent"],
   components: {
     MetaName,
     MetaAttributes,
     MetaDescription
   },
-  setup() {
+  setup(props, context) {
     const notyf = inject("notyf");
     const fileRef = ref(null);
     const isDragged = ref(false);
@@ -104,7 +105,7 @@ export default {
 
       // await getNftIndex();
       // getContent(indexCount.value);
-
+      context.emit('postEvent', true);
       return result;
     }
     const onFileChangedHandler = async () => {
@@ -124,11 +125,11 @@ export default {
         fileRef.value.value = null;
 
         if (successfully.length > 0) {
-          notyf.success(`${successfully.length} files successfully processed.`);
+          notyf.success(`NFT successfully created!`);
         }
       } catch (error) {
         console.log(error)
-        notyf.error(`Opss!, something error while processing your files.`);
+        notyf.error(`Shoot! Something went wrong creating NFT`);
       } finally {
         finished.value = 0;
         isUploading.value = false;

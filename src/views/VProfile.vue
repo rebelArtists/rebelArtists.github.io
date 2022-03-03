@@ -17,7 +17,7 @@
         </div>
         <div v-if="user" v-cloak>
           <ProfileHeader />
-          <Gallery />
+          <Gallery @likeEvent="updateparent" />
         </div>
       </div>
     </div>
@@ -45,6 +45,7 @@ export default {
   data() {
     return {
       ready: false,
+      componentKey: 0,
     };
   },
   methods: {
@@ -54,6 +55,11 @@ export default {
       const { user } = storeToRefs(rebelStore)
       await connectWallet();
       this.ready = true;
+    },
+    async updateparent(variable) {
+      const { getUserByOwner } = useRebelStore()
+      await getUserByOwner();
+      this.componentKey += 1;
     }
   },
   setup() {
