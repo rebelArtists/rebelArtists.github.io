@@ -23,11 +23,11 @@
       <div class="box item8" v-if="loading">
         <button v-if="!isFollowingUser" class="loading animated fadeIn">
           Follow
-          <div class="bg"></div>
+          <div class="bgFollow"></div>
         </button>
         <button v-if="isFollowingUser" class="loading animated fadeIn">
           Unfollow
-          <div class="bg"></div>
+          <div class="bgFollow"></div>
         </button>
       </div>
       <div class="box item5">
@@ -214,7 +214,7 @@ export default {
   padding-right: 20px;
 }
 
-.bg{
+.bgFollow{
     position: absolute;
     left: -46px;
     right: 0;
