@@ -160,10 +160,25 @@ export default {
   font-weight: 900;
 }
 
+// .item3 {
+//   font-size: 15px;
+//   grid-column: 2 / 5;
+//   grid-row: 2 / 5;
+//   font-weight: 900;
+//   margin-top: 65px;
+//   margin-left: 75px;
+// }
+
 .item7 {
   grid-column: 3 / 5;
   grid-row: 3 / 5;
 }
+
+// .item7 {
+//   grid-column: 3 / 5;
+//   grid-row: 3 / 5;
+//   opacity: 0;
+// }
 
 .item9 {
   grid-column: 5 / 6;
