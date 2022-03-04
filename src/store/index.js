@@ -1,6 +1,7 @@
 import { defineStore } from "pinia"
 import { ref } from "vue"
 import Storage from "@src/services/storage";
+import { fetchIpfsMeta } from "@src/services/helpers";
 import { ethers } from 'ethers'
 import contractABInsta from '../artifacts/contracts/InstagramPosting.sol/InstagramPosting.json'
 import contractABIrebel from '../artifacts/contracts/SocialHelper.sol/SocialHelper.json'
@@ -258,6 +259,10 @@ async function getPostById(postId) {
         postObj.blacklisted = postsList.blacklistedArray[i];
         postObj.id = postsList.idArray[i].toNumber();
         postObj.address = postsList.addressesArray[i];
+
+        const ipfsMetadata = await fetchIpfsMeta(postObj.metaHash);
+        postObj.description = ipfsMetadata.description;
+        postObj.attributes = ipfsMetadata.attributes;
         individualPost.value = postObj;
       }
       await getUserByOwnerAddress(individualPost.value.address);

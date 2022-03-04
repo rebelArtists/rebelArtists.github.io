@@ -54,7 +54,7 @@ export const getImgUrl = (hash) => {
 }
 
 export const fetchIpfsMeta = async (item) => {
-  const response = await fetch(`https://ipfs.io/ipfs/${item.metaCid}`);
+  const response = await fetch(`https://ipfs.io/ipfs/${item}`);
   const data = await response.json();
   return data
 }

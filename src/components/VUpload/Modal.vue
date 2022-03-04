@@ -20,7 +20,6 @@ export default {
     async updateparent(variable) {
       const { getUserByOwner } = useRebelStore()
       await getUserByOwner();
-      console.log("gotEventatModal")
       this.componentKey += 1;
     }
   },
