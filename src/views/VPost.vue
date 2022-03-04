@@ -33,10 +33,37 @@
         </div>
       </div>
       <div class="box2 itemAttributes">
-        {{ individualPost.attributes }}
+        <table class="styled-table">
+            <thead class="roundedHeader">
+                <tr>
+                    <th>Trait</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in individualPost.attributes">
+                    <td>{{ item.trait_type }}</td>
+                    <td>{{ item.value }}</td>
+                </tr>
+            </tbody>
+        </table>
       </div>
       <div class="box2 itemLikes">
         {{ individualPost.likes }} likes
+        <div v-if="!likedArray[0]" id="favoriting" class="likeHeart">
+          <ToggleFavorite  :id="individualPost.id" @likeEvent="updateparent" />
+        </div>
+        <div v-if="likedArray[0]" id="favoriting" class="likeHeart">
+          <ToggleFavorite  :id="individualPost.id" :intialFavorited="true"  @likeEvent="updateparent" />
+        </div>
+      </div>
+      <div class="box2 itemIpfs">
+        <a :href="getImgUrl(individualPost.mediaHash)" title="IPFS Media">
+          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M20.4 14.5L16 10 4 20"/></svg>
+        </a>
+        <a :href="getImgUrl(individualPost.metaHash)" title="IPFS Metadata">
+          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 3v5h5M16 13H8M16 17H8M10 9H8"/></svg>
+        </a>
       </div>
   </div>
 </div>
@@ -65,7 +92,8 @@ export default {
     MDBCardText,
     MDBCardImg,
     MDBBtn,
-    MDBCardVideo
+    MDBCardVideo,
+    ToggleFavorite
   },
   data() {
     return {
@@ -83,10 +111,14 @@ export default {
       this.postReady = false;
       const rebelStore = useRebelStore()
       const { individualPost } = storeToRefs(rebelStore)
-      const { getPostById } = useRebelStore()
-      console.log(this.$route.params.id)
+      const { getPostById, isLiked } = useRebelStore()
       await getPostById([this.$route.params.id])
+      await isLiked([this.$route.params.id])
       this.postReady = true;
+    },
+    async updateparent(variable) {
+      this.getContent();
+      this.componentKey += 1;
     }
   },
   watch: {
@@ -99,7 +131,7 @@ export default {
   setup() {
 
     const rebelStore = useRebelStore()
-    const { individualPost, user, account } = storeToRefs(rebelStore)
+    const { individualPost, user, account, likedArray } = storeToRefs(rebelStore)
 
     const NotfyProvider = new Notyf({
       duration: 2000,
@@ -127,13 +159,44 @@ export default {
       individualPost,
       user,
       account,
-      getImgUrl
+      getImgUrl,
+      likedArray
     }
   }
 }
 </script>
 
 <style lang="scss">
+
+.styled-table {
+    border-collapse: collapse;
+    margin: 0 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    width: 100%;
+    // display: flex;
+    // box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled-table thead tr {
+    background-color: var(--loader-color-secondary);
+    // color: #ffffff;
+    text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+    line-height: 50px;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: transparent;
+}
 
 .userName {
   padding-left: 10px;
@@ -209,6 +272,11 @@ export default {
   padding: 15px;
 }
 
+.itemIpfs {
+  padding: 5px;
+  width: 50px;
+}
+
 .card-style {
   background-image: var(--liniear-gradient-color-2);
   border-radius: 0.8rem;
@@ -268,5 +336,12 @@ export default {
   // max-height: 100%;
  border-radius: 50%;
 }
+
+#favoriting.likeHeart {
+  position: relative;
+  margin-top: -3px;
+  margin-left: 15px;
+}
+
 
 </style>

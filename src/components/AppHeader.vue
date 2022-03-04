@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, toRefs } from "vue";
 import Modal from '@src/components/VUpload/Modal.vue'
 
 export default {
