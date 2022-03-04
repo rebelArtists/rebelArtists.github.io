@@ -13,6 +13,9 @@ const VGallery = () => import("@src/views/VGallery.vue");
 // Async Component
 const VPost = () => import("@src/views/VPost.vue");
 
+// Async Component
+const VUser = () => import("@src/views/VUser.vue");
+
 const routes = [
   {
     path: "/",
@@ -38,6 +41,11 @@ const routes = [
       path: '/post/:id',
       name: 'Post',
       component: VPost,
+  },
+  {
+      path: '/user/:name',
+      name: 'User',
+      component: VUser,
   }
 ];
 

@@ -1,13 +1,13 @@
 <template>
   <section id="content">
-    <div v-if="this.ready" class="main animated">
+    <div class="main animated">
       <div class="main-content">
-        <div v-if="!user">
-          <CreateProfile />
+        <div v-if="this.stateLoaded && !routedUser.profPicHash">
+          404 page
         </div>
-        <div v-if="user">
-          <ProfileHeader />
-          <Gallery @likeEvent="updateparent" />
+        <div v-if="this.stateLoaded && routedUser.profPicHash">
+          <UserProfileHeader />
+          <UserGallery @likeEvent="updateparent" />
         </div>
       </div>
     </div>
@@ -18,31 +18,50 @@
 import { provide } from "vue";
 import { Notyf } from "notyf";
 
-import Gallery from "@src/components/VUpload/Gallery.vue";
-import ProfileHeader from "@src/components/VUpload/ProfileHeader.vue";
-import CreateProfile from "@src/components/VUpload/CreateProfile.vue";
+import UserGallery from "@src/components/VUpload/UserGallery.vue";
+import UserProfileHeader from "@src/components/VUpload/UserProfileHeader.vue";
 import { storeToRefs } from 'pinia'
 import { useRebelStore } from '@src/store/index'
 
 
 export default {
-  name: "VProfile",
+  name: "VUser",
   components: {
-    Gallery,
-    ProfileHeader,
-    CreateProfile
+    UserGallery,
+    UserProfileHeader
   },
   props: ['ready'],
   data() {
     return {
       componentKey: 0,
+      postReady: false,
+      stateLoaded: false
     };
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.getUserContent();
+    });
+  },
   methods: {
+    async getUserContent() {
+      const { isFollowing, getUserByName } = useRebelStore()
+      const rebelStore = useRebelStore()
+      const { user, isFollowingUser } = storeToRefs(rebelStore)
+      await getUserByName(this.$route.params.name);
+      await isFollowing(user.value.id);
+      this.stateLoaded = true;
+    },
     async updateparent(variable) {
-      const { getUserByOwner } = useRebelStore()
-      await getUserByOwner();
+      await this.getUserContent();
       this.componentKey += 1;
+    }
+  },
+  watch: {
+    '$route' (to, from) {
+      if(to !== from ) {
+        this.getUserContent();
+      }
     }
   },
   setup() {
@@ -67,13 +86,13 @@ export default {
     })
 
     const rebelStore = useRebelStore()
-    const { account, user } = storeToRefs(rebelStore)
+    const { account, routedUser } = storeToRefs(rebelStore)
 
     provide("notyf", NotfyProvider);
 
     return {
       account,
-      user,
+      routedUser,
     }
   }
 }

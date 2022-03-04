@@ -6,14 +6,14 @@
     </div>
     <div class="header-menu">
       <nav class="header-navbar">
-        <router-link :to="{ name: 'home' }" active-class="active" exact>
+        <router-link :to="{ name: 'home' }" active-class="active" title="Home" exact>
           <svg class="svgNav" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
         </router-link>
 
         <!-- <router-link :to="{ name: 'about' }" active-class="active" exact>About</router-link> -->
         <div>
-          <button id="show-modal" @click="showModal = true">
-            <svg class="svgNav" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+          <button id="show-modal" @click="showModal = true" title="Mint New Post">
+            <svg class="mintContent" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
           </button>
           <Teleport to="body">
             <!-- use the modal component, pass in the prop -->
@@ -159,6 +159,13 @@ body.dark-theme {
 }
 
 .svgNav {
+  stroke: var(--icon-color);
+  padding-top: 1px;
+  margin-right: 2px;
+  fill: transparent;
+}
+
+.mintContent {
   stroke: var(--icon-color);
   padding-top: 7px;
   margin-right: 15px;

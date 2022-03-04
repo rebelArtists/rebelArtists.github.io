@@ -117,7 +117,11 @@ export default {
       this.postReady = true;
     },
     async updateparent(variable) {
-      this.getContent();
+      const rebelStore = useRebelStore()
+      const { individualPost } = storeToRefs(rebelStore)
+      const { getPostById, isLiked } = useRebelStore()
+      await getPostById([this.$route.params.id])
+      await isLiked([this.$route.params.id])
       this.componentKey += 1;
     }
   },
@@ -178,6 +182,10 @@ export default {
     // box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
+.styled-table tr {
+  line-height: 10px;
+  border-bottom: 1px solid #dddddd; }
+
 .styled-table thead tr {
     background-color: var(--loader-color-secondary);
     // color: #ffffff;
@@ -191,7 +199,7 @@ export default {
 
 .styled-table tbody tr {
     border-bottom: 1px solid #dddddd;
-    line-height: 50px;
+    line-height: 5px;
 }
 
 .styled-table tbody tr:last-of-type {

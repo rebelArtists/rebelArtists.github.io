@@ -93,10 +93,7 @@ export default {
       const { error } = result;
       if (error && error instanceof Error) notyf.error(error.message);
 
-      // await getNftIndex();
-      // getContent(indexCount.value);
-
-      fileCount = 0;
+      // fileCount = 0;
       return result;
     }
     const onFileChangedHandler = async () => {

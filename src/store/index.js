@@ -15,7 +15,8 @@ const contractAddressInsta = '0x279608E8F8cE4FbE02726B3ef999e0DA92153E43';
 // const contractAddressRebel = '0x8404cC8D5634d9E53eAE5F860F34c8A61F73fA75';
 // const contractAddressRebel = '0xa75Bf88B61426ed0A515756C1D10D0BA41c87C5e';
 // const contractAddressRebel = '0xfd3b4CD00977310D1AFf01B754C4245116FcBa34';
-const contractAddressRebel = '0x7Cd84c24b5429b2EbB32EB015e16c3846bd9C838';
+// const contractAddressRebel = '0x7Cd84c24b5429b2EbB32EB015e16c3846bd9C838';
+const contractAddressRebel = '0x773485fc783b2c8Bd12E18d27658a1280c0402A5';
 
 db.read();
 db.data ||= { version: "0.0.1", results: [] };
@@ -176,6 +177,7 @@ export const useRebelStore = defineStore('rebel', () => {
   const isFollowingUser = ref(false)
   const likedArray = ref([])
   const individualPost = ref([])
+  const routedUser = ref(null)
 
   async function postContent(name, mediaHash, metaHash) {
     try {
@@ -221,6 +223,34 @@ async function getPostsByUser() {
       const signer = provider.getSigner()
       const rebelContract = new ethers.Contract(contractAddressRebel, contractABIrebel.abi, signer)
       const userPosts = (await rebelContract.getPostsByOwner(account.value))
+      postedItems.value = [];
+      postsArray.value = [];
+      for (let i = 0; i < userPosts.namesArray.length; i++) {
+        const postObj = new Object();
+        postObj.name = userPosts.namesArray[i];
+        postObj.mediaHash = userPosts.mediaHashesArray[i];
+        postObj.metaHash = userPosts.metaHashesArray[i];
+        postObj.likes = userPosts.likesArray[i].toNumber();
+        postObj.blacklisted = userPosts.blacklistedArray[i];
+        postObj.id = userPosts.idArray[i].toNumber();
+        postsArray.value.push(userPosts.idArray[i].toNumber());
+        postedItems.value.push(postObj);
+      }
+    }
+  }
+  catch (e) {
+    console.log('e', e)
+  }
+}
+
+async function getPostsByUserName(name) {
+  try {
+    const { ethereum } = window
+    if (ethereum) {
+      const provider = new ethers.providers.Web3Provider(ethereum)
+      const signer = provider.getSigner()
+      const rebelContract = new ethers.Contract(contractAddressRebel, contractABIrebel.abi, signer)
+      const userPosts = (await rebelContract.getPostsByUserName(name))
       postedItems.value = [];
       postsArray.value = [];
       for (let i = 0; i < userPosts.namesArray.length; i++) {
@@ -293,6 +323,35 @@ async function getUserByOwner() {
         userObj.postCount = userResp.postCount.toNumber();
         userObj.id = userResp.id.toNumber();
         user.value = userObj;
+      }
+    }
+  }
+  catch (e) {
+    console.log('e', e)
+  }
+}
+
+async function getUserByName(name) {
+  try {
+    const { ethereum } = window
+    if (ethereum) {
+      const provider = new ethers.providers.Web3Provider(ethereum)
+      const signer = provider.getSigner()
+      const rebelContract = new ethers.Contract(contractAddressRebel, contractABIrebel.abi, signer)
+      const userResp = (await rebelContract.getUserByName(name))
+      routedUser.value = new Object();
+      if (userResp.profPicHash != "") {
+        const userObj = new Object();
+        userObj.name = userResp.name;
+        userObj.bio = userResp.bio;
+        userObj.followers = userResp.followers.toNumber();
+        userObj.following = userResp.following.toNumber();
+        userObj.profPicHash = userResp.profPicHash;
+        userObj.amtEarned = ethers.utils.formatEther(userResp.amtEarned);
+        userObj.blacklisted = userResp.blacklisted;
+        userObj.postCount = userResp.postCount.toNumber();
+        userObj.id = userResp.id.toNumber();
+        routedUser.value = userObj;
       }
     }
   }
@@ -475,6 +534,9 @@ async function getUserByOwnerAddress(address) {
     unlikePost,
     unfollowUser,
     getPostById,
-    individualPost
+    individualPost,
+    getUserByName,
+    getPostsByUserName,
+    routedUser
   }
 });

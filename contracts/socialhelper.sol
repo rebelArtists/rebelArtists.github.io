@@ -126,6 +126,35 @@ contract SocialHelper is PostFactory, UserFactory {
     return (names, mediaHashes, metaHashes, likes, blacklisted, postIds);
   }
 
+  // comment
+  function getPostsByUserName(string memory _name) external view returns(
+    string[] memory namesArray,
+    string[] memory mediaHashesArray,
+    string[] memory metaHashesArray,
+    uint[] memory likesArray,
+    bool[] memory blacklistedArray,
+    uint[] memory idArray
+    ) {
+    address postsOwner = nameToAddress[_name];
+    uint[] memory postIds = ownerToPostIds[postsOwner];
+    string[] memory names = new string[](postIds.length);
+    string[] memory mediaHashes = new string[](postIds.length);
+    string[] memory metaHashes = new string[](postIds.length);
+    uint[] memory likes = new uint[](postIds.length);
+    bool[] memory blacklisted = new bool[](postIds.length);
+
+    for (uint i = 0; i < postIds.length; i++) {
+        Post storage post = postsMap[postIds[i]];
+        names[i] = post.name;
+        mediaHashes[i] = post.mediaHash;
+        metaHashes[i] = post.metaHash;
+        likes[i] = post.likes;
+        blacklisted[i] = post.blacklisted;
+    }
+
+    return (names, mediaHashes, metaHashes, likes, blacklisted, postIds);
+  }
+
   function getPostsByIds(uint[] memory _postIds) external view returns(
     string[] memory namesArray,
     string[] memory mediaHashesArray,
@@ -170,6 +199,30 @@ contract SocialHelper is PostFactory, UserFactory {
     uint userId = ownerToUserId[_owner];
     User storage user = usersMap[userId];
     uint postTotal = ownerPostCount[_owner];
+
+    return (user.name, user.bio, user.followers, user.following, user.profPicHash, user.amtEarned, user.blacklisted, postTotal, userId);
+  }
+
+  function getUserByName(string memory _name) external view returns(
+    string memory name,
+    string memory bio,
+    uint followers,
+    uint following,
+    string memory profPicHash,
+    uint amtEarned,
+    bool blacklisted,
+    uint postCount,
+    uint id
+  ) {
+    bool nameDoesExist = nameExists[_name];
+    if (!nameDoesExist) {
+      return ("", "", 0, 0, "", 0, false, 0, 0);
+    }
+
+    address userOwner = nameToAddress[_name];
+    uint userId = ownerToUserId[userOwner];
+    User storage user = usersMap[userId];
+    uint postTotal = ownerPostCount[userOwner];
 
     return (user.name, user.bio, user.followers, user.following, user.profPicHash, user.amtEarned, user.blacklisted, postTotal, userId);
   }

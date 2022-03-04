@@ -10,6 +10,9 @@
         <span></span>
     </div>
   </div>
+  <div v-if="this.ready && account && !user">
+    <CreateProfile />
+  </div>
   <router-view v-slot="{ Component }">
     <keep-alive>
       <component v-if="user" :is="Component" :key="$route.name" :ready="true"/>
@@ -21,18 +24,23 @@
 <script>
 import AppHeader from "@src/components/AppHeader.vue";
 import ReloadPrompt from "@src/components/ReloadPrompt.vue";
+import CreateProfile from "@src/components/VUpload/CreateProfile.vue";
 import { storeToRefs } from 'pinia'
 import { useRebelStore } from '@src/store/index'
+import { provide } from "vue";
+import { Notyf } from "notyf";
 
 export default {
   name: "App",
   components: {
     AppHeader,
-    ReloadPrompt
+    ReloadPrompt,
+    CreateProfile
   },
   data() {
     return {
       componentKey: 0,
+      ready: false
     };
   },
   methods: {
@@ -42,12 +50,35 @@ export default {
       const { user } = storeToRefs(rebelStore)
       await connectWallet();
       this.componentKey += 1;
+      this.ready = true;
     },
   },
   setup() {
     const rebelStore = useRebelStore()
     const { connectWallet } = useRebelStore()
     const { account, user } = storeToRefs(rebelStore)
+
+    const NotfyProvider = new Notyf({
+      duration: 2000,
+      position: {
+        x: 'center',
+        y: 'bottom'
+      },
+      types: [
+        {
+          type: 'loading',
+          background: 'orange',
+          duration: 0,
+          dismissible: true,
+          icon: {
+            className: 'icon icon-loading',
+            tagName: 'i'
+          }
+        },
+      ]
+    })
+
+    provide("notyf", NotfyProvider);
 
     return {
       connectWallet,
