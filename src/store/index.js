@@ -487,7 +487,6 @@ async function getUserByOwnerAddress(address) {
         const rebelContract = new ethers.Contract(contractAddressRebel, contractABIrebel.abi, signer)
         const liked = (await rebelContract.isLiked(postIds))
         likedArray.value = liked;
-        console.log("madeithere")
       }
     }
     catch (e) {

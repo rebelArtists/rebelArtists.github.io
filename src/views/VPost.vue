@@ -112,8 +112,10 @@ export default {
       const rebelStore = useRebelStore()
       const { individualPost } = storeToRefs(rebelStore)
       const { getPostById, isLiked } = useRebelStore()
-      await getPostById([this.$route.params.id])
-      await isLiked([this.$route.params.id])
+      if (this.$route.params.id) {
+        await getPostById([this.$route.params.id])
+        await isLiked([this.$route.params.id])
+      }
       this.postReady = true;
     },
     async updateparent(variable) {
