@@ -2,9 +2,6 @@
   <section id="content">
     <div v-if="this.ready" class="main animated">
       <div class="main-content">
-        <div v-if="!user">
-          <CreateProfile />
-        </div>
         <div v-if="user">
           <ProfileHeader />
           <Gallery @likeEvent="updateparent" />

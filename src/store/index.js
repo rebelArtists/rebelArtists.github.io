@@ -16,7 +16,7 @@ const contractAddressInsta = '0x279608E8F8cE4FbE02726B3ef999e0DA92153E43';
 // const contractAddressRebel = '0xa75Bf88B61426ed0A515756C1D10D0BA41c87C5e';
 // const contractAddressRebel = '0xfd3b4CD00977310D1AFf01B754C4245116FcBa34';
 // const contractAddressRebel = '0x7Cd84c24b5429b2EbB32EB015e16c3846bd9C838';
-const contractAddressRebel = '0x773485fc783b2c8Bd12E18d27658a1280c0402A5';
+const contractAddressRebel = '0x81Ab16a60dCC88c40A91830aC1e2ea2F4A2729CC';
 
 db.read();
 db.data ||= { version: "0.0.1", results: [] };
@@ -487,6 +487,7 @@ async function getUserByOwnerAddress(address) {
         const rebelContract = new ethers.Contract(contractAddressRebel, contractABIrebel.abi, signer)
         const liked = (await rebelContract.isLiked(postIds))
         likedArray.value = liked;
+        console.log("madeithere")
       }
     }
     catch (e) {

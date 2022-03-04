@@ -196,6 +196,11 @@ contract SocialHelper is PostFactory, UserFactory {
     uint postCount,
     uint id
   ) {
+    bool userDoesExist = addressExists[_owner];
+    if (!userDoesExist) {
+      return ("", "", 0, 0, "", 0, false, 0, 0);
+    }
+
     uint userId = ownerToUserId[_owner];
     User storage user = usersMap[userId];
     uint postTotal = ownerPostCount[_owner];

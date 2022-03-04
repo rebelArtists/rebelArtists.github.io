@@ -3,7 +3,7 @@
     <div class="main animated">
       <div class="main-content">
         <div v-if="this.stateLoaded && !routedUser.profPicHash">
-          404 page
+          <ErrorPage />
         </div>
         <div v-if="this.stateLoaded && routedUser.profPicHash">
           <UserProfileHeader />
@@ -20,6 +20,7 @@ import { Notyf } from "notyf";
 
 import UserGallery from "@src/components/VUpload/UserGallery.vue";
 import UserProfileHeader from "@src/components/VUpload/UserProfileHeader.vue";
+import ErrorPage from "@src/components/VUpload/404.vue";
 import { storeToRefs } from 'pinia'
 import { useRebelStore } from '@src/store/index'
 
@@ -28,7 +29,8 @@ export default {
   name: "VUser",
   components: {
     UserGallery,
-    UserProfileHeader
+    UserProfileHeader,
+    ErrorPage
   },
   props: ['ready'],
   data() {
