@@ -1,42 +1,49 @@
 <template>
-  <div class="container" v-if="!postedItems[0]">
-    <div class="bg"></div>
-    <button class="modalButton" id="show-modal" @click="showModal = true">+</button>
-    <Teleport to="body">
-      <!-- use the modal component, pass in the prop -->
-      <modal :show="showModal" @close="showModal = false">
-        <template #header>
-          <h3>custom header</h3>
-        </template>
-      </modal>
-    </Teleport>
-  </div>
-
-  <div class="wrapper">
-    <div class="gallery-panel" v-for="(item, index) in postedItems" :key="index">
-      <div class="media-wrap">
-        <MDBCard class="card-style hover-overlay">
-          <MDBCardImg
-            :src="getImgUrl(item.mediaHash)"
-            top
-            alt="..."
-            class="card-img-style"
-          />
-          <!-- <video v-if="isVideo(item.file.type)" class="vid-fit" controls :src="getImgUrl(item.fileCid)" /> -->
-          <MDBCardBody class="card-body">
-            <MDBCardText>Name: {{ item.name }} </MDBCardText>
-            <MDBCardText>
-              Likes: {{ item.likes }}
-              <div v-if="!likedArray[index]" id="favoriting">
-                <ToggleFavorite  :id="item.id" @likeEvent="updateparent" />
-              </div>
-              <div v-if="likedArray[index]" id="favoriting">
-                <ToggleFavorite  :id="item.id" :intialFavorited="true"  @likeEvent="updateparent" />
-              </div>
-            </MDBCardText>
-          </MDBCardBody>
-        </MDBCard>
+  <div v-if="this.stateLoaded">
+    <div class="container" v-if="!postedItems[0]">
+      <div class="bg"></div>
+      <button class="modalButton" id="show-modal" @click="showModal = true">+</button>
+      <Teleport to="body">
+        <!-- use the modal component, pass in the prop -->
+        <modal :show="showModal" @close="showModal = false">
+          <template #header>
+            <h3>custom header</h3>
+          </template>
+        </modal>
+      </Teleport>
     </div>
+
+    <div class="wrapper">
+      <div class="gallery-panel" v-for="(item, index) in postedItems" :key="index">
+        <div class="media-wrap">
+          <MDBCard class="card-style hover-overlay">
+            <router-link :to="`/post/${item.id}`" active-class="active" exact>
+              <figure>
+                <MDBCardImg
+                  :src="getImgUrl(item.mediaHash)"
+                  top
+                  hover
+                  alt="..."
+                  class="card-img-style"
+                />
+              </figure>
+            </router-link>
+            <!-- <video v-if="isVideo(item.file.type)" class="vid-fit" controls :src="getImgUrl(item.fileCid)" /> -->
+            <MDBCardBody class="card-body">
+              <MDBCardText>Name: {{ item.name }} </MDBCardText>
+              <MDBCardText>
+                Likes: {{ item.likes }}
+                <div v-if="!likedArray[index]" id="favoriting">
+                  <ToggleFavorite  :id="item.id" @likeEvent="updateparent" />
+                </div>
+                <div v-if="likedArray[index]" id="favoriting">
+                  <ToggleFavorite  :id="item.id" :intialFavorited="true"  @likeEvent="updateparent" />
+                </div>
+              </MDBCardText>
+            </MDBCardBody>
+          </MDBCard>
+      </div>
+      </div>
     </div>
   </div>
 </template>
@@ -47,7 +54,7 @@ import { ref, computed, inject } from "vue";
 import { useStore } from "@src/store";
 import { fileSize, copyToClipboard, generateLink, generateShortLink, getImgUrl, isVideo} from "@src/services/helpers";
 
-import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardImg, MDBBtn, MDBCardVideo } from "mdb-vue-ui-kit";
+import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardImg, MDBBtn, MDBCardVideo, mdbRipple } from "mdb-vue-ui-kit";
 import { useRebelStore } from '@src/store/index';
 import { storeToRefs } from 'pinia';
 import ToggleFavorite from "@src/components/VUpload/ToggleFavorite.vue";
@@ -67,10 +74,14 @@ export default {
     ToggleFavorite,
     Modal
   },
+  directives: {
+    mdbRipple
+  },
   data() {
     return {
       componentKey: 0,
-      showModal: false
+      showModal: false,
+      stateLoaded: false,
     };
   },
   mounted() {
@@ -85,6 +96,7 @@ export default {
       const { postsArray } = storeToRefs(rebelStore)
       await getPostsByUser();
       await isLiked(postsArray._rawValue);
+      this.stateLoaded = true;
     },
     async updateparent(variable) {
       const { isLiked, getPostsByUser } = useRebelStore()
@@ -163,6 +175,20 @@ export default {
 </script>
 
 <style lang="scss">
+
+// /* Opacity #2 */
+// .card-style figure {
+// 	background: #1abc9c;
+// }
+.card-style figure img {
+	opacity: 1;
+	-webkit-transition: .3s ease-in-out;
+	transition: .3s ease-in-out;
+}
+.card-style figure:hover img {
+	opacity: .5;
+  cursor: pointer;
+}
 
 .bg,
 .modalButton {

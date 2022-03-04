@@ -189,6 +189,8 @@ section#panel-upload {
     position: relative;
     cursor: pointer;
     overflow: hidden;
+    padding-top: 25px;
+    padding-bottom: 25px;
 
     display: flex;
     align-content: center;
@@ -215,7 +217,7 @@ section#panel-upload {
       padding: .8rem;
       border-radius: .5rem;
       text-align: center;
-      width: 80%;
+      width: 0%;
 
       svg {
         height: 48px;

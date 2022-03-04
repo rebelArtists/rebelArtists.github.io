@@ -1,5 +1,5 @@
 <template>
-<div v-if="individualPost.mediaHash">
+<div v-if="this.postReady">
   <div class="wrapper3">
       <div class="box2 itemMedia">
         <div class="media-wrap">
@@ -45,6 +45,7 @@
 <script>
 import { provide } from "vue";
 import { Notyf } from "notyf";
+import { ref } from "vue";
 
 import { getImgUrl } from "@src/services/helpers";
 import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardImg, MDBBtn, MDBCardVideo } from "mdb-vue-ui-kit";
@@ -68,7 +69,8 @@ export default {
   },
   data() {
     return {
-      componentKey: 0
+      componentKey: 0,
+      postReady: false
     };
   },
   mounted() {
@@ -78,9 +80,20 @@ export default {
   },
   methods: {
     async getContent() {
+      this.postReady = false;
+      const rebelStore = useRebelStore()
+      const { individualPost } = storeToRefs(rebelStore)
       const { getPostById } = useRebelStore()
+      console.log(this.$route.params.id)
       await getPostById([this.$route.params.id])
-      this.componentKey += 1;
+      this.postReady = true;
+    }
+  },
+  watch: {
+    '$route' (to, from) {
+      if(to !== from ) {
+        this.getContent();
+      }
     }
   },
   setup() {

@@ -266,6 +266,7 @@ async function getPostById(postId) {
         individualPost.value = postObj;
       }
       await getUserByOwnerAddress(individualPost.value.address);
+      console.log(individualPost.value)
     }
   }
   catch (e) {
