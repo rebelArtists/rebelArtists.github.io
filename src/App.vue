@@ -12,7 +12,7 @@
   </div>
   <router-view v-slot="{ Component }">
     <keep-alive>
-      <component v-if="user" :is="Component" :key="$route.name" />
+      <component v-if="user" :is="Component" :key="$route.name" :ready="true"/>
     </keep-alive>
   </router-view>
   <ReloadPrompt />
