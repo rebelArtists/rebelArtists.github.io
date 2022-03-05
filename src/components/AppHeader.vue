@@ -1,18 +1,18 @@
 <template>
   <header id="header">
     <div class="header-title">
-      <h1>Rebel<span class="emoji">💣</span></h1>
+      <h1 class="rebelLogo">Rebel</h1>
       <span>Own What's Yours</span>
     </div>
     <div class="header-menu">
       <nav class="header-navbar">
-        <router-link :to="{ name: 'home' }" active-class="active" title="Home" exact>
+        <router-link v-if="account && user" :to="{ name: 'home' }" active-class="active" title="Home" exact>
           <svg class="svgNav" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
         </router-link>
 
         <!-- <router-link :to="{ name: 'about' }" active-class="active" exact>About</router-link> -->
         <div>
-          <button id="show-modal" @click="showModal = true" title="Mint New Post">
+          <button v-if="account && user" id="show-modal" @click="showModal = true" title="Mint New Post">
             <svg class="mintContent" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
           </button>
           <Teleport to="body">
@@ -38,6 +38,8 @@
 <script>
 import { ref, toRefs } from "vue";
 import Modal from '@src/components/VUpload/Modal.vue'
+import { storeToRefs } from 'pinia'
+import { useRebelStore } from '@src/store/index'
 
 export default {
   name: "AppHeader",
@@ -50,6 +52,11 @@ export default {
     };
   },
   setup() {
+
+    const rebelStore = useRebelStore()
+    const { connectWallet } = useRebelStore()
+    const { account, user } = storeToRefs(rebelStore)
+
     const isDarkClassAvailable = document.body.classList.contains("dark-theme");
 
     const isDark = ref(isDarkClassAvailable);
@@ -72,13 +79,21 @@ export default {
 
     return {
       isDark,
-      toggleTheme
+      toggleTheme,
+      user,
+      account
     }
   }
 }
 </script>
 
 <style lang="scss">
+
+.rebelLogo{
+   font-family: "Rebel";
+   font-size: 40px;
+   font-weight: 5;
+}
 
 .mintContent {
   padding-top: 7px;
@@ -106,6 +121,9 @@ export default {
       font-weight: 700;
       margin: 0 0 8px 0;
       color: #333;
+      font-family: "Rebel";
+      font-size: 40px;
+      font-weight: 5;
 
       span.emoji {
         font-size: 1.6rem;

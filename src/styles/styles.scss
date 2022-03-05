@@ -15,7 +15,9 @@ body {
   --loader-color-primary: #facc15;
   --loader-color-secondary: #f97316;
   --svg-color: black;
-  --icon-color: #f97316;
+  --icon-color: black;
+  --icon-color-opposite: white;
+  --landing-gradient: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(250,204,21,1) 33%, rgba(249,115,22,1) 66%, rgba(219,39,119,1) 98%);
 
   --gradient-50: rgb(255, 242, 203);
   --gradient-100: rgb(254, 236, 181);
@@ -44,7 +46,10 @@ body {
     --loader-color-primary: #a855f7;
     --loader-color-secondary: #6366f1;
     --svg-color: white;
-    --icon-color: #1ce7b4;
+    --icon-color: white;
+    --icon-color-opposite: black;
+    --landing-gradient: linear-gradient(-45deg, rgba(28,231,180,1) 0%, rgba(99,102,241,1) 33%, rgba(168,85,247,1) 66%, rgba(17,24,29,1) 100%);
+
 
     --gradient-100: rgb(234, 240, 255);
     --gradient-200: rgb(224, 230, 252);
@@ -81,7 +86,8 @@ body,
       margin-bottom: 8px;
 
       h1 {
-        font-size: 1.5em;
+        font-size: 50px;
+        font-weight: 5;
       }
 
       span {
@@ -320,20 +326,22 @@ body,
   }
 
   #app {
-    padding: 1rem;
-    height: calc(100% - 2rem);
+    // padding: 1rem;
+    // height: calc(100% - 2rem);
 
     #header {
       padding: 0 0 .8em 0;
       border-bottom: none;
       flex-direction: column;
+      padding-left: 3vw;
 
       .header-title {
         width: 100%;
         margin-bottom: 8px;
 
         h1 {
-          font-size: 1.5em;
+          font-size: 50px;
+          font-weight: 5;
         }
 
         span {
