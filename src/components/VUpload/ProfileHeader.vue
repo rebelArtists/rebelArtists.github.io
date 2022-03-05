@@ -175,6 +175,7 @@ export default {
 .item7 {
   grid-column: 3 / 5;
   grid-row: 3 / 5;
+  font-size: 11px;
 }
 
 // .item7 {

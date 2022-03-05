@@ -217,7 +217,7 @@ section#panel-upload {
       padding: .8rem;
       border-radius: .5rem;
       text-align: center;
-      width: 0%;
+      width: 50%;
 
       svg {
         height: 48px;

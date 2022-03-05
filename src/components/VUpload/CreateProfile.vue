@@ -1,11 +1,11 @@
 <template>
-  <section id="panel-upload">
+  <section id="panel-upload-create">
     <ProfileName :profname="profname" @onChanged="onProfNameChanged" />
     <ProfileBio :profbio="profbio" @onChanged="onProfBioChanged" />
-    <div class="content panel-upload--content">
-      <div class="panel-upload--dropzone" :class="{ active: isDragged }" @dragenter="onDragEnter" @dragleave="onDragLeave" @drop.prevent="onDropHandler" @dragover.prevent>
+    <div class="content panel-upload-create--content">
+      <div class="panel-upload-create--dropzone" :class="{ active: isDragged }" @dragenter="onDragEnter" @dragleave="onDragLeave" @drop.prevent="onDropHandler" @dragover.prevent>
         <input type="file" ref="fileRef" @change="onFileChangedHandler" />
-        <div class="dropzone-label" @click="openSelectFile">
+        <div class="dropzone-label-create" @click="openSelectFile">
           <i-mdi-timer-sand v-if="(fileCount > 0)" class="icon-color" />
           <i-mdi-upload v-else class="icon-color" />
           <span>Drop profile pic here or click to select file.</span>
@@ -158,20 +158,25 @@ export default {
 </script>
 
 <style lang="scss">
-section#panel-upload {
+section#panel-upload-create {
   background-color: var(--gradient-100);
   border-top-left-radius: 1rem;
   border-bottom-left-radius: 1rem;
   border-top-right-radius: 1rem;
   border-bottom-right-radius: 1rem;
+  align-content: center;
+  display: block;
+  margin-left: 10vw;
+  margin-right: 10vw;
+  margin-top: 50px;
 
-  .panel-upload--content,
-  .panel-upload--content .panel-upload--dropzone {
+  .panel-upload-create--content,
+  .panel-upload-create--content .panel-upload-create--dropzone {
     width: 100%;
     height: 70%;
   }
 
-  .panel-upload--dropzone {
+  .panel-upload-create--dropzone {
     position: relative;
     cursor: pointer;
     overflow: hidden;
@@ -186,7 +191,7 @@ section#panel-upload {
         pointer-events: none;
       }
 
-      .dropzone-label {
+      .dropzone-label-create {
         background-color: rgba(0, 0, 0, .2);
       }
     }
@@ -194,7 +199,7 @@ section#panel-upload {
     input {
       display: none;
     }
-    .dropzone-label {
+    .dropzone-label-create {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -275,7 +280,7 @@ section#panel-upload {
 }
 
 body.dark-theme {
-  section#panel-upload {
+  section#panel-upload-create {
     background-color: var(--gradient-800);
 
     .dropzone-details .dropzone-detail {
