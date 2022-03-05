@@ -1,15 +1,18 @@
 <template>
-  <AppHeader />
-  <div class="divConnect">
-    <button v-if="!account" class="buttonConnect" @click="fireConnectWallet">
-      connect wallet and enter
-    </button>
-    <div v-if="!account" class="arrow">
-        <span></span>
-        <span></span>
-        <span></span>
+  <div v-if="!account" class="testing">
+    <AppHeader />
+    <div class="divConnect">
+      <button v-if="!account" class="buttonConnect" @click="fireConnectWallet">
+        connect wallet and enter
+      </button>
+      <div v-if="!account" class="arrow">
+          <span></span>
+          <span></span>
+          <span></span>
+      </div>
     </div>
   </div>
+  <AppHeader v-if="account"/>
   <div v-if="this.ready && account && !user">
     <CreateProfile />
   </div>
@@ -90,6 +93,25 @@ export default {
 </script>
 
 <style lang="scss">
+
+div.testing {
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    height: 100%;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
 
   .divConnect {
     position: relative;

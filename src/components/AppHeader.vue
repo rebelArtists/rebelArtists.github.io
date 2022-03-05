@@ -89,6 +89,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 20px;
 
   transition: border-bottom 0.5s ease;
 

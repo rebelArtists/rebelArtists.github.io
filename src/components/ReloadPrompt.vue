@@ -49,6 +49,8 @@ export default {
 </script>
 
 <style lang="scss">
+
+
 .pwa-toast {
   position: fixed;
   right: 2em;
