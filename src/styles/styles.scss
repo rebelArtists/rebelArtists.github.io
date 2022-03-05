@@ -232,8 +232,8 @@ body,
   font-size: .8rem;
 }
 
-@media only screen and (max-width: 768px) {
-
+// original max 768px
+@media only screen and (max-width: 1010px) {
 
   .wrapper2 {
     font-size: 10px;
@@ -246,6 +246,7 @@ body,
     grid-auto-rows: repeat(3, 1fr);
     justify-content: center;
     align-content: end;
+    margin-bottom: 25px;
   }
 
   .box {
@@ -260,14 +261,15 @@ body,
     grid-row: 1 / 3;
     justify-content: center;
     align-content: end;
-    margin-left: 33%;
+    margin-left: 25%;
   }
 
   .item3 {
-    font-size: 15px;
+    font-size: 13px;
     grid-column: 2 / 4;
     grid-row: 3 / 3;
     font-weight: 900;
+    margin-left: -25px;
 
   }
 
@@ -285,7 +287,8 @@ body,
     grid-column: 1 / 2;
     grid-row: 4 / 5;
     font-weight: 900;
-      font-size: 10px;
+    font-size: 10px;
+    margin-left: 10px;
   }
 
   .item6 {
@@ -307,6 +310,7 @@ body,
   .item8 {
     grid-column: 4 / 5;
     grid-row: 3 / 3;
+    margin-top: -4px;
   }
 
   .item9 {
@@ -339,11 +343,12 @@ body,
 
       .header-menu {
         margin-top: -70px;
-        width: 35vw;
+        width: 70vw;
+        padding-right: 20px;
         // background: white;
         // height: 30vh;
         display: flex;
-        align-items: centrier;
+        align-items: center;
         justify-content: center;
 
         nav {

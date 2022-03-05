@@ -50,8 +50,10 @@ export default {
       const { isFollowing, getUserByName } = useRebelStore()
       const rebelStore = useRebelStore()
       const { user, isFollowingUser } = storeToRefs(rebelStore)
-      await getUserByName(this.$route.params.name);
-      await isFollowing(user.value.id);
+      if (this.$route.params.name) {
+        await getUserByName(this.$route.params.name);
+        await isFollowing(user.value.id);
+      }
       this.stateLoaded = true;
     },
     async updateparent(variable) {

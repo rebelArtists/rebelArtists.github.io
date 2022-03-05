@@ -14,10 +14,12 @@
       </div>
       </div>
       <div class="box2 userName">
+        <router-link :to="`/user/${user.name}`" exact>
         <img
            :src="getImgUrl(user.profPicHash)"
            class="round-image-post"
         />
+      </router-link>
         <div class="userName">
           {{ user.name }}
         </div>
@@ -177,8 +179,8 @@ export default {
 .styled-table {
     border-collapse: collapse;
     margin: 0 0;
-    font-size: 0.9em;
-    font-family: sans-serif;
+    // font-size: 0.9em;
+    // font-family: sans-serif;
     width: 100%;
     // display: flex;
     // box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
@@ -186,12 +188,15 @@ export default {
 
 .styled-table tr {
   line-height: 10px;
-  border-bottom: 1px solid #dddddd; }
+  border-bottom: 2px solid #dddddd;
+}
 
 .styled-table thead tr {
-    background-color: var(--loader-color-secondary);
+    // background-color: var(--loader-color-secondary);
     // color: #ffffff;
     text-align: left;
+    font-size: 12px;
+    font-weight: 900;
 }
 
 .styled-table th,
@@ -208,17 +213,12 @@ export default {
     border-bottom: transparent;
 }
 
-.userName {
-  padding-left: 10px;
-  padding-top: 10px;
-}
-
 .wrapper3 {
   font-size: 13px;
   margin: 15px 0 35px 0;
   width: 100%;
   // background-color: white;
-  height: 70vh;
+  height: 65vh;
   display: grid;
   grid-gap: 10px;
   grid-template-columns: 17vw 17vw 25vw;
@@ -251,35 +251,41 @@ export default {
 }
 
 .userName {
-  font-size: 15px;
+  font-size: 13px;
   grid-column: 3 / 3;
   grid-row: 1 / 1;
-  font-weight: 900;
-  padding: 15px;
+  font-weight: 999;
+  padding-left: 15px;
+  padding-top: 10px;
 }
 
 .itemName {
   grid-column: 3 / 3;
   grid-row: 2 / 2;
   padding: 15px;
+  font-size: 11px;
+  font-weight: 999;
 }
 
 .itemDescription {
   grid-column: 3 / 3;
   grid-row: 3 / 3;
   padding: 15px;
+  font-size: 11px;
 }
 
 .itemAttributes {
   grid-column: 3 / 3;
   grid-row: 4 / 4;
   padding: 15px;
+  font-size: 11px;
 }
 
 .itemLikes {
   grid-column: 3 / 3;
   grid-row: 5 / 5;
   padding: 15px;
+  font-size: 12px;
 }
 
 .itemIpfs {

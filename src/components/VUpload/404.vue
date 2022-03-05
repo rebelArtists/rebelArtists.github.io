@@ -128,7 +128,7 @@ $delayCoeff: 0.04s;
     fill: $firstColor;
   }
   @for $i from 1 through length($listColors) {
-    #{$i*math.div(100, length($listColors))}% {
+    #{$i*(100/length($listColors))}% {
       fill: nth($listColors, $i);
     }
   }
@@ -139,7 +139,7 @@ $delayCoeff: 0.04s;
     fill: $firstColor;
   }
   @for $i from 1 through length($listColors) {
-    #{$i*math.div(100, length($listColors))}% {
+    #{$i*(100/length($listColors))}% {
       fill: nth($listColors, $i);
     }
   }
