@@ -126,7 +126,6 @@ contract SocialHelper is PostFactory, UserFactory {
     return (names, mediaHashes, metaHashes, likes, blacklisted, postIds);
   }
 
-  // comment
   function getPostsByUserName(string memory _name) external view returns(
     string[] memory namesArray,
     string[] memory mediaHashesArray,
@@ -154,6 +153,49 @@ contract SocialHelper is PostFactory, UserFactory {
 
     return (names, mediaHashes, metaHashes, likes, blacklisted, postIds);
   }
+
+function getPostsLatest() external view returns(
+  string[] memory namesArray,
+  string[] memory mediaHashesArray,
+  string[] memory metaHashesArray,
+  uint[] memory likesArray,
+  bool[] memory blacklistedArray,
+  uint[] memory idArray
+  ) {
+
+  uint assetsToFetch = 20;
+  string[] memory names = new string[](assetsToFetch);
+  string[] memory mediaHashes = new string[](assetsToFetch);
+  string[] memory metaHashes = new string[](assetsToFetch);
+  uint[] memory likes = new uint[](assetsToFetch);
+  bool[] memory blacklisted = new bool[](assetsToFetch);
+  uint[] memory postIds = new uint[](assetsToFetch);
+
+  if (postCounter == 0) {
+    return (names, mediaHashes, metaHashes, likes, blacklisted, postIds);
+  }
+
+
+  if (assetsToFetch > postCounter) {
+    assetsToFetch = postCounter;
+  }
+  uint startingIndex = postCounter.sub(assetsToFetch);
+
+  uint loopCounter = 0;
+
+  for (uint i = startingIndex; i <= postCounter; i++) {
+      Post storage post = postsMap[i];
+      names[loopCounter] = post.name;
+      mediaHashes[loopCounter] = post.mediaHash;
+      metaHashes[loopCounter] = post.metaHash;
+      likes[loopCounter] = post.likes;
+      blacklisted[loopCounter] = post.blacklisted;
+      postIds[loopCounter] = i;
+      loopCounter = loopCounter.add(1);
+  }
+
+  return (names, mediaHashes, metaHashes, likes, blacklisted, postIds);
+}
 
   function getPostsByIds(uint[] memory _postIds) external view returns(
     string[] memory namesArray,

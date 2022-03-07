@@ -6,16 +6,7 @@ import { ethers } from 'ethers'
 import contractABIrebel from '../artifacts/contracts/SocialHelper.sol/SocialHelper.json'
 
 const db = new Storage("app");
-const contractAddressInsta = '0x279608E8F8cE4FbE02726B3ef999e0DA92153E43';
-// const contractAddressRebel = '0x3F899516c4562Bb74fFeb6246d1848ae9E9e6927';
-// const contractAddressRebel = '0x7306BB8b0B6e19D09ddEfD9762Fc587eA8D0E9e5';
-// const contractAddressRebel = '0x75099A61816CC30E8249E29f92C9880DB5d37185';
-// const contractAddressRebel = '0x1D0Dde0c9b75d401d5B4B33B1c7Cf306da1ca35B';
-// const contractAddressRebel = '0x8404cC8D5634d9E53eAE5F860F34c8A61F73fA75';
-// const contractAddressRebel = '0xa75Bf88B61426ed0A515756C1D10D0BA41c87C5e';
-// const contractAddressRebel = '0xfd3b4CD00977310D1AFf01B754C4245116FcBa34';
-// const contractAddressRebel = '0x7Cd84c24b5429b2EbB32EB015e16c3846bd9C838';
-const contractAddressRebel = '0x81Ab16a60dCC88c40A91830aC1e2ea2F4A2729CC';
+const contractAddressRebel = '0x9c9771a4Ba367071CdF07E46f52e268530786E23';
 
 db.read();
 db.data ||= { version: "0.0.1", results: [] };
@@ -73,6 +64,8 @@ export const useRebelStore = defineStore('rebel', () => {
   const likedArray = ref([])
   const individualPost = ref([])
   const routedUser = ref(null)
+  const latestPosts = ref([])
+  const latestPostsArray = ref([])
 
   async function postContent(name, mediaHash, metaHash) {
     try {
@@ -158,6 +151,37 @@ async function getPostsByUserName(name) {
         postObj.id = userPosts.idArray[i].toNumber();
         postsArray.value.push(userPosts.idArray[i].toNumber());
         postedItems.value.push(postObj);
+      }
+    }
+  }
+  catch (e) {
+    console.log('e', e)
+  }
+}
+
+async function getPostsLatest() {
+  try {
+    const { ethereum } = window
+    if (ethereum) {
+      const provider = new ethers.providers.Web3Provider(ethereum)
+      const signer = provider.getSigner()
+      const rebelContract = new ethers.Contract(contractAddressRebel, contractABIrebel.abi, signer)
+      const latestPostsResp = (await rebelContract.getPostsLatest())
+      console.log(latestPostsResp);
+      latestPosts.value = [];
+      latestPostsArray.value = [];
+      for (let i = 0; i < latestPostsResp.namesArray.length; i++) {
+        const postObj = new Object();
+        if (latestPostsResp.namesArray[i]) {
+          postObj.name = latestPostsResp.namesArray[i];
+          postObj.mediaHash = latestPostsResp.mediaHashesArray[i];
+          postObj.metaHash = latestPostsResp.metaHashesArray[i];
+          postObj.likes = latestPostsResp.likesArray[i].toNumber();
+          postObj.blacklisted = latestPostsResp.blacklistedArray[i];
+          postObj.id = latestPostsResp.idArray[i].toNumber();
+          latestPostsArray.value.push(latestPostsResp.idArray[i].toNumber());
+          latestPosts.value.push(postObj);
+        }
       }
     }
   }
@@ -432,6 +456,9 @@ async function getUserByOwnerAddress(address) {
     individualPost,
     getUserByName,
     getPostsByUserName,
-    routedUser
+    routedUser,
+    getPostsLatest,
+    latestPosts,
+    latestPostsArray
   }
 });

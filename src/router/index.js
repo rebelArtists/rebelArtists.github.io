@@ -16,6 +16,9 @@ const VPost = () => import("@src/views/VPost.vue");
 // Async Component
 const VUser = () => import("@src/views/VUser.vue");
 
+// Async Component
+const VFeed = () => import("@src/views/VFeed.vue");
+
 const routes = [
   {
     path: "/",
@@ -36,6 +39,11 @@ const routes = [
     path: "/gallery",
     name: "gallery",
     component: VGallery
+  },
+  {
+    path: "/feed",
+    name: "feed",
+    component: VFeed
   },
   {
       path: '/post/:id',
