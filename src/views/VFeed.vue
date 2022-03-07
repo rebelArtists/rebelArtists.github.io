@@ -3,6 +3,7 @@
     <div v-if="account" class="main animated">
       <div class="main-content">
         <Feed />
+        <UserToFollow />
       </div>
     </div>
   </section>
@@ -13,12 +14,15 @@ import { provide } from "vue";
 import { Notyf } from "notyf";
 
 import Feed from "@src/components/VUpload/Feed.vue";
+import UserToFollow from "@src/components/VUpload/UserToFollow.vue";
 import { storeToRefs } from 'pinia'
 import { useRebelStore } from '@src/store/index'
 
 export default {
   name: "VFeed",
   components: {
+    UserToFollow,
+    Feed
   },
   setup() {
     const NotfyProvider = new Notyf({

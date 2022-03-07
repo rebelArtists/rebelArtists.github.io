@@ -304,6 +304,49 @@ function getPostsLatest() external view returns(
     return (names, bios, followers, following, profPicHashes, blacklist, ids);
   }
 
+  function getUsersToFollow() external view returns(
+    string[] memory nameArray,
+    string[] memory bioArray,
+    uint[] memory followersArray,
+    uint[] memory followingArray,
+    string[] memory profPicHashArray,
+    bool[] memory blacklistArray,
+    uint[] memory idArray
+  ) {
+
+    // pick five random users to suggest following
+    uint userSuggestions = 5;
+    uint randNonce = 0;
+    string[] memory names = new string[](userSuggestions);
+    string[] memory bios = new string[](userSuggestions);
+    uint[] memory followers = new uint[](userSuggestions);
+    uint[] memory following = new uint[](userSuggestions);
+    string[] memory profPicHashes = new string[](userSuggestions);
+    bool[] memory blacklist = new bool[](userSuggestions);
+    uint[] memory ids = new uint[](userSuggestions);
+
+    if (userCounter == 0) {
+      return (names, bios, followers, following, profPicHashes, blacklist, ids);
+    }
+
+    for (uint i = 0; i < userSuggestions; i++) {
+      ids[i] = uint(keccak256(abi.encodePacked(block.timestamp, msg.sender, randNonce))) % userCounter;
+      randNonce++;
+    }
+
+    for (uint i = 0; i < ids.length; i++) {
+      User storage user = usersMap[ids[i]];
+      names[i] = user.name;
+      bios[i] = user.bio;
+      followers[i] = user.followers;
+      following[i] = user.following;
+      profPicHashes[i] = user.profPicHash;
+      blacklist[i] = user.blacklisted;
+    }
+
+    return (names, bios, followers, following, profPicHashes, blacklist, ids);
+  }
+
   function isFollowing(uint userId) external view returns(
     bool following
   ) {

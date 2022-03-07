@@ -6,7 +6,7 @@ import { ethers } from 'ethers'
 import contractABIrebel from '../artifacts/contracts/SocialHelper.sol/SocialHelper.json'
 
 const db = new Storage("app");
-const contractAddressRebel = '0x9c9771a4Ba367071CdF07E46f52e268530786E23';
+const contractAddressRebel = '0xdfEa5491DAaf15b7FfCe4C9777A1e2BA02443456';
 
 db.read();
 db.data ||= { version: "0.0.1", results: [] };
@@ -66,6 +66,7 @@ export const useRebelStore = defineStore('rebel', () => {
   const routedUser = ref(null)
   const latestPosts = ref([])
   const latestPostsArray = ref([])
+  const usersToFollow = ref([])
 
   async function postContent(name, mediaHash, metaHash) {
     try {
@@ -279,6 +280,36 @@ async function getUserByName(name) {
   }
 }
 
+async function getUsersToFollow() {
+  try {
+    const { ethereum } = window
+    if (ethereum) {
+      const provider = new ethers.providers.Web3Provider(ethereum)
+      const signer = provider.getSigner()
+      const rebelContract = new ethers.Contract(contractAddressRebel, contractABIrebel.abi, signer)
+      const userResp = (await rebelContract.getUsersToFollow())
+      console.log(userResp);
+      usersToFollow.value = [];
+      for (let i = 0; i < userResp.nameArray.length; i++) {
+        if (userResp.profPicHash != "") {
+          const userObj = new Object();
+          userObj.name = userResp.nameArray[i];
+          userObj.bio = userResp.bioArray[i];
+          userObj.followers = userResp.followersArray[i].toNumber();
+          userObj.following = userResp.followingArray[i].toNumber();
+          userObj.profPicHash = userResp.profPicHashArray[i];
+          userObj.blacklisted = userResp.blacklistArray[i];
+          userObj.id = userResp.idArray[i].toNumber();
+          usersToFollow.value.push(userObj);
+          }
+      }
+    }
+  }
+  catch (e) {
+    console.log('e', e)
+  }
+}
+
 async function getUserByOwnerAddress(address) {
   try {
     const { ethereum } = window
@@ -459,6 +490,8 @@ async function getUserByOwnerAddress(address) {
     routedUser,
     getPostsLatest,
     latestPosts,
-    latestPostsArray
+    latestPostsArray,
+    getUsersToFollow,
+    usersToFollow
   }
 });
