@@ -98,8 +98,8 @@ export default {
 
 @font-face {
   font-family: "Rebel";
-  src: local("Rebel"),
-   url(./fonts/Rebel/Rebel.ttf) format("truetype");
+  src: local("RebelNew"),
+   url(./fonts/Rebel/RebelNew.ttf) format("truetype");
 }
 
 div.testing {

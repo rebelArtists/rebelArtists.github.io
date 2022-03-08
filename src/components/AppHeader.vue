@@ -6,7 +6,13 @@
     </div>
     <div class="header-menu">
       <nav class="header-navbar">
-        <router-link v-if="account && user" :to="{ name: 'home' }" active-class="active" title="Home" exact>
+        <router-link v-if="account && user" :to="`/user/${user.name}`" active-class="active" title="Home" exact>
+          <img
+             :src="getImgUrl(user.profPicHash)"
+             class="round-image-header"
+          />
+        </router-link>
+        <router-link v-if="account && user" :to="{ name: 'feed' }" active-class="active" title="Home" exact>
           <svg class="svgNav" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
         </router-link>
 
@@ -40,6 +46,7 @@ import { ref, toRefs } from "vue";
 import Modal from '@src/components/VUpload/Modal.vue'
 import { storeToRefs } from 'pinia'
 import { useRebelStore } from '@src/store/index'
+import { getImgUrl } from "@src/services/helpers";
 
 export default {
   name: "AppHeader",
@@ -81,7 +88,8 @@ export default {
       isDark,
       toggleTheme,
       user,
-      account
+      account,
+      getImgUrl
     }
   }
 }
@@ -91,8 +99,8 @@ export default {
 
 .rebelLogo{
    font-family: "Rebel";
-   font-size: 40px;
-   font-weight: 5;
+   font-size: 45px;
+   font-weight: 1;
 }
 
 .mintContent {
@@ -189,6 +197,16 @@ body.dark-theme {
   padding-top: 7px;
   margin-right: 15px;
   fill: transparent;
+}
+
+.round-image-header {
+  object-fit: cover;
+  width: 35px;
+  height: 35px;
+  padding-top: 3px;
+  padding-right: 5px;
+  // max-height: 100%;
+ border-radius: 50%;
 }
 
 </style>
