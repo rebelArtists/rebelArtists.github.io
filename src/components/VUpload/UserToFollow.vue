@@ -1,14 +1,18 @@
 <template>
-    <div class="usersToFollowHeader">
-      Users to follow:
-    </div>
+  <div class="wrapperHeader">
+        <div class="box-follow headerBar">
+          users to follow:
+      </div>
+</div>
     <div class="gallery-panel-follow" v-for="(user, index) in usersToFollow" :key="index">
       <div class="wrapper4">
           <div class="box-follow itemProfFollow">
-            <img
-               :src="getImgUrl(user.profPicHash)"
-               class="round-image-follow"
-            />
+              <router-link :to="`/user/${user.name}`" exact>
+                <img
+                   :src="getImgUrl(user.profPicHash)"
+                   class="round-image-follow"
+                />
+            </router-link>
           </div>
             <div class="box-follow itemNameFollow">
             {{ user.name }}
@@ -60,31 +64,48 @@ export default {
 
 <style lang="scss">
 
-.usersToFollowHeader {
-  margin-left: auto;
-  margin-right: auto;
-  padding-right: 60px;
-  font-size: 13px;
-  font-weight: 900;
-}
 .wrapper4 {
   font-size: 13px;
-  margin: 15px 0 -5px 0;
+  margin: 0 0 -5px 0;
   width: 100%;
   height: 20%;
   display: grid;
-  grid-gap: 5px;
+  grid-gap: 0px;
+  grid-template-columns: 100px 100px 100px;
+  justify-content: center;
+  align-content: end;
+}
+
+.wrapperHeader {
+  font-size: 13px;
+  margin: 0 0 0px 0;
+  width: 100%;
+  height: 5%;
+  display: grid;
+  grid-gap: 0px;
   grid-template-columns: 100px 100px 100px;
   justify-content: center;
   align-content: end;
 }
 
 .box-follow {
-  background-color: #444;
-  color: #fff;
+  // background-color: #444;
+  // color: #fff;
   border-radius: 5px;
   padding: 10px;
 
+}
+
+.headerBar {
+  grid-column: 1 / 3;
+  grid-row: 1 / 1;
+  justify-content: center;
+  align-content: end;
+  margin-left: auto;
+  display: flex;
+  font-weight: 950;
+  font-size: 13px;
+  // padding-left: 4vw;
 }
 
 .itemProfFollow {

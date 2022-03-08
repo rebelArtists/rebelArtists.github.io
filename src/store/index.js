@@ -124,6 +124,9 @@ async function getPostsByUser() {
         postObj.id = userPosts.idArray[i].toNumber();
         postsArray.value.push(userPosts.idArray[i].toNumber());
         postedItems.value.push(postObj);
+        // reverse so most recent items first in list
+        postsArray.value = postsArray.value.reverse();
+        postedItems.value = postedItems.value.reverse();
       }
     }
   }
@@ -152,6 +155,9 @@ async function getPostsByUserName(name) {
         postObj.id = userPosts.idArray[i].toNumber();
         postsArray.value.push(userPosts.idArray[i].toNumber());
         postedItems.value.push(postObj);
+        // reverse so most recent items first in list
+        postsArray.value = postsArray.value.reverse();
+        postedItems.value = postedItems.value.reverse();
       }
     }
   }
@@ -182,6 +188,9 @@ async function getPostsLatest() {
           postObj.id = latestPostsResp.idArray[i].toNumber();
           latestPostsArray.value.push(latestPostsResp.idArray[i].toNumber());
           latestPosts.value.push(postObj);
+          // reverse so most recent is first in list
+          latestPostsArray.value = latestPostsArray.value.reverse();
+          latestPosts.value = latestPosts.value.reverse();
         }
       }
     }
