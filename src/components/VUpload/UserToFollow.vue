@@ -96,8 +96,6 @@ export default {
 }
 
 .box-follow {
-  // background-color: #444;
-  // color: #fff;
   border-radius: 5px;
   padding: 10px;
 
@@ -112,7 +110,6 @@ export default {
   display: flex;
   font-weight: 950;
   font-size: 13px;
-  // padding-left: 4vw;
 }
 
 .itemProfFollow {
@@ -122,7 +119,6 @@ export default {
   align-content: end;
   margin-left: auto;
   display: flex;
-  // padding-left: 4vw;
 }
 
 .itemNameFollow {
@@ -145,7 +141,6 @@ export default {
   object-fit: cover;
   width: 30px;
   height: 30px;
-  // max-height: 100%;
  border-radius: 50%;
 }
 

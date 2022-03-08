@@ -131,8 +131,6 @@ export default {
 }
 
 .box {
-  // background-color: #444;
-  // color: #fff;
   border-radius: 5px;
   padding: 10px;
 }
@@ -160,7 +158,6 @@ export default {
   grid-row: 1 / 5;
   justify-content: center;
   align-content: end;
-  // padding-left: 4vw;
 }
 
 .item3 {
@@ -169,25 +166,10 @@ export default {
   font-weight: 900;
 }
 
-// .item3 {
-//   font-size: 15px;
-//   grid-column: 2 / 5;
-//   grid-row: 2 / 5;
-//   font-weight: 900;
-//   margin-top: 65px;
-//   margin-left: 75px;
-// }
-
 .item7 {
   grid-column: 3 / 5;
   grid-row: 3 / 5;
 }
-
-// .item7 {
-//   grid-column: 3 / 5;
-//   grid-row: 3 / 5;
-//   opacity: 0;
-// }
 
 .item9 {
   grid-column: 5 / 6;
@@ -198,7 +180,6 @@ export default {
   object-fit: cover;
   width: 150px;
   height: 150px;
-  // max-height: 100%;
  border-radius: 50%;
 }
 

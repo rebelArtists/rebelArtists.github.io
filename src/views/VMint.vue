@@ -11,8 +11,6 @@
       </div>
     </div>
     <div v-if="account" class="main animated">
-      <!-- <div class="main-content--shadow s-index-1"></div>
-      <div class="main-content--shadow s-index-2"></div> -->
       <div class="main-content">
         <PanelUpload />
       </div>

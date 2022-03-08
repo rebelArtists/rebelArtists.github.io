@@ -4,7 +4,6 @@
       <div class="bg"></div>
       <button class="modalButton" id="show-modal" @click="showModal = true">+</button>
       <Teleport to="body">
-        <!-- use the modal component, pass in the prop -->
         <modal :show="showModal" @close="showModal = false">
           <template #header>
             <h3>custom header</h3>
@@ -176,10 +175,6 @@ export default {
 
 <style lang="scss">
 
-// /* Opacity #2 */
-// .card-style figure {
-// 	background: #1abc9c;
-// }
 .card-style figure img {
 	opacity: 1;
 	-webkit-transition: .3s ease-in-out;
@@ -236,34 +231,6 @@ export default {
     opacity: 0;
   }
 }
-
-//
-// .test {
-//   height: 30vh;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-// }
-//
-// .modalButton {
-//   transition-duration: 0.6s;
-//   border-radius: 8px;
-//   width: 40%;
-//   height: 50%;
-//   cursor: pointer;
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   padding: 5px;
-//   padding-left: 20px;
-//   padding-right: 20px;
-//   background-image: var(--liniear-gradient-color-2);
-// }
-//
-// .modalButton:hover {
-//   background-color: #4CAF50; /* Green */
-//   color: white;
-// }
 
 .card-style {
   background-image: var(--liniear-gradient-color-2);

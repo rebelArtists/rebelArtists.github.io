@@ -103,8 +103,6 @@ export default {
       const { error } = result;
       if (error && error instanceof Error) notyf.error(error.message);
 
-      // await getNftIndex();
-      // getContent(indexCount.value);
       context.emit('postEvent', true);
       return result;
     }

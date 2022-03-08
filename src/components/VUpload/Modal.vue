@@ -94,9 +94,7 @@ export default {
   height: 70%;
   margin: 0px auto;
   padding: 20px 30px;
-  /* background-color: #fff; */
   border-radius: 2px;
-  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33); */
   transition: all 0.3s ease;
 }
 
@@ -126,15 +124,6 @@ export default {
 .modal-default-button {
   float: right;
 }
-
-/*
- * The following styles are auto-applied to elements with
- * transition="modal" when their visibility is toggled
- * by Vue.js.
- *
- * You can easily play with the modal transition by editing
- * these styles.
- */
 
 .modal-enter-from {
   opacity: 0;

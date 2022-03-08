@@ -178,11 +178,7 @@ export default {
 .styled-table {
     border-collapse: collapse;
     margin: 0 0;
-    // font-size: 0.9em;
-    // font-family: sans-serif;
     width: 100%;
-    // display: flex;
-    // box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
 .styled-table tr {
@@ -191,8 +187,6 @@ export default {
 }
 
 .styled-table thead tr {
-    // background-color: var(--loader-color-secondary);
-    // color: #ffffff;
     text-align: left;
     font-size: 12px;
     font-weight: 900;
@@ -216,14 +210,12 @@ export default {
   font-size: 13px;
   margin: 15px 0 35px 0;
   width: 100%;
-  // background-color: white;
   height: 60vh;
   display: grid;
   grid-gap: 10px;
   grid-template-columns: 17vw 17vw 25vw;
   grid-template-rows: 15% 10% 15% 40% 17%;
   justify-content: center;
-  // align-content: end;
 }
 
 .card-img-style {
@@ -233,9 +225,7 @@ export default {
 
 .box2 {
   background-image: var(--liniear-gradient-color-2);
-  // color: #fff;
   border-radius: 10px;
-  // padding: 10px;
   max-width: 80rem;
   display: flex;
 }
@@ -246,7 +236,6 @@ export default {
   justify-content: center;
   align-content: end;
   background-color: transparent;
-  // padding-left: 4vw;
 }
 
 .userName {
@@ -348,7 +337,6 @@ export default {
   object-fit: cover;
   width: 50px;
   height: 50px;
-  // max-height: 100%;
  border-radius: 50%;
 }
 

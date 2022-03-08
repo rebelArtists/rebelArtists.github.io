@@ -64,7 +64,6 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
 $particles-animation-duration: 0.8s;
 $icon-animation-duration: 0.48s;
