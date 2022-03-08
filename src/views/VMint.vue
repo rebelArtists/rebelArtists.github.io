@@ -25,7 +25,6 @@ import { provide } from "vue";
 import { Notyf } from "notyf";
 
 import PanelUpload from "@src/components/VUpload/PanelUpload.vue";
-import PanelResult from "@src/components/VUpload/PanelResult.vue";
 import { storeToRefs } from 'pinia'
 import { useRebelStore } from '@src/store/index'
 
@@ -33,8 +32,7 @@ import { useRebelStore } from '@src/store/index'
 export default {
   name: "VMint",
   components: {
-    PanelUpload,
-    PanelResult
+    PanelUpload
   },
   setup() {
     const NotfyProvider = new Notyf({

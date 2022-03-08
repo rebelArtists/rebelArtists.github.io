@@ -79,7 +79,6 @@ import { ref } from "vue";
 import { getImgUrl } from "@src/services/helpers";
 import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardImg, MDBBtn, MDBCardVideo } from "mdb-vue-ui-kit";
 import PanelUpload from "@src/components/VUpload/PanelUpload.vue";
-import PanelResult from "@src/components/VUpload/PanelResult.vue";
 import { storeToRefs } from 'pinia'
 import { useRebelStore } from '@src/store/index'
 import ToggleFavorite from "@src/components/VUpload/ToggleFavorite.vue";

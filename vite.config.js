@@ -24,9 +24,9 @@ export default defineConfig({
     Icons(),
     VitePWA({
       manifest: {
-        name: "InstaShare - Instant File Sharing",
-        short_name: "InstaShare",
-        description : "Instant File Sharing powered by IPFS Protocol",
+        name: "REBEL - Own What's Yours",
+        short_name: "REBEL",
+        description : "Full ownership of your content via NFTs",
         theme_color: "#212121",
         registerType: "autoUpdate",
         includeAssets: ['/favicon.svg'],
