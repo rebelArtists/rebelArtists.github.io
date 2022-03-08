@@ -15,7 +15,6 @@
                 />
               </figure>
             </router-link>
-            <!-- <video v-if="isVideo(item.file.type)" class="vid-fit" controls :src="getImgUrl(item.fileCid)" /> -->
             <MDBCardBody class="card-body">
               <MDBCardText>Name: {{ item.name }} </MDBCardText>
               <MDBCardText>

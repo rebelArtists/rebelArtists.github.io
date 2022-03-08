@@ -1,16 +1,21 @@
 <template>
-  <div class="wrapper4">
+    <div class="usersToFollowHeader">
+      Users to follow:
+    </div>
     <div class="gallery-panel-follow" v-for="(user, index) in usersToFollow" :key="index">
-      <div class="box-follow item2">
-        <div>
-          <img
-             :src="getImgUrl(user.profPicHash)"
-             class="round-image"
-          />
-          {{ user.name }}
-          {{ user.followers }} followers
-        </div>
-      </div>
+      <div class="wrapper4">
+          <div class="box-follow itemProfFollow">
+            <img
+               :src="getImgUrl(user.profPicHash)"
+               class="round-image-follow"
+            />
+          </div>
+            <div class="box-follow itemNameFollow">
+            {{ user.name }}
+          </div>
+          <div class="box-follow itemFollowersFollow">
+            {{ user.followers }} followers
+          </div>
     </div>
   </div>
 </template>
@@ -55,15 +60,21 @@ export default {
 
 <style lang="scss">
 
+.usersToFollowHeader {
+  margin-left: auto;
+  margin-right: auto;
+  padding-right: 60px;
+  font-size: 13px;
+  font-weight: 900;
+}
 .wrapper4 {
   font-size: 13px;
-  margin: 15px 0 35px 0;
+  margin: 15px 0 -5px 0;
   width: 100%;
   height: 20%;
   display: grid;
-  grid-gap: 10px;
-  grid-template-columns: repeat(1, minmax(12vw, 100));
-  grid-auto-rows: repeat(1, 1fr);
+  grid-gap: 5px;
+  grid-template-columns: 100px 100px 100px;
   justify-content: center;
   align-content: end;
 }
@@ -73,67 +84,36 @@ export default {
   color: #fff;
   border-radius: 5px;
   padding: 10px;
+
 }
 
-.buttonConnectProfile {
-  transition-duration: 0.6s;
-  border-radius: 8px;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 5px;
-  padding-left: 20px;
-  padding-right: 20px;
-  background-image: var(--liniear-gradient-color-2);
-}
-
-.buttonConnectProfile:hover {
-  background-color: #4CAF50; /* Green */
-  color: white;
-}
-
-.item2 {
-  grid-column: 1 / 3;
+.itemProfFollow {
+  grid-column: 1 / 1;
   grid-row: 1 / 1;
   justify-content: center;
   align-content: end;
+  margin-left: auto;
+  display: flex;
   // padding-left: 4vw;
 }
 
-.item3 {
-  font-size: 15px;
+.itemNameFollow {
+  font-size: 12px;
   grid-column: 2 / 2;
   grid-row: 1 / 1;
   font-weight: 900;
+  padding-top: 15px;
 }
 
-// .item3 {
-//   font-size: 15px;
-//   grid-column: 2 / 5;
-//   grid-row: 2 / 5;
-//   font-weight: 900;
-//   margin-top: 65px;
-//   margin-left: 75px;
-// }
-
-.item5 {
+.itemFollowersFollow {
+  font-size: 11px;
   grid-column: 3 / 3;
   grid-row: 1 / 1;
+  font-weight: 900;
+  padding-top: 17px;
 }
 
-// .item7 {
-//   grid-column: 3 / 5;
-//   grid-row: 3 / 5;
-//   opacity: 0;
-// }
-
-.item9 {
-  grid-column: 5 / 6;
-  grid-row: 3 / 5;
-}
-
-.round-image {
+.round-image-follow {
   object-fit: cover;
   width: 30px;
   height: 30px;

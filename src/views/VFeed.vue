@@ -2,8 +2,14 @@
   <section id="content">
     <div v-if="account" class="main animated">
       <div class="main-content">
-        <Feed />
-        <UserToFollow />
+        <div class="feedGrid">
+          <div class="feedBox">
+            <Feed />
+          </div>
+          <div class="usersToFollowBox">
+            <UserToFollow />
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -61,6 +67,18 @@ export default {
 section#content {
   position: relative;
   height: 100%;
+
+  .feedGrid {
+    font-size: 13px;
+    margin: 15px 0 -5px 0;
+    width: 100%;
+    height: 20%;
+    display: grid;
+    grid-gap: 75px;
+    grid-template-columns: 75% 25%;
+    justify-content: center;
+    align-content: end;
+  }
 
   .gallery {
     position: relative;
