@@ -3,10 +3,19 @@
     <div v-if="account" class="main animated">
       <div class="main-content">
         <span class="feedToggle">
-          <a @click="toggleFeedOn">
+          <a @click="toggleFeedOn" v-if="followFeedToggle" class="activeDiscover">
             discover
           </a>
-          <a @click="toggleFeedOff">
+          <a @click="toggleFeedOn" v-if="!followFeedToggle" class="inactiveDiscover">
+            discover
+          </a>
+          <div class="dividerLine">
+             |
+          </div>
+          <a @click="toggleFeedOff" v-if="!followFeedToggle" class="activeFollowing">
+            following
+          </a>
+          <a @click="toggleFeedOff" v-if="followFeedToggle" class="inactiveFollowing">
             following
           </a>
         </span>
@@ -96,7 +105,26 @@ section#content {
 
   .feedToggle {
     cursor: pointer;
+    display: flex;
+    font-size: 14px;
+    justify-content: center;
+    margin-right: 35%;
   }
+
+.activeDiscover {
+  font-weight: 999;
+    font-size: 15px;
+}
+
+.activeFollowing {
+  font-weight: bold;
+    font-size: 15px;
+}
+
+.dividerLine {
+  margin-left: 15px;
+  margin-right: 15px;
+}
 
   .feedGrid {
     font-size: 13px;
