@@ -1,56 +1,52 @@
 <template>
   <div v-if="this.stateLoaded" class="wrapper2">
-      <div class="box item2">
-        <div>
-          <img
-             :src="getImgUrl(routedUser.profPicHash)"
-             class="round-image"
-          />
-        </div>
+    <div class="box item2">
+      <div>
+        <img :src="getImgUrl(routedUser.profPicHash)" class="round-image" />
       </div>
-      <div class="box item3">
-        {{ routedUser.name }}
-      </div>
-      <div class="box item8" v-if="!loading">
-        <button v-if="!isFollowingUser" class="buttonConnectProfile" @click="fireFollowUser(routedUser.id)">
-          Follow
-        </button>
-        <button v-if="isFollowingUser" class="buttonConnectProfile" @click="fireUnfollowUser(routedUser.id)">
-          Unfollow
-        </button>
-      </div>
-      <div class="box item8" v-if="loading">
-        <button v-if="!isFollowingUser" class="loading animated fadeIn">
-          Follow
-          <div class="bgFollow"></div>
-        </button>
-        <button v-if="isFollowingUser" class="loading animated fadeIn">
-          Unfollow
-          <div class="bgFollow"></div>
-        </button>
-      </div>
-      <div class="box item5">
-        {{ routedUser.followers }} followers
-      </div>
-      <div class="box item6">
-        {{ routedUser.following }} following
-      </div>
-      <div class="box item4">
-        {{ routedUser.postCount }} posts
-      </div>
-      <div class="box item7">
-        {{ routedUser.bio }}
-      </div>
-      <div class="box item9">
-        {{ routedUser.amtEarned }} MATIC earned
-      </div>
+    </div>
+    <div class="box item3">
+      {{ routedUser.name }}
+    </div>
+    <div class="box item8" v-if="!loading">
+      <button
+        v-if="!isFollowingUser"
+        class="buttonConnectProfile"
+        @click="fireFollowUser(routedUser.id)"
+      >
+        Follow
+      </button>
+      <button
+        v-if="isFollowingUser"
+        class="buttonConnectProfile"
+        @click="fireUnfollowUser(routedUser.id)"
+      >
+        Unfollow
+      </button>
+    </div>
+    <div class="box item8" v-if="loading">
+      <button v-if="!isFollowingUser" class="loading animated fadeIn">
+        Follow
+        <div class="bgFollow"></div>
+      </button>
+      <button v-if="isFollowingUser" class="loading animated fadeIn">
+        Unfollow
+        <div class="bgFollow"></div>
+      </button>
+    </div>
+    <div class="box item5">{{ routedUser.followers }} followers</div>
+    <div class="box item6">{{ routedUser.following }} following</div>
+    <div class="box item4">{{ routedUser.postCount }} posts</div>
+    <div class="box item7">
+      {{ routedUser.bio }}
+    </div>
+    <div class="box item9">{{ routedUser.amtEarned }} MATIC earned</div>
   </div>
 </template>
 
 <script>
-
-import { useRebelStore } from '@src/store/index';
-import { storeToRefs } from 'pinia'
+import { useRebelStore } from "@src/store/index";
+import { storeToRefs } from "pinia";
 import { getImgUrl } from "@src/services/helpers";
 
 export default {
@@ -59,7 +55,7 @@ export default {
     return {
       componentKey: 0,
       loading: false,
-      stateLoaded: false
+      stateLoaded: false,
     };
   },
   mounted() {
@@ -68,24 +64,24 @@ export default {
     });
   },
   watch: {
-    '$route' (to, from) {
-      if(to !== from ) {
+    $route(to, from) {
+      if (to !== from) {
         this.checkIsFollowing();
       }
-    }
+    },
   },
   methods: {
     async checkIsFollowing() {
-      const { isFollowing, getUserByName } = useRebelStore()
-      const rebelStore = useRebelStore()
-      const { routedUser, isFollowingUser } = storeToRefs(rebelStore)
+      const { isFollowing, getUserByName } = useRebelStore();
+      const rebelStore = useRebelStore();
+      const { routedUser, isFollowingUser } = storeToRefs(rebelStore);
       await getUserByName(this.$route.params.name);
       await isFollowing(routedUser.value.id);
       this.stateLoaded = true;
     },
     async fireFollowUser(userId) {
       this.loading = true;
-      const { followUser } = useRebelStore()
+      const { followUser } = useRebelStore();
       await followUser(userId);
       await this.checkIsFollowing();
       this.componentKey += 1;
@@ -93,30 +89,29 @@ export default {
     },
     async fireUnfollowUser(userId) {
       this.loading = true;
-      const { unfollowUser, getUserByName } = useRebelStore()
+      const { unfollowUser, getUserByName } = useRebelStore();
       await unfollowUser(userId);
       await this.checkIsFollowing();
       this.componentKey += 1;
       this.loading = false;
-    }
+    },
   },
   setup() {
-
-    const rebelStore = useRebelStore()
-    const { postedItems, routedUser, isFollowingUser } = storeToRefs(rebelStore)
+    const rebelStore = useRebelStore();
+    const { postedItems, routedUser, isFollowingUser } =
+      storeToRefs(rebelStore);
 
     return {
       postedItems,
       routedUser,
       getImgUrl,
-      isFollowingUser
-    }
-}
-}
+      isFollowingUser,
+    };
+  },
+};
 </script>
 
 <style lang="scss">
-
 .wrapper2 {
   font-size: 13px;
   margin: 15px 0 35px 0;
@@ -149,7 +144,7 @@ export default {
 }
 
 .buttonConnectProfile:hover {
-  background-color: #4CAF50; /* Green */
+  background-color: #4caf50; /* Green */
   color: white;
 }
 
@@ -180,31 +175,29 @@ export default {
   object-fit: cover;
   width: 150px;
   height: 150px;
- border-radius: 50%;
+  border-radius: 50%;
 }
 
-
 @-webkit-keyframes MOVE-BG {
-	from {
-		-webkit-transform: translateX(0);
-	}
-	to {
-		-webkit-transform: translateX(46px);
-	}
+  from {
+    -webkit-transform: translateX(0);
+  }
+  to {
+    -webkit-transform: translateX(46px);
+  }
 }
 
 @keyframes MOVE-BG {
-	from {
-		transform: translateX(0);
-	}
-	to {
-		transform: translateX(46px);
-	}
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(46px);
+  }
 }
 
-
 .loading {
-	height: auto;
+  height: auto;
   text-align: center;
   color: black;
   position: relative;
@@ -219,30 +212,29 @@ export default {
   padding-right: 20px;
 }
 
-.bgFollow{
-    position: absolute;
-    left: -46px;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    z-index: -1;
+.bgFollow {
+  position: absolute;
+  left: -46px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: -1;
 
   background: repeating-linear-gradient(
     -55deg,
     var(--loader-color-secondary) 1px,
     var(--loader-color-primary) 12px,
-    var(--loader-color-primary) 20px,
-	);
+    var(--loader-color-primary) 20px
+  );
 
-    -webkit-animation-name: MOVE-BG;
-	-webkit-animation-duration: .6s;
-	-webkit-animation-timing-function: linear;
-	-webkit-animation-iteration-count: infinite;
+  -webkit-animation-name: MOVE-BG;
+  -webkit-animation-duration: 0.6s;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
 
-    animation-name: MOVE-BG;
-	animation-duration: .6s;
-	animation-timing-function: linear;
-	animation-iteration-count: infinite;
+  animation-name: MOVE-BG;
+  animation-duration: 0.6s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 }
-
 </style>

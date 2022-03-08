@@ -3,17 +3,24 @@
     <ProfileName :profname="profname" @onChanged="onProfNameChanged" />
     <ProfileBio :profbio="profbio" @onChanged="onProfBioChanged" />
     <div class="content panel-upload-create--content">
-      <div class="panel-upload-create--dropzone" :class="{ active: isDragged }" @dragenter="onDragEnter" @dragleave="onDragLeave" @drop.prevent="onDropHandler" @dragover.prevent>
+      <div
+        class="panel-upload-create--dropzone"
+        :class="{ active: isDragged }"
+        @dragenter="onDragEnter"
+        @dragleave="onDragLeave"
+        @drop.prevent="onDropHandler"
+        @dragover.prevent
+      >
         <input type="file" ref="fileRef" @change="onFileChangedHandler" />
         <div class="dropzone-label-create" @click="openSelectFile">
-          <i-mdi-timer-sand v-if="(fileCount > 0)" class="icon-color" />
+          <i-mdi-timer-sand v-if="fileCount > 0" class="icon-color" />
           <i-mdi-upload v-else class="icon-color" />
           <span>Drop profile pic here or click to select file.</span>
 
-          <div class="dropzone-is-loading" :class="{ active: (fileCount > 0) }">
+          <div class="dropzone-is-loading" :class="{ active: fileCount > 0 }">
             <div class="dropzone-loading--bar"></div>
           </div>
-          <span v-show="(fileCount > 0)"> Profile being created... </span>
+          <span v-show="fileCount > 0"> Profile being created... </span>
         </div>
       </div>
     </div>
@@ -24,10 +31,10 @@
 import { computed, inject, ref } from "vue";
 
 import { useStore } from "@src/store";
-import { uploadBlob } from "@src/services/ipfs.js"
+import { uploadBlob } from "@src/services/ipfs.js";
 import { fileSize } from "@src/services/helpers";
-import { useRebelStore } from '@src/store/index';
-import { storeToRefs } from 'pinia'
+import { useRebelStore } from "@src/store/index";
+import { storeToRefs } from "pinia";
 import ProfileName from "@src/components/VUpload/ProfileName.vue";
 import ProfileBio from "@src/components/VUpload/ProfileBio.vue";
 
@@ -35,7 +42,7 @@ export default {
   name: "CreateProfile",
   components: {
     ProfileName,
-    ProfileBio
+    ProfileBio,
   },
   setup() {
     const notyf = inject("notyf");
@@ -43,8 +50,8 @@ export default {
     const isDragged = ref(false);
     const finished = ref(0);
     const isUploading = ref(false);
-    const { createUser, getUserByOwner } = useRebelStore()
-    const rebelStore = useRebelStore()
+    const { createUser, getUserByOwner } = useRebelStore();
+    const rebelStore = useRebelStore();
     const profname = ref("");
     const profbio = ref("");
 
@@ -52,11 +59,11 @@ export default {
 
     const onProfNameChanged = ($event) => {
       profname.value = $event.target.value;
-    }
+    };
 
     const onProfBioChanged = ($event) => {
       profbio.value = $event.target.value;
-    }
+    };
 
     const onDropHandler = ($event) => {
       if (isUploading.value) return false;
@@ -66,18 +73,18 @@ export default {
       fileRef.value.files = $event.dataTransfer.files;
 
       onFileChangedHandler();
-    }
+    };
     const openSelectFile = () => {
       if (isUploading.value) return false;
 
       fileRef.value.click();
-    }
+    };
     const onDragEnter = () => {
       isDragged.value = true;
-    }
+    };
     const onDragLeave = () => {
       isDragged.value = false;
-    }
+    };
 
     /**
      * @param {File} file
@@ -93,15 +100,14 @@ export default {
       const { error } = result;
       if (error && error instanceof Error) notyf.error(error.message);
 
-      // fileCount = 0;
       return result;
-    }
+    };
     const onFileChangedHandler = async () => {
       isUploading.value = true;
 
       store.addFiles(...fileRef.value.files);
 
-      const files = store.files.map(file => uploadFileHandler(file));
+      const files = store.files.map((file) => uploadFileHandler(file));
 
       try {
         let results = await Promise.all(files);
@@ -116,13 +122,13 @@ export default {
           notyf.success(`Profile successfully created!`);
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
         notyf.error(`Damn! There was an issue creating profile.`);
       } finally {
         finished.value = 0;
         isUploading.value = false;
       }
-    }
+    };
 
     const fileCount = computed(() => {
       return store.files.length;
@@ -132,8 +138,8 @@ export default {
         count: store.results.length,
         size: store.results.reduce((sum, result) => {
           return sum + result.file.size;
-        }, 0)
-      }
+        }, 0),
+      };
     });
 
     return {
@@ -152,9 +158,9 @@ export default {
       profbio,
       onProfNameChanged,
       onProfBioChanged,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss">
@@ -192,7 +198,7 @@ section#panel-upload-create {
       }
 
       .dropzone-label-create {
-        background-color: rgba(0, 0, 0, .2);
+        background-color: rgba(0, 0, 0, 0.2);
       }
     }
 
@@ -203,8 +209,8 @@ section#panel-upload-create {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: .8rem;
-      border-radius: .5rem;
+      padding: 0.8rem;
+      border-radius: 0.5rem;
       text-align: center;
       width: 80%;
 
@@ -228,9 +234,9 @@ section#panel-upload-create {
       .dropzone-detail {
         background-color: var(--gradient-300);
         border-radius: 1rem;
-        padding: .4rem .8rem;
-        font-size: .8rem;
-        margin-right: .6rem;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+        margin-right: 0.6rem;
       }
     }
 
@@ -254,24 +260,26 @@ section#panel-upload-create {
         background-color: var(--gradient-800);
 
         &:before {
-          content: '';
+          content: "";
           position: absolute;
           background-color: inherit;
           top: 0;
           left: 0;
           bottom: 0;
           will-change: left, right;
-          animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+          animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395)
+            infinite;
         }
         &:after {
-          content: '';
+          content: "";
           position: absolute;
           background-color: inherit;
           top: 0;
           left: 0;
           bottom: 0;
           will-change: left, right;
-          animation: indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+          animation: indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1)
+            infinite;
           animation-delay: 1.15s;
         }
       }

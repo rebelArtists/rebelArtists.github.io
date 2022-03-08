@@ -1,23 +1,37 @@
 * {
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: "IBM Plex Mono", monospace;
   letter-spacing: 0.05786em;
 }
 
 body {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   transition: background-color 0.5s ease;
 
   --dark-color: rgb(254, 236, 181);
   --secondary-color: rgb(250, 145, 25);
   --contrast-color: black;
-  --liniear-gradient-color-1: linear-gradient(to bottom right,#db2777,#db2777);
-  --liniear-gradient-color-2: linear-gradient(to bottom right,#facc15,#f97316);
+  --liniear-gradient-color-1: linear-gradient(
+    to bottom right,
+    #db2777,
+    #db2777
+  );
+  --liniear-gradient-color-2: linear-gradient(
+    to bottom right,
+    #facc15,
+    #f97316
+  );
   --loader-color-primary: #facc15;
   --loader-color-secondary: #f97316;
   --svg-color: black;
   --icon-color: black;
   --icon-color-opposite: white;
-  --landing-gradient: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(250,204,21,1) 33%, rgba(249,115,22,1) 66%, rgba(219,39,119,1) 98%);
+  --landing-gradient: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(250, 204, 21, 1) 33%,
+    rgba(249, 115, 22, 1) 66%,
+    rgba(219, 39, 119, 1) 98%
+  );
 
   --gradient-50: rgb(255, 242, 203);
   --gradient-100: rgb(254, 236, 181);
@@ -41,15 +55,28 @@ body {
     --darken-color: rgb(49, 36, 200);
     --secondary-color: rgb(202, 202, 250);
     --contrast-color: white;
-    --liniear-gradient-color-1: linear-gradient(to bottom right,#1ce7b4,#2ad4f5);
-    --liniear-gradient-color-2: linear-gradient(to bottom right,#a855f7,#6366f1);
+    --liniear-gradient-color-1: linear-gradient(
+      to bottom right,
+      #1ce7b4,
+      #2ad4f5
+    );
+    --liniear-gradient-color-2: linear-gradient(
+      to bottom right,
+      #a855f7,
+      #6366f1
+    );
     --loader-color-primary: #a855f7;
     --loader-color-secondary: #6366f1;
     --svg-color: white;
     --icon-color: white;
     --icon-color-opposite: black;
-    --landing-gradient: linear-gradient(-45deg, rgba(28,231,180,1) 0%, rgba(99,102,241,1) 33%, rgba(168,85,247,1) 66%, rgba(17,24,29,1) 100%);
-
+    --landing-gradient: linear-gradient(
+      -45deg,
+      rgba(28, 231, 180, 1) 0%,
+      rgba(99, 102, 241, 1) 33%,
+      rgba(168, 85, 247, 1) 66%,
+      rgba(17, 24, 29, 1) 100%
+    );
 
     --gradient-100: rgb(234, 240, 255);
     --gradient-200: rgb(224, 230, 252);
@@ -76,7 +103,7 @@ body,
   // height: calc(100% - 2rem);
 
   #header {
-    padding: 0 0 .8em 0;
+    padding: 0 0 0.8em 0;
     border-bottom: none;
     padding-left: 3vw;
     // flex-direction: row;
@@ -91,7 +118,7 @@ body,
       }
 
       span {
-        font-size: .8em;
+        font-size: 0.8em;
       }
     }
 
@@ -104,8 +131,8 @@ body,
         width: 100%;
         margin-left: 15vw;
 
-        >a {
-          font-size: .83em;
+        > a {
+          font-size: 0.83em;
           margin-right: 12px;
 
           &.active {
@@ -118,7 +145,6 @@ body,
           justify-content: flex-end;
           padding-right: 7vw;
         }
-
       }
 
       .icon.icon-lg {
@@ -152,13 +178,14 @@ body,
           width: 100%;
           border-radius: 1rem;
           margin-bottom: 1rem;
-          box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1),0 4px 6px -2px rgba(0,0,0,0.05);
+          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+            0 4px 6px -2px rgba(0, 0, 0, 0.05);
 
           &#about {
             width: 100%;
 
             p {
-              font-size: .9rem;
+              font-size: 0.9rem;
             }
           }
           &#panel-upload {
@@ -235,12 +262,11 @@ body,
 }
 
 .notyf .notyf__message {
-  font-size: .8rem;
+  font-size: 0.8rem;
 }
 
 // original max 768px
 @media only screen and (max-width: 1010px) {
-
   .wrapper2 {
     font-size: 10px;
     margin: 15px 0 35px 0;
@@ -276,7 +302,6 @@ body,
     grid-row: 3 / 3;
     font-weight: 900;
     margin-left: -25px;
-
   }
 
   .item4 {
@@ -284,8 +309,7 @@ body,
     grid-column: 4 / 5;
     grid-row: 4 / 5;
     font-weight: 900;
-      font-size: 10px;
-
+    font-size: 10px;
   }
 
   .item5 {
@@ -302,9 +326,8 @@ body,
     grid-column: 3 / 3;
     grid-row: 4 / 5;
     font-weight: 900;
-      font-size: 10px;
+    font-size: 10px;
     margin-left: -30px;
-
   }
 
   .item7 {
@@ -330,7 +353,7 @@ body,
     // height: calc(100% - 2rem);
 
     #header {
-      padding: 0 0 .8em 0;
+      padding: 0 0 0.8em 0;
       border-bottom: none;
       flex-direction: column;
       padding-left: 3vw;
@@ -345,7 +368,7 @@ body,
         }
 
         span {
-          font-size: .8em;
+          font-size: 0.8em;
         }
       }
 
@@ -365,9 +388,9 @@ body,
           width: 90%;
           margin-left: 70vw;
 
-          >a {
+          > a {
             display: flex;
-            font-size: .83em;
+            font-size: 0.83em;
             margin-right: 12px;
 
             &.active {
@@ -380,7 +403,6 @@ body,
             justify-content: flex-end;
             margin-right: -10px;
           }
-
         }
 
         .icon.icon-lg {
@@ -407,13 +429,14 @@ body,
             width: 100%;
             border-radius: 1rem;
             margin-bottom: 1rem;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1),0 4px 6px -2px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+              0 4px 6px -2px rgba(0, 0, 0, 0.05);
 
             &#about {
               width: 100%;
 
               p {
-                font-size: .9rem;
+                font-size: 0.9rem;
               }
             }
             &#panel-upload {

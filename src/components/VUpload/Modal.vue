@@ -2,14 +2,14 @@
 import PanelUpload from "@src/components/VUpload/PanelUpload.vue";
 import { provide } from "vue";
 import { Notyf } from "notyf";
-import { useRebelStore } from '@src/store/index';
+import { useRebelStore } from "@src/store/index";
 
 export default {
   props: {
-    show: Boolean
+    show: Boolean,
   },
   components: {
-    PanelUpload
+    PanelUpload,
   },
   data() {
     return {
@@ -18,36 +18,35 @@ export default {
   },
   methods: {
     async updateparent(variable) {
-      const { getUserByOwner } = useRebelStore()
+      const { getUserByOwner } = useRebelStore();
       await getUserByOwner();
       this.componentKey += 1;
-    }
+    },
   },
   setup() {
     const NotfyProvider = new Notyf({
       duration: 2000,
       position: {
-        x: 'center',
-        y: 'bottom'
+        x: "center",
+        y: "bottom",
       },
       types: [
         {
-          type: 'loading',
-          background: 'orange',
+          type: "loading",
+          background: "orange",
           duration: 0,
           dismissible: true,
           icon: {
-            className: 'icon icon-loading',
-            tagName: 'i'
-          }
+            className: "icon icon-loading",
+            tagName: "i",
+          },
         },
-      ]
-    })
+      ],
+    });
 
     provide("notyf", NotfyProvider);
-
-  }
-}
+  },
+};
 </script>
 
 <template>
@@ -55,14 +54,12 @@ export default {
     <div v-if="show" class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
-
           <PanelUpload @postEvent="updateparent" />
           <div class="modal-footer">
             <slot name="footer">
-              <button
-                class="modal-default-button"
-                @click="$emit('close')"
-              >x</button>
+              <button class="modal-default-button" @click="$emit('close')">
+                x
+              </button>
             </slot>
           </div>
         </div>

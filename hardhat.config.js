@@ -1,10 +1,10 @@
-require('dotenv').config()
-require('@nomiclabs/hardhat-waffle')
+require("dotenv").config();
+require("@nomiclabs/hardhat-waffle");
 
 module.exports = {
-  solidity: '0.8.4',
+  solidity: "0.8.4",
   paths: {
-    artifacts: './src/artifacts',
+    artifacts: "./src/artifacts",
   },
   networks: {
     hardhat: {
@@ -15,4 +15,4 @@ module.exports = {
       accounts: [`0x${process.env.PRIVATE_KEY}`],
     },
   },
-}
+};

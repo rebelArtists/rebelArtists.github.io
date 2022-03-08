@@ -1,25 +1,22 @@
 <template>
-<div v-if="this.postReady">
-  <div class="wrapper3">
+  <div v-if="this.postReady">
+    <div class="wrapper3">
       <div class="box2 itemMedia">
         <div class="media-wrap">
-        <MDBCard class="card-style hover-overlay">
-          <MDBCardImg
-            :src="getImgUrl(individualPost.mediaHash)"
-            top
-            alt="..."
-            class="card-img-style"
-          />
-        </MDBCard>
-      </div>
+          <MDBCard class="card-style hover-overlay">
+            <MDBCardImg
+              :src="getImgUrl(individualPost.mediaHash)"
+              top
+              alt="..."
+              class="card-img-style"
+            />
+          </MDBCard>
+        </div>
       </div>
       <div class="box2 userName">
         <router-link :to="`/user/${user.name}`" exact>
-        <img
-           :src="getImgUrl(user.profPicHash)"
-           class="round-image-post"
-        />
-      </router-link>
+          <img :src="getImgUrl(user.profPicHash)" class="round-image-post" />
+        </router-link>
         <div class="userName">
           {{ user.name }}
         </div>
@@ -36,39 +33,72 @@
       </div>
       <div class="box2 itemAttributes">
         <table class="styled-table">
-            <thead class="roundedHeader">
-                <tr>
-                    <th>Trait</th>
-                    <th>Value</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="item in individualPost.attributes">
-                    <td>{{ item.trait_type }}</td>
-                    <td>{{ item.value }}</td>
-                </tr>
-            </tbody>
+          <thead class="roundedHeader">
+            <tr>
+              <th>Trait</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in individualPost.attributes">
+              <td>{{ item.trait_type }}</td>
+              <td>{{ item.value }}</td>
+            </tr>
+          </tbody>
         </table>
       </div>
       <div class="box2 itemLikes">
         {{ individualPost.likes }} likes
         <div v-if="!likedArray[0]" id="favoriting" class="likeHeart">
-          <ToggleFavorite  :id="individualPost.id" @likeEvent="updateparent" />
+          <ToggleFavorite :id="individualPost.id" @likeEvent="updateparent" />
         </div>
         <div v-if="likedArray[0]" id="favoriting" class="likeHeart">
-          <ToggleFavorite  :id="individualPost.id" :intialFavorited="true"  @likeEvent="updateparent" />
+          <ToggleFavorite
+            :id="individualPost.id"
+            :intialFavorited="true"
+            @likeEvent="updateparent"
+          />
         </div>
       </div>
       <div class="box2 itemIpfs">
         <a :href="getImgUrl(individualPost.mediaHash)" title="IPFS Media">
-          <svg class="svgIpfs" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M20.4 14.5L16 10 4 20"/></svg>
+          <svg
+            class="svgIpfs"
+            xmlns="http://www.w3.org/2000/svg"
+            width="25"
+            height="25"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke-width="1"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <circle cx="8.5" cy="8.5" r="1.5" />
+            <path d="M20.4 14.5L16 10 4 20" />
+          </svg>
         </a>
         <a :href="getImgUrl(individualPost.metaHash)" title="IPFS Metadata">
-          <svg class="svgIpfs" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 3v5h5M16 13H8M16 17H8M10 9H8"/></svg>
+          <svg
+            class="svgIpfs"
+            xmlns="http://www.w3.org/2000/svg"
+            width="25"
+            height="25"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke-width="1"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z"
+            />
+            <path d="M14 3v5h5M16 13H8M16 17H8M10 9H8" />
+          </svg>
         </a>
       </div>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -77,12 +107,19 @@ import { Notyf } from "notyf";
 import { ref } from "vue";
 
 import { getImgUrl } from "@src/services/helpers";
-import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardImg, MDBBtn, MDBCardVideo } from "mdb-vue-ui-kit";
+import {
+  MDBCard,
+  MDBCardBody,
+  MDBCardTitle,
+  MDBCardText,
+  MDBCardImg,
+  MDBBtn,
+  MDBCardVideo,
+} from "mdb-vue-ui-kit";
 import PanelUpload from "@src/components/VUpload/PanelUpload.vue";
-import { storeToRefs } from 'pinia'
-import { useRebelStore } from '@src/store/index'
+import { storeToRefs } from "pinia";
+import { useRebelStore } from "@src/store/index";
 import ToggleFavorite from "@src/components/VUpload/ToggleFavorite.vue";
-
 
 export default {
   name: "VPost",
@@ -94,12 +131,12 @@ export default {
     MDBCardImg,
     MDBBtn,
     MDBCardVideo,
-    ToggleFavorite
+    ToggleFavorite,
   },
   data() {
     return {
       componentKey: 0,
-      postReady: false
+      postReady: false,
     };
   },
   mounted() {
@@ -110,55 +147,55 @@ export default {
   methods: {
     async getContent() {
       this.postReady = false;
-      const rebelStore = useRebelStore()
-      const { individualPost } = storeToRefs(rebelStore)
-      const { getPostById, isLiked } = useRebelStore()
+      const rebelStore = useRebelStore();
+      const { individualPost } = storeToRefs(rebelStore);
+      const { getPostById, isLiked } = useRebelStore();
       if (this.$route.params.id) {
-        await getPostById([this.$route.params.id])
-        await isLiked([this.$route.params.id])
+        await getPostById([this.$route.params.id]);
+        await isLiked([this.$route.params.id]);
       }
       this.postReady = true;
     },
     async updateparent(variable) {
-      const rebelStore = useRebelStore()
-      const { individualPost } = storeToRefs(rebelStore)
-      const { getPostById, isLiked } = useRebelStore()
-      await getPostById([this.$route.params.id])
-      await isLiked([this.$route.params.id])
+      const rebelStore = useRebelStore();
+      const { individualPost } = storeToRefs(rebelStore);
+      const { getPostById, isLiked } = useRebelStore();
+      await getPostById([this.$route.params.id]);
+      await isLiked([this.$route.params.id]);
       this.componentKey += 1;
-    }
+    },
   },
   watch: {
-    '$route' (to, from) {
-      if(to !== from ) {
+    $route(to, from) {
+      if (to !== from) {
         this.getContent();
       }
-    }
+    },
   },
   setup() {
-
-    const rebelStore = useRebelStore()
-    const { individualPost, user, account, likedArray } = storeToRefs(rebelStore)
+    const rebelStore = useRebelStore();
+    const { individualPost, user, account, likedArray } =
+      storeToRefs(rebelStore);
 
     const NotfyProvider = new Notyf({
       duration: 2000,
       position: {
-        x: 'center',
-        y: 'bottom'
+        x: "center",
+        y: "bottom",
       },
       types: [
         {
-          type: 'loading',
-          background: 'orange',
+          type: "loading",
+          background: "orange",
           duration: 0,
           dismissible: true,
           icon: {
-            className: 'icon icon-loading',
-            tagName: 'i'
-          }
+            className: "icon icon-loading",
+            tagName: "i",
+          },
         },
-      ]
-    })
+      ],
+    });
 
     provide("notyf", NotfyProvider);
 
@@ -167,18 +204,17 @@ export default {
       user,
       account,
       getImgUrl,
-      likedArray
-    }
-  }
-}
+      likedArray,
+    };
+  },
+};
 </script>
 
 <style lang="scss">
-
 .styled-table {
-    border-collapse: collapse;
-    margin: 0 0;
-    width: 100%;
+  border-collapse: collapse;
+  margin: 0 0;
+  width: 100%;
 }
 
 .styled-table tr {
@@ -187,23 +223,23 @@ export default {
 }
 
 .styled-table thead tr {
-    text-align: left;
-    font-size: 12px;
-    font-weight: 900;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 900;
 }
 
 .styled-table th,
 .styled-table td {
-    padding: 12px 15px;
+  padding: 12px 15px;
 }
 
 .styled-table tbody tr {
-    border-bottom: 1px solid #dddddd;
-    line-height: 5px;
+  border-bottom: 1px solid #dddddd;
+  line-height: 5px;
 }
 
 .styled-table tbody tr:last-of-type {
-    border-bottom: transparent;
+  border-bottom: transparent;
 }
 
 .wrapper3 {
@@ -219,8 +255,8 @@ export default {
 }
 
 .card-img-style {
-  max-width:100%;
-  max-height:100%;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .box2 {
@@ -314,10 +350,9 @@ export default {
   height: 100%;
   object-fit: cover;
   border-radius: 0.75rem;
-
 }
 
-.image-fit{
+.image-fit {
   height: 100%;
   width: 100%;
   object-fit: cover;
@@ -326,7 +361,7 @@ export default {
   text-align: center; /*for centering images inside*/
 }
 
-.vid-fit{
+.vid-fit {
   height: 100%;
   width: 100%;
   object-fit: cover;
@@ -337,7 +372,7 @@ export default {
   object-fit: cover;
   width: 50px;
   height: 50px;
- border-radius: 50%;
+  border-radius: 50%;
 }
 
 #favoriting.likeHeart {
@@ -349,6 +384,4 @@ export default {
 .svgIpfs {
   stroke: var(--svg-color);
 }
-
-
 </style>

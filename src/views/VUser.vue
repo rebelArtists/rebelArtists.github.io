@@ -21,23 +21,22 @@ import { Notyf } from "notyf";
 import UserGallery from "@src/components/VUpload/UserGallery.vue";
 import UserProfileHeader from "@src/components/VUpload/UserProfileHeader.vue";
 import ErrorPage from "@src/components/VUpload/404.vue";
-import { storeToRefs } from 'pinia'
-import { useRebelStore } from '@src/store/index'
-
+import { storeToRefs } from "pinia";
+import { useRebelStore } from "@src/store/index";
 
 export default {
   name: "VUser",
   components: {
     UserGallery,
     UserProfileHeader,
-    ErrorPage
+    ErrorPage,
   },
-  props: ['ready'],
+  props: ["ready"],
   data() {
     return {
       componentKey: 0,
       postReady: false,
-      stateLoaded: false
+      stateLoaded: false,
     };
   },
   mounted() {
@@ -47,9 +46,9 @@ export default {
   },
   methods: {
     async getUserContent() {
-      const { isFollowing, getUserByName } = useRebelStore()
-      const rebelStore = useRebelStore()
-      const { user, isFollowingUser } = storeToRefs(rebelStore)
+      const { isFollowing, getUserByName } = useRebelStore();
+      const rebelStore = useRebelStore();
+      const { user, isFollowingUser } = storeToRefs(rebelStore);
       if (this.$route.params.name) {
         await getUserByName(this.$route.params.name);
         await isFollowing(user.value.id);
@@ -59,53 +58,52 @@ export default {
     async updateparent(variable) {
       await this.getUserContent();
       this.componentKey += 1;
-    }
+    },
   },
   watch: {
-    '$route' (to, from) {
-      if(to !== from ) {
+    $route(to, from) {
+      if (to !== from) {
         this.getUserContent();
       }
-    }
+    },
   },
   setup() {
     const NotfyProvider = new Notyf({
       duration: 2000,
       position: {
-        x: 'center',
-        y: 'bottom'
+        x: "center",
+        y: "bottom",
       },
       types: [
         {
-          type: 'loading',
-          background: 'orange',
+          type: "loading",
+          background: "orange",
           duration: 0,
           dismissible: true,
           icon: {
-            className: 'icon icon-loading',
-            tagName: 'i'
-          }
+            className: "icon icon-loading",
+            tagName: "i",
+          },
         },
-      ]
-    })
+      ],
+    });
 
-    const rebelStore = useRebelStore()
-    const { account, routedUser } = storeToRefs(rebelStore)
+    const rebelStore = useRebelStore();
+    const { account, routedUser } = storeToRefs(rebelStore);
 
     provide("notyf", NotfyProvider);
 
     return {
       account,
       routedUser,
-    }
-  }
-}
+    };
+  },
+};
 </script>
 
 <style lang="scss">
-
 [v-cloak] {
-    display: none;
+  display: none;
 }
 
 section#content {
@@ -140,48 +138,48 @@ section#content {
   }
 
   .buttonConnect:hover {
-    background-color: #4CAF50; /* Green */
+    background-color: #4caf50; /* Green */
     color: white;
   }
 
-  body{
+  body {
     margin: 0;
     padding: 0;
     background-color: #000;
   }
-  .arrow{
-      position: relative;
-      padding-top: 15px;
+  .arrow {
+    position: relative;
+    padding-top: 15px;
   }
-  .arrow span{
-      display: block;
-      width: 20px;
-      height: 20px;
-      border-bottom: 5px solid #06A8FF;
-      border-right: 5px solid #06A8FF;
-      transform: rotate(45deg);
-      margin: -24.3px;
-      border-color: var(--liniear-gradient-color-2);
-      animation: animate 2.6s infinite;
+  .arrow span {
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-bottom: 5px solid #06a8ff;
+    border-right: 5px solid #06a8ff;
+    transform: rotate(45deg);
+    margin: -24.3px;
+    border-color: var(--liniear-gradient-color-2);
+    animation: animate 2.6s infinite;
   }
-  .arrow span:nth-child(2){
-      animation-delay: -0.2s;
+  .arrow span:nth-child(2) {
+    animation-delay: -0.2s;
   }
-  .arrow span:nth-child(3){
-      animation-delay: -0.4s;
+  .arrow span:nth-child(3) {
+    animation-delay: -0.4s;
   }
   @keyframes animate {
-      0%{
-          opacity: 0;
-          transform: rotate(-45deg) translate(-200px,-20px);
-      }
-      50%{
-          opacity: 1;
-      }
-      100%{
-          opacity: 0;
-          transform: rotate(-45deg) translate(-100px,75px);
-      }
+    0% {
+      opacity: 0;
+      transform: rotate(-45deg) translate(-200px, -20px);
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: rotate(-45deg) translate(-100px, 75px);
+    }
   }
 
   .main {
@@ -198,7 +196,8 @@ section#content {
 
       display: flex;
       border-radius: 1em;
-      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1),0 4px 6px -2px rgba(0,0,0,0.05);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -2px rgba(0, 0, 0, 0.05);
 
       section {
         width: 70vw;
@@ -207,7 +206,7 @@ section#content {
 
         overflow-y: scroll;
         scrollbar-width: thin;
-        scrollbar-color: rgba(0, 0, 0, .4) rgba(36, 18, 18, 0.2);
+        scrollbar-color: rgba(0, 0, 0, 0.4) rgba(36, 18, 18, 0.2);
       }
     }
 
@@ -217,20 +216,22 @@ section#content {
       width: 878px;
       height: 464px;
 
-      box-shadow: rgba(0,0,0,0) 0px 0px 0px 0px, rgba(0,0,0,0) 0px 0px 0px 0px, 0 10px 15px -3px rgba(0,0,0,0.1),0 4px 6px -2px rgba(0,0,0,0.05);
+      box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+        rgba(0, 0, 0, 0) 0px 0px 0px 0px, 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -2px rgba(0, 0, 0, 0.05);
       border-radius: 1em;
 
       &.s-index-1 {
         z-index: 1;
         background-image: var(--liniear-gradient-color-1);
-        transition: transform .3s ease-in-out;
+        transition: transform 0.3s ease-in-out;
 
         transform: rotate(2deg);
       }
       &.s-index-2 {
         z-index: 2;
         background-image: var(--liniear-gradient-color-2);
-        transition: transform .3s ease-in-out;
+        transition: transform 0.3s ease-in-out;
 
         transform: rotate(-2deg);
 
@@ -272,5 +273,4 @@ section#content {
     transform: rotate(-2deg);
   }
 }
-
 </style>

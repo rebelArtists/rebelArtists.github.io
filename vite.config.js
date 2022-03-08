@@ -1,11 +1,11 @@
-import { defineConfig } from "vite"
+import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 import { resolve } from "path";
 
 import Vue from "@vitejs/plugin-vue";
-import Components from 'unplugin-vue-components/vite';
-import Icons from 'unplugin-icons/vite'
-import IconsResolver from 'unplugin-icons/resolver'
+import Components from "unplugin-vue-components/vite";
+import Icons from "unplugin-icons/vite";
+import IconsResolver from "unplugin-icons/resolver";
 import ViteFonts from "vite-plugin-fonts";
 
 export default defineConfig({
@@ -18,7 +18,7 @@ export default defineConfig({
     Vue(),
     Components({
       resolvers: IconsResolver({
-        enabledCollections: ['mdi', 'ri']
+        enabledCollections: ["mdi", "ri"],
       }),
     }),
     Icons(),
@@ -26,42 +26,42 @@ export default defineConfig({
       manifest: {
         name: "REBEL - Own What's Yours",
         short_name: "REBEL",
-        description : "Full ownership of your content via NFTs",
+        description: "Full ownership of your content via NFTs",
         theme_color: "#212121",
         registerType: "autoUpdate",
-        includeAssets: ['/favicon.svg'],
+        includeAssets: ["/favicon.svg"],
         icons: [
           {
             src: "/icons/icon-192x192.png",
             sizes: "192x192",
             type: "image/png",
-            purpose: "any maskable"
+            purpose: "any maskable",
           },
           {
             src: "/icons/icon-256x256.png",
             sizes: "256x256",
             type: "image/png",
-            purpose: "any maskable"
+            purpose: "any maskable",
           },
           {
             src: "/icons/icon-384x384.png",
             sizes: "384x384",
             type: "image/png",
-            purpose: "any maskable"
+            purpose: "any maskable",
           },
           {
             src: "/icons/icon-512x512.png",
             sizes: "512x512",
             type: "image/png",
-            purpose: "any maskable"
+            purpose: "any maskable",
           },
         ],
       },
     }),
     ViteFonts({
       google: {
-        families: ['IBM+Plex+Mono']
+        families: ["IBM+Plex+Mono"],
       },
-    })
-  ]
-})
+    }),
+  ],
+});

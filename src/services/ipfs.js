@@ -20,21 +20,26 @@ export const uploadBlob = async (file, name, description, attributes) => {
 
   // Max 50MB Upload
   if (file.size > 52428800) {
-    return [ new Error(`Maximum file size to be upload is 50 MB`), detail ];
+    return [new Error(`Maximum file size to be upload is 50 MB`), detail];
   }
 
   try {
-    let ipfsHashes = await client.storeBlob(file, name, description, attributes);
+    let ipfsHashes = await client.storeBlob(
+      file,
+      name,
+      description,
+      attributes
+    );
     let metaHash = ipfsHashes.metaHash,
-        fileHash  = ipfsHashes.fileHash;
+      fileHash = ipfsHashes.fileHash;
     // const cid = await client.storeBlob(file);
     detail = getCidDetail({ metaCid: metaHash, fileCid: fileHash, file });
     return { error: false, data: detail };
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return { error, data: detail };
   }
-}
+};
 
 /**
  * Get CID Detail with File
@@ -59,14 +64,14 @@ export const getCidDetail = ({ metaCid, fileCid, file }) => {
     name: file.name,
     type: file.type,
     size: file.size,
-    created_at: Date.now()
-  }
+    created_at: Date.now(),
+  };
 
   if (!metaCid) return { metaCid: null, fileCid: null, file: base };
 
   return {
     metaCid: metaCid,
     fileCid: fileCid,
-    file: base
+    file: base,
   };
-}
+};

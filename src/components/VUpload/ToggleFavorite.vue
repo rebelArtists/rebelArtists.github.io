@@ -13,19 +13,19 @@
 
 <script>
 import FavoriteIcon from "./FavoriteIcon.vue";
-import { useRebelStore } from '@src/store/index';
+import { useRebelStore } from "@src/store/index";
 
 export default {
   name: "ToggleFavorite",
   components: {
-    FavoriteIcon
+    FavoriteIcon,
   },
-  props: ['id', 'intialFavorited'],
+  props: ["id", "intialFavorited"],
   data() {
     return {
       favorited: this.intialFavorited,
       animating: false,
-      loading: false
+      loading: false,
     };
   },
   computed: {
@@ -33,13 +33,13 @@ export default {
       return {
         "toggle-favorite__icon--favorited": this.favorited,
         "toggle-favorite__icon--animate": this.animating,
-        "toggle-favorite__icon--loading": this.loading
+        "toggle-favorite__icon--loading": this.loading,
       };
-    }
+    },
   },
   methods: {
     async toggle() {
-      const { likePost, unlikePost } = useRebelStore()
+      const { likePost, unlikePost } = useRebelStore();
       // Only animate on favoriting.
       if (!this.favorited) {
         this.animating = true;
@@ -53,14 +53,14 @@ export default {
         await unlikePost(this.id);
       }
 
-      this.$emit('likeEvent', true);
+      this.$emit("likeEvent", true);
       this.loading = false;
       // this.favorited = !this.favorited;
     },
     onIconAnimationEnds() {
       this.animating = false;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -133,16 +133,16 @@ $icon-border-color: var(--svg-color);
     }
 
     &--loading {
-      fill-opacity: .5;
+      fill-opacity: 0.5;
       stroke: $icon-color;
       transform: rotate(45deg);
       animation-name: animateHeart;
-    	animation-duration: 10s;
+      animation-duration: 10s;
       animation-timing-function: steps(24);
-    	animation-iteration-count: infinite;
+      animation-iteration-count: infinite;
     }
 
-    @keyframes animateHeart  {
+    @keyframes animateHeart {
       // scale down and scale up faster in irregular intervals to get the throbbing effect
       0% {
         transform: rotate(45deg) scale(0.8);
@@ -183,5 +183,4 @@ $icon-border-color: var(--svg-color);
     height: 3em;
   }
 }
-
 </style>

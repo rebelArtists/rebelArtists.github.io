@@ -1,33 +1,31 @@
 <template>
   <div class="wrapperHeader">
-        <div class="box-follow headerBar">
-          users to follow:
+    <div class="box-follow headerBar">users to follow:</div>
+  </div>
+  <div
+    class="gallery-panel-follow"
+    v-for="(user, index) in usersToFollow"
+    :key="index"
+  >
+    <div class="wrapper4">
+      <div class="box-follow itemProfFollow">
+        <router-link :to="`/user/${user.name}`" exact>
+          <img :src="getImgUrl(user.profPicHash)" class="round-image-follow" />
+        </router-link>
       </div>
-</div>
-    <div class="gallery-panel-follow" v-for="(user, index) in usersToFollow" :key="index">
-      <div class="wrapper4">
-          <div class="box-follow itemProfFollow">
-              <router-link :to="`/user/${user.name}`" exact>
-                <img
-                   :src="getImgUrl(user.profPicHash)"
-                   class="round-image-follow"
-                />
-            </router-link>
-          </div>
-            <div class="box-follow itemNameFollow">
-            {{ user.name }}
-          </div>
-          <div class="box-follow itemFollowersFollow">
-            {{ user.followers }} followers
-          </div>
+      <div class="box-follow itemNameFollow">
+        {{ user.name }}
+      </div>
+      <div class="box-follow itemFollowersFollow">
+        {{ user.followers }} followers
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-
-import { useRebelStore } from '@src/store/index';
-import { storeToRefs } from 'pinia'
+import { useRebelStore } from "@src/store/index";
+import { storeToRefs } from "pinia";
 import { getImgUrl } from "@src/services/helpers";
 
 export default {
@@ -45,32 +43,30 @@ export default {
   },
   methods: {
     async checkIsFollowing() {
-      const { getUsersToFollow } = useRebelStore()
+      const { getUsersToFollow } = useRebelStore();
       await getUsersToFollow();
     },
   },
   watch: {
-    '$route' (to, from) {
-      if(to !== from ) {
+    $route(to, from) {
+      if (to !== from) {
         this.checkIsFollowing();
       }
-    }
+    },
   },
   setup() {
-
-    const rebelStore = useRebelStore()
-    const { usersToFollow } = storeToRefs(rebelStore)
+    const rebelStore = useRebelStore();
+    const { usersToFollow } = storeToRefs(rebelStore);
 
     return {
       usersToFollow,
-      getImgUrl
-    }
-}
-}
+      getImgUrl,
+    };
+  },
+};
 </script>
 
 <style lang="scss">
-
 .wrapper4 {
   font-size: 13px;
   margin: 0 0 -5px 0;
@@ -98,7 +94,6 @@ export default {
 .box-follow {
   border-radius: 5px;
   padding: 10px;
-
 }
 
 .headerBar {
@@ -141,31 +136,29 @@ export default {
   object-fit: cover;
   width: 30px;
   height: 30px;
- border-radius: 50%;
+  border-radius: 50%;
 }
 
-
 @-webkit-keyframes MOVE-BG {
-	from {
-		-webkit-transform: translateX(0);
-	}
-	to {
-		-webkit-transform: translateX(46px);
-	}
+  from {
+    -webkit-transform: translateX(0);
+  }
+  to {
+    -webkit-transform: translateX(46px);
+  }
 }
 
 @keyframes MOVE-BG {
-	from {
-		transform: translateX(0);
-	}
-	to {
-		transform: translateX(46px);
-	}
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(46px);
+  }
 }
 
-
 .loading {
-	height: auto;
+  height: auto;
   text-align: center;
   color: black;
   position: relative;
@@ -180,30 +173,29 @@ export default {
   padding-right: 20px;
 }
 
-.bgFollow{
-    position: absolute;
-    left: -46px;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    z-index: -1;
+.bgFollow {
+  position: absolute;
+  left: -46px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: -1;
 
   background: repeating-linear-gradient(
     -55deg,
     var(--loader-color-secondary) 1px,
     var(--loader-color-primary) 12px,
-    var(--loader-color-primary) 20px,
-	);
+    var(--loader-color-primary) 20px
+  );
 
-    -webkit-animation-name: MOVE-BG;
-	-webkit-animation-duration: .6s;
-	-webkit-animation-timing-function: linear;
-	-webkit-animation-iteration-count: infinite;
+  -webkit-animation-name: MOVE-BG;
+  -webkit-animation-duration: 0.6s;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
 
-    animation-name: MOVE-BG;
-	animation-duration: .6s;
-	animation-timing-function: linear;
-	animation-iteration-count: infinite;
+  animation-name: MOVE-BG;
+  animation-duration: 0.6s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 }
-
 </style>

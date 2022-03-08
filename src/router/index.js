@@ -23,43 +23,43 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: VProfile
+    component: VProfile,
   },
   {
     path: "/about",
     name: "about",
-    component: VAbout
+    component: VAbout,
   },
   {
     path: "/mint",
     name: "mint",
-    component: VMint
+    component: VMint,
   },
   {
     path: "/gallery",
     name: "gallery",
-    component: VGallery
+    component: VGallery,
   },
   {
     path: "/feed",
     name: "feed",
-    component: VFeed
+    component: VFeed,
   },
   {
-      path: '/post/:id',
-      name: 'Post',
-      component: VPost,
+    path: "/post/:id",
+    name: "Post",
+    component: VPost,
   },
   {
-      path: '/user/:name',
-      name: 'User',
-      component: VUser,
-  }
+    path: "/user/:name",
+    name: "User",
+    component: VUser,
+  },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
 });
 
 export default router;

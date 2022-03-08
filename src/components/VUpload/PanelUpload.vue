@@ -1,20 +1,30 @@
 <template>
   <section id="panel-upload">
     <MetaName :name="name" @onChanged="onNameChanged" />
-    <MetaDescription :description="description" @onChanged="onDescriptionChanged" />
+    <MetaDescription
+      :description="description"
+      @onChanged="onDescriptionChanged"
+    />
     <MetaAttributes :attributes="attributes" @onChanged="onAttributesChanged" />
     <div class="content panel-upload--content">
-      <div class="panel-upload--dropzone" :class="{ active: isDragged }" @dragenter="onDragEnter" @dragleave="onDragLeave" @drop.prevent="onDropHandler" @dragover.prevent>
+      <div
+        class="panel-upload--dropzone"
+        :class="{ active: isDragged }"
+        @dragenter="onDragEnter"
+        @dragleave="onDragLeave"
+        @drop.prevent="onDropHandler"
+        @dragover.prevent
+      >
         <input type="file" ref="fileRef" @change="onFileChangedHandler" />
         <div class="dropzone-label" @click="openSelectFile">
-          <i-mdi-timer-sand v-if="(fileCount > 0)" class="icon-color" />
+          <i-mdi-timer-sand v-if="fileCount > 0" class="icon-color" />
           <i-mdi-upload v-else class="icon-color" />
           <span>Drop file here or click to select file.</span>
 
-          <div class="dropzone-is-loading" :class="{ active: (fileCount > 0) }">
+          <div class="dropzone-is-loading" :class="{ active: fileCount > 0 }">
             <div class="dropzone-loading--bar"></div>
           </div>
-          <span v-show="(fileCount > 0)"> NFT being created... </span>
+          <span v-show="fileCount > 0"> NFT being created... </span>
         </div>
       </div>
     </div>
@@ -25,10 +35,10 @@
 import { computed, inject, ref } from "vue";
 
 import { useStore } from "@src/store";
-import { uploadBlob } from "@src/services/ipfs.js"
+import { uploadBlob } from "@src/services/ipfs.js";
 import { fileSize } from "@src/services/helpers";
-import { useRebelStore } from '@src/store/index';
-import { storeToRefs } from 'pinia'
+import { useRebelStore } from "@src/store/index";
+import { storeToRefs } from "pinia";
 import MetaName from "@src/components/VUpload/MetaName.vue";
 import MetaAttributes from "@src/components/VUpload/MetaAttributes.vue";
 import MetaDescription from "@src/components/VUpload/MetaDescription.vue";
@@ -39,7 +49,7 @@ export default {
   components: {
     MetaName,
     MetaAttributes,
-    MetaDescription
+    MetaDescription,
   },
   setup(props, context) {
     const notyf = inject("notyf");
@@ -47,9 +57,9 @@ export default {
     const isDragged = ref(false);
     const finished = ref(0);
     const isUploading = ref(false);
-    const { postContent, getPostsByUser } = useRebelStore()
-    const rebelStore = useRebelStore()
-    const { account } = storeToRefs(rebelStore)
+    const { postContent, getPostsByUser } = useRebelStore();
+    const rebelStore = useRebelStore();
+    const { account } = storeToRefs(rebelStore);
     const name = ref("");
     const description = ref("");
     const attributes = ref('[{"trait_type": "Type","value": "Single"},...]');
@@ -58,15 +68,15 @@ export default {
 
     const onNameChanged = ($event) => {
       name.value = $event.target.value;
-    }
+    };
 
     const onDescriptionChanged = ($event) => {
       description.value = $event.target.value;
-    }
+    };
 
     const onAttributesChanged = ($event) => {
       attributes.value = $event.target.value;
-    }
+    };
 
     const onDropHandler = ($event) => {
       if (isUploading.value) return false;
@@ -76,24 +86,29 @@ export default {
       fileRef.value.files = $event.dataTransfer.files;
 
       onFileChangedHandler();
-    }
+    };
     const openSelectFile = () => {
       if (isUploading.value) return false;
 
       fileRef.value.click();
-    }
+    };
     const onDragEnter = () => {
       isDragged.value = true;
-    }
+    };
     const onDragLeave = () => {
       isDragged.value = false;
-    }
+    };
 
     /**
      * @param {File} file
      */
     const uploadFileHandler = async (file) => {
-      const result = await uploadBlob(file, name.value, description.value, attributes.value);
+      const result = await uploadBlob(
+        file,
+        name.value,
+        description.value,
+        attributes.value
+      );
       const { data } = result;
       await postContent(name.value, data.fileCid, data.metaCid);
       getPostsByUser(account.value);
@@ -103,15 +118,15 @@ export default {
       const { error } = result;
       if (error && error instanceof Error) notyf.error(error.message);
 
-      context.emit('postEvent', true);
+      context.emit("postEvent", true);
       return result;
-    }
+    };
     const onFileChangedHandler = async () => {
       isUploading.value = true;
 
       store.addFiles(...fileRef.value.files);
 
-      const files = store.files.map(file => uploadFileHandler(file));
+      const files = store.files.map((file) => uploadFileHandler(file));
 
       try {
         let results = await Promise.all(files);
@@ -126,13 +141,13 @@ export default {
           notyf.success(`NFT successfully created!`);
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
         notyf.error(`Shoot! Something went wrong creating NFT`);
       } finally {
         finished.value = 0;
         isUploading.value = false;
       }
-    }
+    };
 
     const fileCount = computed(() => {
       return store.files.length;
@@ -142,8 +157,8 @@ export default {
         count: store.results.length,
         size: store.results.reduce((sum, result) => {
           return sum + result.file.size;
-        }, 0)
-      }
+        }, 0),
+      };
     });
 
     return {
@@ -163,10 +178,10 @@ export default {
       attributes,
       onNameChanged,
       onDescriptionChanged,
-      onAttributesChanged
-    }
+      onAttributesChanged,
+    };
   },
-}
+};
 </script>
 
 <style lang="scss">
@@ -201,7 +216,7 @@ section#panel-upload {
       }
 
       .dropzone-label {
-        background-color: rgba(0, 0, 0, .2);
+        background-color: rgba(0, 0, 0, 0.2);
       }
     }
 
@@ -212,8 +227,8 @@ section#panel-upload {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: .8rem;
-      border-radius: .5rem;
+      padding: 0.8rem;
+      border-radius: 0.5rem;
       text-align: center;
       width: 50%;
 
@@ -237,9 +252,9 @@ section#panel-upload {
       .dropzone-detail {
         background-color: var(--gradient-300);
         border-radius: 1rem;
-        padding: .4rem .8rem;
-        font-size: .8rem;
-        margin-right: .6rem;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+        margin-right: 0.6rem;
       }
     }
 
@@ -263,24 +278,26 @@ section#panel-upload {
         background-color: var(--gradient-800);
 
         &:before {
-          content: '';
+          content: "";
           position: absolute;
           background-color: inherit;
           top: 0;
           left: 0;
           bottom: 0;
           will-change: left, right;
-          animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+          animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395)
+            infinite;
         }
         &:after {
-          content: '';
+          content: "";
           position: absolute;
           background-color: inherit;
           top: 0;
           left: 0;
           bottom: 0;
           will-change: left, right;
-          animation: indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+          animation: indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1)
+            infinite;
           animation-delay: 1.15s;
         }
       }

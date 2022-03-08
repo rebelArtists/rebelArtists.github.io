@@ -3,8 +3,10 @@
   "version": "1.5.0",
   "description": "NFT Share File",
   "scripts": {
-    "dev": "vite",
     "build": "vite build",
+    "dev": "vite",
+    "format": "prettier .  --write",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
     "serve": "vite preview"
   },
   "homepage": "https://share.nyan.my.id",
@@ -27,6 +29,10 @@
     "@iconify/json": "^1.1.390",
     "@vitejs/plugin-vue": "^1.4.0",
     "@vue/compiler-sfc": "^3.2.4",
+    "eslint": "^8.10.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-vue": "^8.5.0",
+    "prettier": "2.5.1",
     "sass": "^1.35.2",
     "unplugin-icons": "^0.11.3",
     "unplugin-vue-components": "^0.15.2",

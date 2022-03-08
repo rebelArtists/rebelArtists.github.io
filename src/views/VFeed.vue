@@ -3,19 +3,33 @@
     <div v-if="account" class="main animated">
       <div class="main-content">
         <span class="feedToggle">
-          <a @click="toggleFeedOn" v-if="followFeedToggle" class="activeDiscover">
+          <a
+            @click="toggleFeedOn"
+            v-if="followFeedToggle"
+            class="activeDiscover"
+          >
             discover
           </a>
-          <a @click="toggleFeedOn" v-if="!followFeedToggle" class="inactiveDiscover">
+          <a
+            @click="toggleFeedOn"
+            v-if="!followFeedToggle"
+            class="inactiveDiscover"
+          >
             discover
           </a>
-          <div class="dividerLine">
-             |
-          </div>
-          <a @click="toggleFeedOff" v-if="!followFeedToggle" class="activeFollowing">
+          <div class="dividerLine">|</div>
+          <a
+            @click="toggleFeedOff"
+            v-if="!followFeedToggle"
+            class="activeFollowing"
+          >
             following
           </a>
-          <a @click="toggleFeedOff" v-if="followFeedToggle" class="inactiveFollowing">
+          <a
+            @click="toggleFeedOff"
+            v-if="followFeedToggle"
+            class="inactiveFollowing"
+          >
             following
           </a>
         </span>
@@ -42,15 +56,15 @@ import { Notyf } from "notyf";
 import Feed from "@src/components/VUpload/Feed.vue";
 import FollowFeed from "@src/components/VUpload/FollowFeed.vue";
 import UserToFollow from "@src/components/VUpload/UserToFollow.vue";
-import { storeToRefs } from 'pinia'
-import { useRebelStore } from '@src/store/index'
+import { storeToRefs } from "pinia";
+import { useRebelStore } from "@src/store/index";
 
 export default {
   name: "VFeed",
   components: {
     UserToFollow,
     Feed,
-    FollowFeed
+    FollowFeed,
   },
   data() {
     return {
@@ -63,39 +77,39 @@ export default {
     },
     toggleFeedOff() {
       this.followFeedToggle = false;
-    }
+    },
   },
   setup() {
     const NotfyProvider = new Notyf({
       duration: 2000,
       position: {
-        x: 'center',
-        y: 'bottom'
+        x: "center",
+        y: "bottom",
       },
       types: [
         {
-          type: 'loading',
-          background: 'orange',
+          type: "loading",
+          background: "orange",
           duration: 0,
           dismissible: true,
           icon: {
-            className: 'icon icon-loading',
-            tagName: 'i'
-          }
+            className: "icon icon-loading",
+            tagName: "i",
+          },
         },
-      ]
-    })
+      ],
+    });
 
-    const rebelStore = useRebelStore()
-    const { account } = storeToRefs(rebelStore)
+    const rebelStore = useRebelStore();
+    const { account } = storeToRefs(rebelStore);
 
     provide("notyf", NotfyProvider);
 
     return {
       account,
-    }
-  }
-}
+    };
+  },
+};
 </script>
 
 <style lang="scss">
@@ -111,20 +125,20 @@ section#content {
     margin-right: 35%;
   }
 
-.activeDiscover {
-  font-weight: 999;
+  .activeDiscover {
+    font-weight: 999;
     font-size: 15px;
-}
+  }
 
-.activeFollowing {
-  font-weight: bold;
+  .activeFollowing {
+    font-weight: bold;
     font-size: 15px;
-}
+  }
 
-.dividerLine {
-  margin-left: 15px;
-  margin-right: 15px;
-}
+  .dividerLine {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
 
   .feedGrid {
     font-size: 13px;
@@ -166,48 +180,48 @@ section#content {
   }
 
   .buttonConnect:hover {
-    background-color: #4CAF50; /* Green */
+    background-color: #4caf50; /* Green */
     color: white;
   }
 
-  body{
+  body {
     margin: 0;
     padding: 0;
     background-color: #000;
   }
-  .arrow{
-      position: relative;
-      padding-top: 15px;
+  .arrow {
+    position: relative;
+    padding-top: 15px;
   }
-  .arrow span{
-      display: block;
-      width: 20px;
-      height: 20px;
-      border-bottom: 5px solid #06A8FF;
-      border-right: 5px solid #06A8FF;
-      transform: rotate(45deg);
-      margin: -24.3px;
-      border-color: var(--liniear-gradient-color-2);
-      animation: animate 2.6s infinite;
+  .arrow span {
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-bottom: 5px solid #06a8ff;
+    border-right: 5px solid #06a8ff;
+    transform: rotate(45deg);
+    margin: -24.3px;
+    border-color: var(--liniear-gradient-color-2);
+    animation: animate 2.6s infinite;
   }
-  .arrow span:nth-child(2){
-      animation-delay: -0.2s;
+  .arrow span:nth-child(2) {
+    animation-delay: -0.2s;
   }
-  .arrow span:nth-child(3){
-      animation-delay: -0.4s;
+  .arrow span:nth-child(3) {
+    animation-delay: -0.4s;
   }
   @keyframes animate {
-      0%{
-          opacity: 0;
-          transform: rotate(-45deg) translate(-200px,-20px);
-      }
-      50%{
-          opacity: 1;
-      }
-      100%{
-          opacity: 0;
-          transform: rotate(-45deg) translate(-100px,75px);
-      }
+    0% {
+      opacity: 0;
+      transform: rotate(-45deg) translate(-200px, -20px);
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: rotate(-45deg) translate(-100px, 75px);
+    }
   }
 
   .main {
@@ -224,7 +238,8 @@ section#content {
 
       display: flex;
       border-radius: 1em;
-      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1),0 4px 6px -2px rgba(0,0,0,0.05);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -2px rgba(0, 0, 0, 0.05);
 
       section {
         width: 70vw;
@@ -233,7 +248,7 @@ section#content {
 
         overflow-y: scroll;
         scrollbar-width: thin;
-        scrollbar-color: rgba(0, 0, 0, .4) rgba(36, 18, 18, 0.2);
+        scrollbar-color: rgba(0, 0, 0, 0.4) rgba(36, 18, 18, 0.2);
       }
     }
 
@@ -243,20 +258,22 @@ section#content {
       width: 878px;
       height: 464px;
 
-      box-shadow: rgba(0,0,0,0) 0px 0px 0px 0px, rgba(0,0,0,0) 0px 0px 0px 0px, 0 10px 15px -3px rgba(0,0,0,0.1),0 4px 6px -2px rgba(0,0,0,0.05);
+      box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+        rgba(0, 0, 0, 0) 0px 0px 0px 0px, 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -2px rgba(0, 0, 0, 0.05);
       border-radius: 1em;
 
       &.s-index-1 {
         z-index: 1;
         background-image: var(--liniear-gradient-color-1);
-        transition: transform .3s ease-in-out;
+        transition: transform 0.3s ease-in-out;
 
         transform: rotate(2deg);
       }
       &.s-index-2 {
         z-index: 2;
         background-image: var(--liniear-gradient-color-2);
-        transition: transform .3s ease-in-out;
+        transition: transform 0.3s ease-in-out;
 
         transform: rotate(-2deg);
 
@@ -298,5 +315,4 @@ section#content {
     transform: rotate(-2deg);
   }
 }
-
 </style>

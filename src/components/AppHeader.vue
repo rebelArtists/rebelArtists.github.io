@@ -6,20 +6,59 @@
     </div>
     <div class="header-menu">
       <nav class="header-navbar">
-        <router-link v-if="account && user" :to="`/user/${user.name}`" active-class="active" title="Home" exact>
-          <img
-             :src="getImgUrl(user.profPicHash)"
-             class="round-image-header"
-          />
+        <router-link
+          v-if="account && user"
+          :to="`/user/${user.name}`"
+          active-class="active"
+          title="Home"
+          exact
+        >
+          <img :src="getImgUrl(user.profPicHash)" class="round-image-header" />
         </router-link>
-        <router-link v-if="account && user" :to="{ name: 'feed' }" active-class="active" title="Home" exact>
-          <svg class="svgNav" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <router-link
+          v-if="account && user"
+          :to="{ name: 'feed' }"
+          active-class="active"
+          title="Home"
+          exact
+        >
+          <svg
+            class="svgNav"
+            xmlns="http://www.w3.org/2000/svg"
+            width="36"
+            height="36"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
         </router-link>
 
         <!-- <router-link :to="{ name: 'about' }" active-class="active" exact>About</router-link> -->
         <div>
-          <button v-if="account && user" id="show-modal" @click="showModal = true" title="Mint New Post">
-            <svg class="mintContent" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+          <button
+            v-if="account && user"
+            id="show-modal"
+            @click="showModal = true"
+            title="Mint New Post"
+          >
+            <svg
+              class="mintContent"
+              xmlns="http://www.w3.org/2000/svg"
+              width="36"
+              height="36"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="16"></line>
+              <line x1="8" y1="12" x2="16" y2="12"></line>
+            </svg>
           </button>
           <Teleport to="body">
             <!-- use the modal component, pass in the prop -->
@@ -33,7 +72,11 @@
 
         <!-- <router-link :to="{ name: 'gallery' }" active-class="active" exact>Gallery</router-link> -->
         <i :title="`Switch to ${isDark ? 'Light' : 'Dark'} Theme`">
-          <i-mdi-brightness-7 v-if="isDark" class="icon-color" @click="toggleTheme" />
+          <i-mdi-brightness-7
+            v-if="isDark"
+            class="icon-color"
+            @click="toggleTheme"
+          />
           <i-mdi-brightness-4 v-else class="icon-color" @click="toggleTheme" />
         </i>
       </nav>
@@ -43,26 +86,25 @@
 
 <script>
 import { ref, toRefs } from "vue";
-import Modal from '@src/components/VUpload/Modal.vue'
-import { storeToRefs } from 'pinia'
-import { useRebelStore } from '@src/store/index'
+import Modal from "@src/components/VUpload/Modal.vue";
+import { storeToRefs } from "pinia";
+import { useRebelStore } from "@src/store/index";
 import { getImgUrl } from "@src/services/helpers";
 
 export default {
   name: "AppHeader",
   components: {
-    Modal
+    Modal,
   },
   data() {
     return {
-      showModal: false
+      showModal: false,
     };
   },
   setup() {
-
-    const rebelStore = useRebelStore()
-    const { connectWallet } = useRebelStore()
-    const { account, user } = storeToRefs(rebelStore)
+    const rebelStore = useRebelStore();
+    const { connectWallet } = useRebelStore();
+    const { account, user } = storeToRefs(rebelStore);
 
     const isDarkClassAvailable = document.body.classList.contains("dark-theme");
 
@@ -73,34 +115,32 @@ export default {
       requestAnimationFrame(toggleAnimation);
 
       isDark.value = !isDark.value;
-    }
+    };
     const toggleAnimation = () => {
       const element = document.querySelector("section#content .main");
       try {
         element.classList.remove("animated");
         void element.offsetWidth;
         element.classList.add("animated");
-      } catch (error) {
-      }
-    }
+      } catch (error) {}
+    };
 
     return {
       isDark,
       toggleTheme,
       user,
       account,
-      getImgUrl
-    }
-  }
-}
+      getImgUrl,
+    };
+  },
+};
 </script>
 
 <style lang="scss">
-
-.rebelLogo{
-   font-family: "Rebel";
-   font-size: 45px;
-   font-weight: 1;
+.rebelLogo {
+  font-family: "Rebel";
+  font-size: 45px;
+  font-weight: 1;
 }
 
 .mintContent {
@@ -138,7 +178,7 @@ export default {
       }
     }
     span {
-      font-size: .9rem;
+      font-size: 0.9rem;
     }
   }
 
@@ -206,7 +246,6 @@ body.dark-theme {
   padding-top: 3px;
   padding-right: 5px;
   // max-height: 100%;
- border-radius: 50%;
+  border-radius: 50%;
 }
-
 </style>

@@ -3,7 +3,14 @@
     <div class="profname-span">
       <span>Username:</span>
     </div>
-    <input type="text" id="profname" class="profname-input" :value="profname" placeholder="satoshi dogemoto" @input="$emit('onChanged', $event)" />
+    <input
+      type="text"
+      id="profname"
+      class="profname-input"
+      :value="profname"
+      placeholder="satoshi dogemoto"
+      @input="$emit('onChanged', $event)"
+    />
   </div>
 </template>
 
@@ -16,11 +23,10 @@ export default {
       default: "",
     },
   },
-}
+};
 </script>
 
 <style lang="scss">
-
 .meta-profname {
   padding-left: 20px;
   padding-top: 15px;
@@ -40,11 +46,11 @@ export default {
   padding: 0.8rem 0.8rem 0.8rem 0.8rem;
   border-radius: 0.8rem;
   color: var(--contrast-color);
-  background-color: rgba(0, 0, 0, .1);
+  background-color: rgba(0, 0, 0, 0.1);
   transition: background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
   &:focus {
-    background-color: rgba(0, 0, 0, .15);
+    background-color: rgba(0, 0, 0, 0.15);
   }
 }
 </style>

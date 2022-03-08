@@ -3,7 +3,14 @@
     <div class="attributes-span">
       <span>Attributes:</span>
     </div>
-    <input type="text" id="attributes" class="attributes-input" :value="attributes" placeholder='[{"trait_type": "Type","value": "Single"},...]' @input="$emit('onChanged', $event)" />
+    <input
+      type="text"
+      id="attributes"
+      class="attributes-input"
+      :value="attributes"
+      placeholder='[{"trait_type": "Type","value": "Single"},...]'
+      @input="$emit('onChanged', $event)"
+    />
   </div>
 </template>
 
@@ -16,12 +23,11 @@ export default {
       default: '[{"trait_type": "Type","value": "Single"},...]',
     },
   },
-}
+};
 </script>
 
 <style lang="scss">
-
-.meta-attributes{
+.meta-attributes {
   padding-left: 20px;
   padding-top: 5px;
 }
@@ -39,11 +45,11 @@ export default {
   padding: 0.8rem 0.8rem 0.8rem 0.8rem;
   border-radius: 0.8rem;
   color: var(--contrast-color);
-  background-color: rgba(0, 0, 0, .1);
+  background-color: rgba(0, 0, 0, 0.1);
   transition: background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
   &:focus {
-    background-color: rgba(0, 0, 0, .15);
+    background-color: rgba(0, 0, 0, 0.15);
   }
 }
 </style>
