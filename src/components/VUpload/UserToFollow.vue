@@ -49,6 +49,13 @@ export default {
       await getUsersToFollow();
     },
   },
+  watch: {
+    '$route' (to, from) {
+      if(to !== from ) {
+        this.checkIsFollowing();
+      }
+    }
+  },
   setup() {
 
     const rebelStore = useRebelStore()

@@ -218,7 +218,7 @@ export default {
   margin: 15px 0 35px 0;
   width: 100%;
   // background-color: white;
-  height: 65vh;
+  height: 60vh;
   display: grid;
   grid-gap: 10px;
   grid-template-columns: 17vw 17vw 25vw;

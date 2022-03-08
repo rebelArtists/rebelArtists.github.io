@@ -67,13 +67,20 @@ export default {
       this.checkIsFollowing();
     });
   },
+  watch: {
+    '$route' (to, from) {
+      if(to !== from ) {
+        this.checkIsFollowing();
+      }
+    }
+  },
   methods: {
     async checkIsFollowing() {
       const { isFollowing, getUserByName } = useRebelStore()
       const rebelStore = useRebelStore()
-      const { user, isFollowingUser } = storeToRefs(rebelStore)
+      const { routedUser, isFollowingUser } = storeToRefs(rebelStore)
       await getUserByName(this.$route.params.name);
-      await isFollowing(user.value.id);
+      await isFollowing(routedUser.value.id);
       this.stateLoaded = true;
     },
     async fireFollowUser(userId) {

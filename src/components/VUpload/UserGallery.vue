@@ -99,6 +99,13 @@ export default {
       this.$emit('likeEvent', true);
     }
   },
+  watch: {
+    '$route' (to, from) {
+      if(to !== from ) {
+        this.checkIsLiked();
+      }
+    }
+  },
   setup() {
     const notyf = inject("notyf");
     const store = useStore();

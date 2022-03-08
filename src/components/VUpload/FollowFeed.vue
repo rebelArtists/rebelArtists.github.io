@@ -73,6 +73,13 @@ export default {
       this.checkIsLiked();
     });
   },
+  watch: {
+    '$route' (to, from) {
+      if(to !== from ) {
+        this.checkIsLiked();
+      }
+    }
+  },
   methods: {
     async checkIsLiked() {
       const { isLiked, getPostsFollowing } = useRebelStore()

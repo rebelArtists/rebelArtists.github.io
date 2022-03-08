@@ -74,6 +74,8 @@
 
 <style  lang="scss">
 
+@use "sass:math";
+
 $firstColor: #0057B8;
 $listColors: #F11E4A, #237, #229C79, #F8A527, #266D7F, $firstColor;
 $delayCoeff: 0.04s;
@@ -93,9 +95,9 @@ $delayCoeff: 0.04s;
 
 .svgError {
   display: inline-block;
-  height: 300px;
-  width: 300px;
-  line-height: 300px;
+  height: 250px;
+  width: 270px;
+  line-height: 250px;
   text-align: center;
   background-image: var(--liniear-gradient-color-2);
   border-radius: 40px;
@@ -128,7 +130,7 @@ $delayCoeff: 0.04s;
     fill: $firstColor;
   }
   @for $i from 1 through length($listColors) {
-    #{$i*(100/length($listColors))}% {
+    #{$i*(math.div(100, length($listColors)))}% {
       fill: nth($listColors, $i);
     }
   }
@@ -139,7 +141,7 @@ $delayCoeff: 0.04s;
     fill: $firstColor;
   }
   @for $i from 1 through length($listColors) {
-    #{$i*(100/length($listColors))}% {
+    #{$i*(math.div(100, length($listColors)))}% {
       fill: nth($listColors, $i);
     }
   }
