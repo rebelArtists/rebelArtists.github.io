@@ -6,7 +6,7 @@ import { ethers } from 'ethers'
 import contractABIrebel from '../artifacts/contracts/SocialHelper.sol/SocialHelper.json'
 
 const db = new Storage("app");
-const contractAddressRebel = '0xdfEa5491DAaf15b7FfCe4C9777A1e2BA02443456';
+const contractAddressRebel = '0xA2C793f51028897a76AA11908eF8CB7FA9cf39af';
 
 db.read();
 db.data ||= { version: "0.0.1", results: [] };
@@ -67,6 +67,8 @@ export const useRebelStore = defineStore('rebel', () => {
   const latestPosts = ref([])
   const latestPostsArray = ref([])
   const usersToFollow = ref([])
+  const followingPosts = ref([])
+  const followingPostsArray = ref([])
 
   async function postContent(name, mediaHash, metaHash) {
     try {
@@ -174,7 +176,7 @@ async function getPostsLatest() {
       const signer = provider.getSigner()
       const rebelContract = new ethers.Contract(contractAddressRebel, contractABIrebel.abi, signer)
       const latestPostsResp = (await rebelContract.getPostsLatest())
-      console.log(latestPostsResp);
+      // console.log(latestPostsResp);
       latestPosts.value = [];
       latestPostsArray.value = [];
       for (let i = 0; i < latestPostsResp.namesArray.length; i++) {
@@ -193,6 +195,38 @@ async function getPostsLatest() {
           latestPosts.value = latestPosts.value.reverse();
         }
       }
+    }
+  }
+  catch (e) {
+    console.log('e', e)
+  }
+}
+
+async function getPostsFollowing() {
+  try {
+    const { ethereum } = window
+    if (ethereum) {
+      const provider = new ethers.providers.Web3Provider(ethereum)
+      const signer = provider.getSigner()
+      const rebelContract = new ethers.Contract(contractAddressRebel, contractABIrebel.abi, signer)
+      const followingPostsResp = (await rebelContract.getPostsFollowing())
+      console.log(followingPostsResp)
+      followingPosts.value = [];
+      followingPostsArray.value = [];
+      for (let i = 0; i < followingPostsResp.namesArray.length; i++) {
+        const postObj = new Object();
+        if (followingPostsResp.namesArray[i]) {
+          postObj.name = followingPostsResp.namesArray[i];
+          postObj.mediaHash = followingPostsResp.mediaHashesArray[i];
+          postObj.likes = followingPostsResp.likesArray[i].toNumber();
+          postObj.id = followingPostsResp.idArray[i].toNumber();
+          if (!followingPostsArray.value.includes(followingPostsResp.idArray[i].toNumber())) {
+            followingPostsArray.value.push(followingPostsResp.idArray[i].toNumber());
+            followingPosts.value.push(postObj);
+          }
+        }
+      }
+      // console.log(followingPosts._rawValue)
     }
   }
   catch (e) {
@@ -297,7 +331,7 @@ async function getUsersToFollow() {
       const signer = provider.getSigner()
       const rebelContract = new ethers.Contract(contractAddressRebel, contractABIrebel.abi, signer)
       const userResp = (await rebelContract.getUsersToFollow())
-      console.log(userResp);
+      // console.log(userResp);
       usersToFollow.value = [];
       for (let i = 0; i < userResp.nameArray.length; i++) {
         if (userResp.profPicHash != "") {
@@ -501,6 +535,9 @@ async function getUserByOwnerAddress(address) {
     latestPosts,
     latestPostsArray,
     getUsersToFollow,
-    usersToFollow
+    usersToFollow,
+    followingPosts,
+    followingPostsArray,
+    getPostsFollowing
   }
 });

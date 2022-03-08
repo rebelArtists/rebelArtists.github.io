@@ -2,9 +2,20 @@
   <section id="content">
     <div v-if="account" class="main animated">
       <div class="main-content">
+        <span class="feedToggle">
+          <a @click="toggleFeedOn">
+            discover
+          </a>
+          <a @click="toggleFeedOff">
+            following
+          </a>
+        </span>
         <div class="feedGrid">
-          <div class="feedBox">
+          <div v-if="followFeedToggle" class="feedBox">
             <Feed />
+          </div>
+          <div v-if="!followFeedToggle" class="feedBox">
+            <FollowFeed />
           </div>
           <div class="usersToFollowBox">
             <UserToFollow />
@@ -20,6 +31,7 @@ import { provide } from "vue";
 import { Notyf } from "notyf";
 
 import Feed from "@src/components/VUpload/Feed.vue";
+import FollowFeed from "@src/components/VUpload/FollowFeed.vue";
 import UserToFollow from "@src/components/VUpload/UserToFollow.vue";
 import { storeToRefs } from 'pinia'
 import { useRebelStore } from '@src/store/index'
@@ -28,7 +40,21 @@ export default {
   name: "VFeed",
   components: {
     UserToFollow,
-    Feed
+    Feed,
+    FollowFeed
+  },
+  data() {
+    return {
+      followFeedToggle: false,
+    };
+  },
+  methods: {
+    toggleFeedOn() {
+      this.followFeedToggle = true;
+    },
+    toggleFeedOff() {
+      this.followFeedToggle = false;
+    }
   },
   setup() {
     const NotfyProvider = new Notyf({
@@ -67,6 +93,10 @@ export default {
 section#content {
   position: relative;
   height: 100%;
+
+  .feedToggle {
+    cursor: pointer;
+  }
 
   .feedGrid {
     font-size: 13px;

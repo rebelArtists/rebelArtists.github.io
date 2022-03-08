@@ -34,6 +34,8 @@ contract UserFactory is Ownable {
   mapping (string => address) nameToAddress;
   mapping (string => bool) nameExists;
   mapping (address => bool) addressExists;
+  mapping (address => address[]) ownerToFollowingList;
+  mapping (address => address[]) ownerToFollowersList;
 
   function createUser(string memory _name, string memory _bio, string memory _profPicHash) public {
     require(ownerUserCount[msg.sender] == 0);

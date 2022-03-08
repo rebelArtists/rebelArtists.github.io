@@ -70,6 +70,8 @@ contract SocialHelper is PostFactory, UserFactory {
 
     usersMap[_userId].followersMap[followeeId] = true;
     usersMap[followeeId].followingMap[_userId] = true;
+    ownerToFollowingList[msg.sender].push(userOwner);
+    ownerToFollowersList[userOwner].push(msg.sender);
 
     uint fundsForOwner = msg.value.div(100).mul(98); // 2% cut for rebel
     payable(userOwner).transfer(fundsForOwner);
@@ -85,18 +87,6 @@ contract SocialHelper is PostFactory, UserFactory {
 
     usersMap[_userId].followersMap[followeeId] = false;
     usersMap[followeeId].followingMap[_userId] = false;
-  }
-
-  function changeName(uint _userId, string memory _newName) external onlyOwner() {
-    usersMap[_userId].name = _newName;
-  }
-
-  function changeBio(uint _userId, string memory _newBio) external onlyOwner() {
-    usersMap[_userId].bio = _newBio;
-  }
-
-  function changeProfPic(uint _userId, string memory _profPicHash) external onlyOwner() {
-    usersMap[_userId].profPicHash = _profPicHash;
   }
 
   function getPostsByOwner(address _owner) external view returns(
@@ -197,6 +187,53 @@ function getPostsLatest() external view returns(
   return (names, mediaHashes, metaHashes, likes, blacklisted, postIds);
 }
 
+function getPostsFollowing() external view returns(
+  string[] memory namesArray,
+  string[] memory mediaHashesArray,
+  uint[] memory likesArray,
+  uint[] memory idArray
+  ) {
+
+  uint assetsToFetch = 20;
+  uint randNonce = 0;
+  address[] memory ownerFollowingList = ownerToFollowingList[msg.sender];
+
+  string[] memory names = new string[](assetsToFetch);
+  string[] memory mediaHashes = new string[](assetsToFetch);
+  uint[] memory likes = new uint[](assetsToFetch);
+  uint[] memory postIds = new uint[](assetsToFetch);
+  uint[] memory followingPostIds = new uint[](assetsToFetch);
+
+  if (ownerFollowingList.length == 0) {
+    return (names, mediaHashes, likes, postIds);
+  }
+
+  uint followingCounter = 0;
+
+  for (uint i = 0; i < ownerFollowingList.length; i++) {
+    uint[] memory ownerPostIds = ownerToPostIds[ownerFollowingList[i]];
+    for (uint x = 0; x < ownerPostIds.length; x++) {
+      followingPostIds[followingCounter] = ownerPostIds[x];
+      followingCounter = followingCounter.add(1);
+    }
+  }
+
+  for (uint i = 0; i < assetsToFetch; i++) {
+    uint randPick = uint(keccak256(abi.encodePacked(block.timestamp, msg.sender, randNonce))) % followingCounter;
+    postIds[i] = followingPostIds[randPick];
+    randNonce++;
+  }
+
+  for (uint i = 0; i < assetsToFetch; i++) {
+      Post storage post = postsMap[postIds[i]];
+      names[i] = post.name;
+      mediaHashes[i] = post.mediaHash;
+      likes[i] = post.likes;
+  }
+
+  return (names, mediaHashes, likes, postIds);
+}
+
   function getPostsByIds(uint[] memory _postIds) external view returns(
     string[] memory namesArray,
     string[] memory mediaHashesArray,
@@ -272,36 +309,6 @@ function getPostsLatest() external view returns(
     uint postTotal = ownerPostCount[userOwner];
 
     return (user.name, user.bio, user.followers, user.following, user.profPicHash, user.amtEarned, user.blacklisted, postTotal, userId);
-  }
-
-  function getUsersByIds(uint[] memory _userIds) external view returns(
-    string[] memory nameArray,
-    string[] memory bioArray,
-    uint[] memory followersArray,
-    uint[] memory followingArray,
-    string[] memory profPicHashArray,
-    bool[] memory blacklistArray,
-    uint[] memory idArray
-  ) {
-    string[] memory names = new string[](_userIds.length);
-    string[] memory bios = new string[](_userIds.length);
-    uint[] memory followers = new uint[](_userIds.length);
-    uint[] memory following = new uint[](_userIds.length);
-    string[] memory profPicHashes = new string[](_userIds.length);
-    bool[] memory blacklist = new bool[](_userIds.length);
-    uint[] memory ids = _userIds;
-
-    for (uint i = 0; i < ids.length; i++) {
-      User storage user = usersMap[ids[i]];
-      names[i] = user.name;
-      bios[i] = user.bio;
-      followers[i] = user.followers;
-      following[i] = user.following;
-      profPicHashes[i] = user.profPicHash;
-      blacklist[i] = user.blacklisted;
-    }
-
-    return (names, bios, followers, following, profPicHashes, blacklist, ids);
   }
 
   function getUsersToFollow() external view returns(

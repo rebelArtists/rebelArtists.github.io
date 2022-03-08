@@ -126,7 +126,7 @@ div.testing {
     display: flex;
     justify-content: center;
     vertical-align: center;
-    margin-top: 115px;
+    margin-top: 125px;
   }
 
   // .buttonConnect {
