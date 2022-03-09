@@ -132,7 +132,6 @@ export default {
         let results = await Promise.all(files);
         const successfully = results.filter(({ error }) => !error);
 
-        store.addResults(...successfully.map(({ error, data: file }) => file));
         store.resetFiles();
 
         fileRef.value.value = null;

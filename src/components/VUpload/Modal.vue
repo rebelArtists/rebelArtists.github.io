@@ -15,13 +15,14 @@ export default {
   },
   data() {
     return {
-      componentKey: 0,
+      componentKey: 0
     };
   },
   methods: {
     async updateparent() {
       const { getUserByOwner } = useRebelStore();
       await getUserByOwner();
+      this.$emit('close');
       this.componentKey += 1;
     },
   },
