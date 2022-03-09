@@ -16,11 +16,11 @@ contract UserFactory is Ownable {
   struct User {
     string name;
     string bio;
+    string profPicHash;
+    bool blacklisted;
     uint followers;
     uint following;
-    string profPicHash;
     uint amtEarned;
-    bool blacklisted;
     mapping (uint => bool) followersMap;
     mapping (uint => bool) followingMap;
   }

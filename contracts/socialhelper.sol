@@ -19,11 +19,6 @@ contract SocialHelper is PostFactory, UserFactory {
     _;
   }
 
-  modifier aboveFollowers(uint _followers, uint _userId) {
-    require(usersMap[_userId].followers >= _followers);
-    _;
-  }
-
   modifier canOnlyLikeOnce(uint _postId) {
     uint followeeId = ownerToUserId[msg.sender];
     require(postsMap[_postId].likesMap[followeeId] != true);

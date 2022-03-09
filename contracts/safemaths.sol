@@ -2,15 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-/**
- * @title SafeMath
- * @dev Math operations with safety checks that throw on error
- */
+
 library SafeMath {
 
-  /**
-  * @dev Multiplies two numbers, throws on overflow.
-  */
   function mul(uint256 a, uint256 b) internal pure returns (uint256) {
     if (a == 0) {
       return 0;
@@ -20,9 +14,6 @@ library SafeMath {
     return c;
   }
 
-  /**
-  * @dev Integer division of two numbers, truncating the quotient.
-  */
   function div(uint256 a, uint256 b) internal pure returns (uint256) {
     // assert(b > 0); // Solidity automatically throws when dividing by 0
     uint256 c = a / b;
@@ -30,17 +21,11 @@ library SafeMath {
     return c;
   }
 
-  /**
-  * @dev Subtracts two numbers, throws on overflow (i.e. if subtrahend is greater than minuend).
-  */
   function sub(uint256 a, uint256 b) internal pure returns (uint256) {
     assert(b <= a);
     return a - b;
   }
 
-  /**
-  * @dev Adds two numbers, throws on overflow.
-  */
   function add(uint256 a, uint256 b) internal pure returns (uint256) {
     uint256 c = a + b;
     assert(c >= a);
@@ -48,10 +33,6 @@ library SafeMath {
   }
 }
 
-/**
- * @title SafeMath32
- * @dev SafeMath library implemented for uint32
- */
 library SafeMath32 {
 
   function mul(uint32 a, uint32 b) internal pure returns (uint32) {
@@ -82,10 +63,6 @@ library SafeMath32 {
   }
 }
 
-/**
- * @title SafeMath16
- * @dev SafeMath library implemented for uint16
- */
 library SafeMath16 {
 
   function mul(uint16 a, uint16 b) internal pure returns (uint16) {
