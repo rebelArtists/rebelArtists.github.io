@@ -1,7 +1,7 @@
 <template>
   <section id="panel-upload-create">
-    <ProfileName :profname="profname" @onChanged="onProfNameChanged" />
-    <ProfileBio :profbio="profbio" @onChanged="onProfBioChanged" />
+    <ProfileName :profname="profname" @on-changed="onProfNameChanged" />
+    <ProfileBio :profbio="profbio" @on-changed="onProfBioChanged" />
     <div class="content panel-upload-create--content">
       <div
         class="panel-upload-create--dropzone"
@@ -34,7 +34,6 @@ import { useStore } from "@src/store";
 import { uploadBlob } from "@src/services/ipfs.js";
 import { fileSize } from "@src/services/helpers";
 import { useRebelStore } from "@src/store/index";
-import { storeToRefs } from "pinia";
 import ProfileName from "@src/components/VUpload/ProfileName.vue";
 import ProfileBio from "@src/components/VUpload/ProfileBio.vue";
 
@@ -51,7 +50,6 @@ export default {
     const finished = ref(0);
     const isUploading = ref(false);
     const { createUser, getUserByOwner } = useRebelStore();
-    const rebelStore = useRebelStore();
     const profname = ref("");
     const profbio = ref("");
 

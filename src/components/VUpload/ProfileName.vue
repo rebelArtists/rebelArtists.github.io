@@ -9,7 +9,7 @@
       class="profname-input"
       :value="profname"
       placeholder="satoshi dogemoto"
-      @input="$emit('onChanged', $event)"
+      @input="$emit('on-changed', $event)"
     />
   </div>
 </template>
@@ -17,6 +17,7 @@
 <script>
 export default {
   name: "ProfileName",
+  emits: ["on-changed"],
   props: {
     profname: {
       type: String,

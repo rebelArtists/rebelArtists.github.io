@@ -9,7 +9,7 @@
       class="description-input"
       :value="description"
       placeholder="gift from the gods"
-      @input="$emit('onChanged', $event)"
+      @input="$emit('on-changed', $event)"
     />
   </div>
 </template>
@@ -17,6 +17,7 @@
 <script>
 export default {
   name: "MetaDescription",
+  emits: ["on-changed"],
   props: {
     description: {
       type: String,

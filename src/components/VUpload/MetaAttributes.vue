@@ -9,7 +9,7 @@
       class="attributes-input"
       :value="attributes"
       placeholder='[{"trait_type": "Type","value": "Single"},...]'
-      @input="$emit('onChanged', $event)"
+      @input="$emit('on-changed', $event)"
     />
   </div>
 </template>
@@ -17,6 +17,7 @@
 <script>
 export default {
   name: "MetaAttributes",
+  emits: ["on-changed"],
   props: {
     attributes: {
       type: String,

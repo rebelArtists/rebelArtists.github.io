@@ -5,6 +5,8 @@ import { Notyf } from "notyf";
 import { useRebelStore } from "@src/store/index";
 
 export default {
+  name: "UploadModal",
+  emits: ["close"],
   props: {
     show: Boolean,
   },
@@ -17,7 +19,7 @@ export default {
     };
   },
   methods: {
-    async updateparent(variable) {
+    async updateparent() {
       const { getUserByOwner } = useRebelStore();
       await getUserByOwner();
       this.componentKey += 1;
@@ -54,7 +56,7 @@ export default {
     <div v-if="show" class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
-          <PanelUpload @postEvent="updateparent" />
+          <PanelUpload @post-event="updateparent" />
           <div class="modal-footer">
             <slot name="footer">
               <button class="modal-default-button" @click="$emit('close')">

@@ -48,8 +48,6 @@ export default {
   methods: {
     async fireConnectWallet() {
       const { connectWallet } = useRebelStore();
-      const rebelStore = useRebelStore();
-      const { user } = storeToRefs(rebelStore);
       await connectWallet();
       this.componentKey += 1;
       this.ready = true;
@@ -85,7 +83,7 @@ export default {
     return {
       connectWallet,
       account,
-      user,
+      user
     };
   },
 };

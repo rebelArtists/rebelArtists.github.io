@@ -4,7 +4,7 @@
       <div class="main-content">
         <div v-if="user">
           <ProfileHeader />
-          <Gallery @likeEvent="updateparent" />
+          <NFTGallery @like-event="updateparent" />
         </div>
       </div>
     </div>
@@ -15,27 +15,30 @@
 import { provide } from "vue";
 import { Notyf } from "notyf";
 
-import Gallery from "@src/components/VUpload/Gallery.vue";
+import NFTGallery from "@src/components/VUpload/Gallery.vue";
 import ProfileHeader from "@src/components/VUpload/ProfileHeader.vue";
-import CreateProfile from "@src/components/VUpload/CreateProfile.vue";
 import { storeToRefs } from "pinia";
 import { useRebelStore } from "@src/store/index";
 
 export default {
   name: "VProfile",
   components: {
-    Gallery,
-    ProfileHeader,
-    CreateProfile,
+    NFTGallery,
+    ProfileHeader
   },
-  props: ["ready"],
+  props: {
+    'ready': {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       componentKey: 0,
     };
   },
   methods: {
-    async updateparent(variable) {
+    async updateparent() {
       const { getUserByOwner } = useRebelStore();
       await getUserByOwner();
       this.componentKey += 1;

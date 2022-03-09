@@ -9,7 +9,7 @@
       class="profbio-input"
       :value="profbio"
       placeholder="proud creator of the blockchain"
-      @input="$emit('onChanged', $event)"
+      @input="$emit('on-changed', $event)"
     />
   </div>
 </template>
@@ -17,6 +17,7 @@
 <script>
 export default {
   name: "ProfileBio",
+  emits: ["on-changed"],
   props: {
     profbio: {
       type: String,

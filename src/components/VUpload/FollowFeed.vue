@@ -24,13 +24,13 @@
               <MDBCardText>
                 Likes: {{ item.likes }}
                 <div v-if="!likedArray[index]" id="favoriting">
-                  <ToggleFavorite :id="item.id" @likeEvent="updateparent" />
+                  <ToggleFavorite :id="item.id" @like-event="updateparent" />
                 </div>
                 <div v-if="likedArray[index]" id="favoriting">
                   <ToggleFavorite
                     :id="item.id"
                     :intialFavorited="true"
-                    @likeEvent="updateparent"
+                    @like-event="updateparent"
                   />
                 </div>
               </MDBCardText>
@@ -58,12 +58,8 @@ import {
 import {
   MDBCard,
   MDBCardBody,
-  MDBCardTitle,
   MDBCardText,
-  MDBCardImg,
-  MDBBtn,
-  MDBCardVideo,
-  mdbRipple,
+  MDBCardImg
 } from "mdb-vue-ui-kit";
 import { useRebelStore } from "@src/store/index";
 import { storeToRefs } from "pinia";
@@ -71,19 +67,13 @@ import ToggleFavorite from "@src/components/VUpload/ToggleFavorite.vue";
 
 export default {
   name: "FollowFeed",
-  emits: ["likeEvent"],
+  emits: ["like-event"],
   components: {
     MDBCard,
     MDBCardBody,
-    MDBCardTitle,
     MDBCardText,
     MDBCardImg,
-    MDBBtn,
-    MDBCardVideo,
     ToggleFavorite,
-  },
-  directives: {
-    mdbRipple,
   },
   data() {
     return {
@@ -113,14 +103,14 @@ export default {
       await isLiked(followingPostsArray._rawValue);
       this.stateLoaded = true;
     },
-    async updateparent(variable) {
+    async updateparent() {
       const { isLiked, getPostsFollowing } = useRebelStore();
       const rebelStore = useRebelStore();
       const { followingPostsArray } = storeToRefs(rebelStore);
       await getPostsFollowing();
       await isLiked(followingPostsArray._rawValue);
       this.componentKey += 1;
-      this.$emit("likeEvent", true);
+      this.$emit("like-event", true);
     },
   },
   setup() {

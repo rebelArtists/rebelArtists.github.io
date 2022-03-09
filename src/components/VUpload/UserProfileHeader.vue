@@ -74,7 +74,7 @@ export default {
     async checkIsFollowing() {
       const { isFollowing, getUserByName } = useRebelStore();
       const rebelStore = useRebelStore();
-      const { routedUser, isFollowingUser } = storeToRefs(rebelStore);
+      const { routedUser } = storeToRefs(rebelStore);
       await getUserByName(this.$route.params.name);
       await isFollowing(routedUser.value.id);
       this.stateLoaded = true;
@@ -89,7 +89,7 @@ export default {
     },
     async fireUnfollowUser(userId) {
       this.loading = true;
-      const { unfollowUser, getUserByName } = useRebelStore();
+      const { unfollowUser } = useRebelStore();
       await unfollowUser(userId);
       await this.checkIsFollowing();
       this.componentKey += 1;

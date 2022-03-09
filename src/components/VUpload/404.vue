@@ -1,4 +1,8 @@
-<script></script>
+<script>
+export default {
+  name: "ErrorPage"
+}
+</script>
 
 <template>
   <div class="errorWrapper">

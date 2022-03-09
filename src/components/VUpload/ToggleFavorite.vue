@@ -17,10 +17,20 @@ import { useRebelStore } from "@src/store/index";
 
 export default {
   name: "ToggleFavorite",
+  emits: ["like-event"],
   components: {
     FavoriteIcon,
   },
-  props: ["id", "intialFavorited"],
+  props: {
+    'id': {
+      type: Number,
+      default: 0
+    },
+    'intialFavorited': {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       favorited: this.intialFavorited,
@@ -53,7 +63,7 @@ export default {
         await unlikePost(this.id);
       }
 
-      this.$emit("likeEvent", true);
+      this.$emit("like-event", true);
       this.loading = false;
       // this.favorited = !this.favorited;
     },

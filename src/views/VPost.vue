@@ -40,7 +40,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in individualPost.attributes">
+            <tr v-for="(item, index) in individualPost.attributes"
+                    :key="index">
               <td>{{ item.trait_type }}</td>
               <td>{{ item.value }}</td>
             </tr>
@@ -50,13 +51,13 @@
       <div class="box2 itemLikes">
         {{ individualPost.likes }} likes
         <div v-if="!likedArray[0]" id="favoriting" class="likeHeart">
-          <ToggleFavorite :id="individualPost.id" @likeEvent="updateparent" />
+          <ToggleFavorite :id="individualPost.id" @like-event="updateparent" />
         </div>
         <div v-if="likedArray[0]" id="favoriting" class="likeHeart">
           <ToggleFavorite
             :id="individualPost.id"
             :intialFavorited="true"
-            @likeEvent="updateparent"
+            @like-event="updateparent"
           />
         </div>
       </div>
@@ -104,19 +105,12 @@
 <script>
 import { provide } from "vue";
 import { Notyf } from "notyf";
-import { ref } from "vue";
 
 import { getImgUrl } from "@src/services/helpers";
 import {
   MDBCard,
-  MDBCardBody,
-  MDBCardTitle,
-  MDBCardText,
-  MDBCardImg,
-  MDBBtn,
-  MDBCardVideo,
+  MDBCardImg
 } from "mdb-vue-ui-kit";
-import PanelUpload from "@src/components/VUpload/PanelUpload.vue";
 import { storeToRefs } from "pinia";
 import { useRebelStore } from "@src/store/index";
 import ToggleFavorite from "@src/components/VUpload/ToggleFavorite.vue";
@@ -125,12 +119,7 @@ export default {
   name: "VPost",
   components: {
     MDBCard,
-    MDBCardBody,
-    MDBCardTitle,
-    MDBCardText,
     MDBCardImg,
-    MDBBtn,
-    MDBCardVideo,
     ToggleFavorite,
   },
   data() {
@@ -147,8 +136,6 @@ export default {
   methods: {
     async getContent() {
       this.postReady = false;
-      const rebelStore = useRebelStore();
-      const { individualPost } = storeToRefs(rebelStore);
       const { getPostById, isLiked } = useRebelStore();
       if (this.$route.params.id) {
         await getPostById([this.$route.params.id]);
@@ -156,9 +143,7 @@ export default {
       }
       this.postReady = true;
     },
-    async updateparent(variable) {
-      const rebelStore = useRebelStore();
-      const { individualPost } = storeToRefs(rebelStore);
+    async updateparent() {
       const { getPostById, isLiked } = useRebelStore();
       await getPostById([this.$route.params.id]);
       await isLiked([this.$route.params.id]);

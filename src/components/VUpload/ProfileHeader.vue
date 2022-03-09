@@ -66,7 +66,7 @@ export default {
     async checkIsFollowing() {
       const { isFollowing } = useRebelStore();
       const rebelStore = useRebelStore();
-      const { user, isFollowingUser } = storeToRefs(rebelStore);
+      const { user } = storeToRefs(rebelStore);
       await isFollowing(user.value.id);
     },
     async fireFollowUser(userId) {

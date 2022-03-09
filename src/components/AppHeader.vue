@@ -62,11 +62,11 @@
           </button>
           <Teleport to="body">
             <!-- use the modal component, pass in the prop -->
-            <modal :show="showModal" @close="showModal = false">
+            <UploadModal :show="showModal" @close="showModal = false">
               <template #header>
                 <h3>custom header</h3>
               </template>
-            </modal>
+            </UploadModal>
           </Teleport>
         </div>
 
@@ -85,8 +85,8 @@
 </template>
 
 <script>
-import { ref, toRefs } from "vue";
-import Modal from "@src/components/VUpload/Modal.vue";
+import { ref } from "vue";
+import UploadModal from "@src/components/VUpload/Modal.vue";
 import { storeToRefs } from "pinia";
 import { useRebelStore } from "@src/store/index";
 import { getImgUrl } from "@src/services/helpers";
@@ -94,7 +94,7 @@ import { getImgUrl } from "@src/services/helpers";
 export default {
   name: "AppHeader",
   components: {
-    Modal,
+    UploadModal,
   },
   data() {
     return {
@@ -103,7 +103,6 @@ export default {
   },
   setup() {
     const rebelStore = useRebelStore();
-    const { connectWallet } = useRebelStore();
     const { account, user } = storeToRefs(rebelStore);
 
     const isDarkClassAvailable = document.body.classList.contains("dark-theme");
@@ -122,7 +121,9 @@ export default {
         element.classList.remove("animated");
         void element.offsetWidth;
         element.classList.add("animated");
-      } catch (error) {}
+      } catch (error) {
+        console.log(error)
+      }
     };
 
     return {
@@ -157,11 +158,6 @@ export default {
   transition: border-bottom 0.5s ease;
 
   padding: 1.3em 64px;
-  // border-bottom: 1px solid rgb(243,244,246);
-
-  // .mintContent {
-  //   fill: var(--loader-color-primary);
-  // }
 
   .header-title {
     h1 {
@@ -195,11 +191,9 @@ export default {
 
       a {
         color: var(--contrast-color);
-        // padding-bottom: 8px;
         text-decoration: none;
         padding-top: 3px;
 
-        // border-bottom: 1px solid;
         cursor: pointer;
 
         &.active {
@@ -245,7 +239,6 @@ body.dark-theme {
   height: 35px;
   padding-top: 3px;
   padding-right: 5px;
-  // max-height: 100%;
   border-radius: 50%;
 }
 </style>

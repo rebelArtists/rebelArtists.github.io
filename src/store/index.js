@@ -9,7 +9,7 @@ const db = new Storage("app");
 const contractAddressRebel = "0xA2C793f51028897a76AA11908eF8CB7FA9cf39af";
 
 db.read();
-db.data ||= { version: "0.0.1", results: [] };
+db.data || { version: "0.0.1", results: [] };
 
 export const useStore = defineStore({
   id: "store",
@@ -57,7 +57,6 @@ export const useStore = defineStore({
 export const useRebelStore = defineStore("rebel", () => {
   const account = ref(null);
   const user = ref(null);
-  const indexCount = ref(0);
   const postedItems = ref([]);
   const postsArray = ref([]);
   const isFollowingUser = ref(false);

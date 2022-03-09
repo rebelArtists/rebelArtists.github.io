@@ -7,7 +7,7 @@
         </div>
         <div v-if="this.stateLoaded && routedUser.profPicHash">
           <UserProfileHeader />
-          <UserGallery @likeEvent="updateparent" />
+          <UserGallery @like-event="updateparent" />
         </div>
       </div>
     </div>
@@ -31,7 +31,12 @@ export default {
     UserProfileHeader,
     ErrorPage,
   },
-  props: ["ready"],
+  props: {
+    'ready': {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       componentKey: 0,
@@ -48,14 +53,14 @@ export default {
     async getUserContent() {
       const { isFollowing, getUserByName } = useRebelStore();
       const rebelStore = useRebelStore();
-      const { user, isFollowingUser } = storeToRefs(rebelStore);
+      const { user } = storeToRefs(rebelStore);
       if (this.$route.params.name) {
         await getUserByName(this.$route.params.name);
         await isFollowing(user.value.id);
       }
       this.stateLoaded = true;
     },
-    async updateparent(variable) {
+    async updateparent() {
       await this.getUserContent();
       this.componentKey += 1;
     },

@@ -1,11 +1,7 @@
 <template>
   <div v-if="this.stateLoaded">
     <div class="wrapper">
-      <div
-        class="gallery-panel"
-        v-for="(item, index) in latestPosts"
-        :key="index"
-      >
+      <div class="gallery-panel" v-for="(item, index) in latestPosts" :key="index">
         <div class="media-wrap">
           <MDBCard class="card-style hover-overlay">
             <router-link :to="`/post/${item.id}`" active-class="active" exact>
@@ -24,19 +20,15 @@
               <MDBCardText>
                 Likes: {{ item.likes }}
                 <div v-if="!likedArray[index]" id="favoriting">
-                  <ToggleFavorite :id="item.id" @likeEvent="updateparent" />
+                  <ToggleFavorite  :id="item.id" @like-event="updateparent" />
                 </div>
                 <div v-if="likedArray[index]" id="favoriting">
-                  <ToggleFavorite
-                    :id="item.id"
-                    :intialFavorited="true"
-                    @likeEvent="updateparent"
-                  />
+                  <ToggleFavorite  :id="item.id" :intialFavorited="true"  @like-event="updateparent" />
                 </div>
               </MDBCardText>
             </MDBCardBody>
           </MDBCard>
-        </div>
+      </div>
       </div>
     </div>
   </div>
@@ -46,44 +38,22 @@
 import { ref, computed, inject } from "vue";
 
 import { useStore } from "@src/store";
-import {
-  fileSize,
-  copyToClipboard,
-  generateLink,
-  generateShortLink,
-  getImgUrl,
-  isVideo,
-} from "@src/services/helpers";
+import { fileSize, copyToClipboard, generateLink, generateShortLink, getImgUrl, isVideo} from "@src/services/helpers";
 
-import {
-  MDBCard,
-  MDBCardBody,
-  MDBCardTitle,
-  MDBCardText,
-  MDBCardImg,
-  MDBBtn,
-  MDBCardVideo,
-  mdbRipple,
-} from "mdb-vue-ui-kit";
-import { useRebelStore } from "@src/store/index";
-import { storeToRefs } from "pinia";
+import { MDBCard, MDBCardBody, MDBCardText, MDBCardImg } from "mdb-vue-ui-kit";
+import { useRebelStore } from '@src/store/index';
+import { storeToRefs } from 'pinia';
 import ToggleFavorite from "@src/components/VUpload/ToggleFavorite.vue";
 
 export default {
-  name: "Feed",
-  emits: ["likeEvent"],
+  name: "DiscoverFeed",
+  emits: ["like-event"],
   components: {
     MDBCard,
     MDBCardBody,
-    MDBCardTitle,
     MDBCardText,
     MDBCardImg,
-    MDBBtn,
-    MDBCardVideo,
     ToggleFavorite,
-  },
-  directives: {
-    mdbRipple,
   },
   data() {
     return {
@@ -99,40 +69,40 @@ export default {
   },
   methods: {
     async checkIsLiked() {
-      const { isLiked, getPostsLatest } = useRebelStore();
-      const rebelStore = useRebelStore();
-      const { latestPostsArray } = storeToRefs(rebelStore);
+      const { isLiked, getPostsLatest } = useRebelStore()
+      const rebelStore = useRebelStore()
+      const { latestPostsArray } = storeToRefs(rebelStore)
       await getPostsLatest();
       await isLiked(latestPostsArray._rawValue);
       this.stateLoaded = true;
     },
-    async updateparent(variable) {
-      const { isLiked, getPostsLatest } = useRebelStore();
-      const rebelStore = useRebelStore();
-      const { latestPostsArray } = storeToRefs(rebelStore);
+    async updateparent() {
+      const { isLiked, getPostsLatest } = useRebelStore()
+      const rebelStore = useRebelStore()
+      const { latestPostsArray } = storeToRefs(rebelStore)
       await getPostsLatest();
       await isLiked(latestPostsArray._rawValue);
       this.componentKey += 1;
-      this.$emit("likeEvent", true);
-    },
+      this.$emit('like-event', true);
+    }
   },
   setup() {
     const notyf = inject("notyf");
     const store = useStore();
 
     const search = ref("");
-    const rebelStore = useRebelStore();
-    const { latestPosts, likedArray } = storeToRefs(rebelStore);
+    const rebelStore = useRebelStore()
+    const { latestPosts, likedArray } = storeToRefs(rebelStore)
 
     const shortenLink = async (item) => {
       const url = generateLink(item);
 
       const loadingIndicator = notyf.open({
         type: "loading",
-        message: "Please wait, we generate shorten link for you.",
+        message: "Please wait, we generate shorten link for you."
       });
 
-      const [error, data] = await generateShortLink(url);
+      const [ error, data ] = await generateShortLink(url);
 
       notyf.dismiss(loadingIndicator);
 
@@ -144,28 +114,26 @@ export default {
 
         notyf.success(`Shorten Link has successfully generated.`);
       }
-    };
+    }
     const copyFileLink = (item) => {
       const url = generateLink(item);
       copyToClipboard(url);
 
       notyf.success("Copied to clipboard!");
-    };
+    }
     const onSearchChanged = ($event) => {
       search.value = $event.target.value;
-    };
+    }
 
-    const files = computed(() =>
-      store.results
-        .slice()
+    const files = computed(() => store
+        .results.slice()
         .reverse()
-        .filter((item) => !!item.metaCid)
-        .filter((item) => {
+        .filter(item => !!item.metaCid)
+        .filter(item => {
           if (search.value === "") return true;
 
           return item.file.name.indexOf(search.value) >= 0;
-        })
-    );
+        }));
 
     return {
       search,
@@ -178,24 +146,21 @@ export default {
       getImgUrl,
       isVideo,
       latestPosts,
-      likedArray,
-    };
-  },
-};
+      likedArray
+    }
+  }
+}
 </script>
 
 <style lang="scss">
-// /* Opacity #2 */
-// .card-style figure {
-// 	background: #1abc9c;
-// }
+
 .card-style figure img {
-  opacity: 1;
-  -webkit-transition: 0.3s ease-in-out;
-  transition: 0.3s ease-in-out;
+	opacity: 1;
+	-webkit-transition: .3s ease-in-out;
+	transition: .3s ease-in-out;
 }
 .card-style figure:hover img {
-  opacity: 0.5;
+	opacity: .5;
   cursor: pointer;
 }
 
@@ -246,34 +211,6 @@ export default {
   }
 }
 
-//
-// .test {
-//   height: 30vh;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-// }
-//
-// .modalButton {
-//   transition-duration: 0.6s;
-//   border-radius: 8px;
-//   width: 40%;
-//   height: 50%;
-//   cursor: pointer;
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   padding: 5px;
-//   padding-left: 20px;
-//   padding-right: 20px;
-//   background-image: var(--liniear-gradient-color-2);
-// }
-//
-// .modalButton:hover {
-//   background-color: #4CAF50; /* Green */
-//   color: white;
-// }
-
 .card-style {
   background-image: var(--liniear-gradient-color-2);
   border-radius: 0.8rem;
@@ -315,9 +252,10 @@ export default {
   height: 100%;
   object-fit: cover;
   border-radius: 0.75rem;
+
 }
 
-.image-fit {
+.image-fit{
   height: 100%;
   width: 100%;
   object-fit: cover;
@@ -326,7 +264,7 @@ export default {
   text-align: center; /*for centering images inside*/
 }
 
-.vid-fit {
+.vid-fit{
   height: 100%;
   width: 100%;
   object-fit: cover;
@@ -356,7 +294,7 @@ body.dark-theme {
     background-color: var(--gradient-900);
 
     .content-file--items .content-file--item {
-      background-color: rgba(255, 255, 255, 0.05);
+      background-color: rgba(255, 255, 255, .05);
 
       .item-detail--subtitle {
         color: rgba(255, 255, 255, 0.5);

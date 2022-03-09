@@ -1,12 +1,13 @@
 {
-  "name": "insta-share",
-  "version": "1.5.0",
+  "name": "rebel",
+  "version": "0.0.1",
   "description": "NFT Share File",
   "scripts": {
     "build": "vite build",
     "dev": "vite",
     "format": "prettier .  --write",
-    "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
+    "lint-save": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
+    "lint-check": "eslint --ext .js,.vue --ignore-path .gitignore --fix-dry-run src",
     "serve": "vite preview"
   },
   "homepage": "https://share.nyan.my.id",

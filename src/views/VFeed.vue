@@ -35,7 +35,7 @@
         </span>
         <div class="feedGrid">
           <div v-if="followFeedToggle" class="feedBox">
-            <Feed />
+            <DiscoverFeed />
           </div>
           <div v-if="!followFeedToggle" class="feedBox">
             <FollowFeed />
@@ -53,7 +53,7 @@
 import { provide } from "vue";
 import { Notyf } from "notyf";
 
-import Feed from "@src/components/VUpload/Feed.vue";
+import DiscoverFeed from "@src/components/VUpload/Feed.vue";
 import FollowFeed from "@src/components/VUpload/FollowFeed.vue";
 import UserToFollow from "@src/components/VUpload/UserToFollow.vue";
 import { storeToRefs } from "pinia";
@@ -63,7 +63,7 @@ export default {
   name: "VFeed",
   components: {
     UserToFollow,
-    Feed,
+    DiscoverFeed,
     FollowFeed,
   },
   data() {

@@ -9,7 +9,7 @@
       class="name-input"
       :value="name"
       placeholder="my single"
-      @input="$emit('onChanged', $event)"
+      @input="$emit('on-changed', $event)"
     />
   </div>
 </template>
@@ -17,6 +17,7 @@
 <script>
 export default {
   name: "MetaName",
+  emits: ["on-changed"],
   props: {
     name: {
       type: String,

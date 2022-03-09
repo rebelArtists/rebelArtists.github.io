@@ -1,11 +1,11 @@
 <template>
   <section id="panel-upload">
-    <MetaName :name="name" @onChanged="onNameChanged" />
+    <MetaName :name="name" @on-changed="onNameChanged" />
     <MetaDescription
       :description="description"
-      @onChanged="onDescriptionChanged"
+      @on-changed="onDescriptionChanged"
     />
-    <MetaAttributes :attributes="attributes" @onChanged="onAttributesChanged" />
+    <MetaAttributes :attributes="attributes" @on-changed="onAttributesChanged" />
     <div class="content panel-upload--content">
       <div
         class="panel-upload--dropzone"
@@ -45,7 +45,7 @@ import MetaDescription from "@src/components/VUpload/MetaDescription.vue";
 
 export default {
   name: "PanelUpload",
-  emit: ["postEvent"],
+  emits: ["post-event"],
   components: {
     MetaName,
     MetaAttributes,
@@ -118,7 +118,7 @@ export default {
       const { error } = result;
       if (error && error instanceof Error) notyf.error(error.message);
 
-      context.emit("postEvent", true);
+      context.emit("post-event", true);
       return result;
     };
     const onFileChangedHandler = async () => {
