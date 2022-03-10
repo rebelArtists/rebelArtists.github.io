@@ -1,24 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="/pwa-192x192.png">
-  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#00aba9">
-  <meta name="msapplication-TileColor" content="#00aba9">
-  <meta name="theme-color" content="#ffffff">
-  <script>
-    (function() {
-      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-      const setting = localStorage.getItem('vueuse-color-scheme') || 'auto'
-      if (setting === 'dark' || (prefersDark && setting !== 'light'))
-        document.documentElement.classList.toggle('dark', true)
-    })()
-  </script>
-</head>
-<body class="font-sans">
-  <div id="app"></div>
-  <script type="module" src="/src/main.ts"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Icon -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="/icons/favicon-16x16.png"
+      sizes="16x16"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/icons/favicon-32x32.png"
+      sizes="32x32"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/icons/android-192x192.png"
+      sizes="192x192"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="/icons/apple-touch-icon-180x180.png"
+      sizes="180x180"
+    />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Rebel NFT allows creators to easily mint NFTs and take full monetary ownership of thier content"
+    />
+
+    <meta name="theme-color" content="#212121" />
+    <meta property="og:title" content="Rebel" />
+    <meta
+      property="og:description"
+      content="Rebel NFT allows creators to easily mint NFTs and take full monetary ownership of thier content"
+    />
+    <meta
+      property="og:image"
+      content="https://cloudflare-ipfs.com/ipfs/bafybeid2rxs5lpagkwmtddqlxpcuaqfgvvwfetclrpszjhvrxzpfpphkvm"
+    />
+
+    <meta name="msapplication-config" content="/browserconfig.xml" />
+
+    <title>REBEL</title>
+
+    <style>
+      body {
+        background-color: #111827;
+      }
+    </style>
+    <link rel="preconnect" href="https://cors.bridged.cc/" crossorigin />
+  </head>
+  <body class="dark-theme">
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
 </html>

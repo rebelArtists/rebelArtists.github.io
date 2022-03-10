@@ -1,9 +1,21 @@
+node_modules
 .DS_Store
-.vite-ssg-dist
-.vite-ssg-temp
+dist
+dist-ssr
+*.local
+.vscode
+.idea
+
 *.local
 dist
 dist-ssr
-node_modules
-.idea/
 *.log
+
+.env
+coverage
+coverage.json
+typechain
+
+#Hardhat files
+cache
+artifacts
