@@ -2,9 +2,9 @@
   <section id="content">
     <div class="main animated">
       <div class="main-content">
-        <div v-if="this.stateLoaded && !routedUser.profPicHash">
+        <!-- <div v-if="this.stateLoaded && !routedUser.profPicHash">
           <ErrorPage />
-        </div>
+        </div> -->
         <div v-if="this.stateLoaded && routedUser.profPicHash">
           <UserProfileHeader />
           <UserGallery @like-event="updateparent" />

@@ -4,6 +4,9 @@
       <div>
         <img :src="getImgUrl(user.profPicHash)" class="round-image" />
       </div>
+      <div>
+        <img :src="url" class="round-image" />
+      </div>
     </div>
     <div class="box item3">
       {{ user.name }}
@@ -48,6 +51,8 @@
 import { useRebelStore } from "@src/store/index";
 import { storeToRefs } from "pinia";
 import { getImgUrl } from "@src/services/helpers";
+import { createAvatar } from '@dicebear/avatars';
+import * as style from '@dicebear/avatars-bottts-sprites';
 
 export default {
   name: "ProfileHeader",
@@ -94,11 +99,21 @@ export default {
     const rebelStore = useRebelStore();
     const { postedItems, user, isFollowingUser } = storeToRefs(rebelStore);
 
+    let svgAvatar = createAvatar(style, {
+      seed: 'custom-seed',
+      background: "#EEE",
+      scale: 80
+    });
+
+    let blob = new Blob([svgAvatar], {type: 'image/svg+xml'});
+    let url = URL.createObjectURL(blob);
+
     return {
       postedItems,
       user,
       getImgUrl,
       isFollowingUser,
+      url
     };
   },
 };

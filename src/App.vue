@@ -11,16 +11,17 @@
       </a>
     </div>
   </div>
-  <AppHeader v-if="account" />
-  <div v-if="this.ready && account && !user">
-    <CreateProfile />
+  <div v-if="account && this.ready">
+  <AppHeader />
+  <div>
   </div>
   <router-view v-slot="{ Component }">
     <keep-alive>
-      <component v-if="user" :is="Component" :key="$route.name" :ready="true" />
+      <component :is="Component" :key="$route.name" :ready="true" />
     </keep-alive>
   </router-view>
   <ReloadPrompt />
+</div>
 </template>
 
 <script>
@@ -31,6 +32,7 @@ import { storeToRefs } from "pinia";
 import { useRebelStore } from "@src/store/index";
 import { provide } from "vue";
 import { Notyf } from "notyf";
+import router from "@src/router";
 
 export default {
   name: "App",
@@ -48,8 +50,12 @@ export default {
   methods: {
     async fireConnectWallet() {
       const { connectWallet } = useRebelStore();
+      const rebelStore = useRebelStore();
+      const { account } = storeToRefs(rebelStore);
       await connectWallet();
-      this.componentKey += 1;
+      if (this.$route.fullPath == "/") {
+        router.push({ path: `/user/${account.value}` })
+      }
       this.ready = true;
     },
   },

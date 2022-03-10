@@ -12,6 +12,8 @@
   },
   "homepage": "https://share.nyan.my.id",
   "dependencies": {
+    "@dicebear/avatars": "^4.10.2",
+    "@dicebear/avatars-bottts-sprites": "^4.10.2",
     "@nomiclabs/hardhat-ethers": "^2.0.5",
     "@nomiclabs/hardhat-waffle": "^2.0.2",
     "dotenv": "^16.0.0",

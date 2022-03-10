@@ -2,10 +2,6 @@
   <section id="content">
     <div v-if="this.ready" class="main animated">
       <div class="main-content">
-        <div v-if="user">
-          <ProfileHeader />
-          <NFTGallery @like-event="updateparent" />
-        </div>
       </div>
     </div>
   </section>

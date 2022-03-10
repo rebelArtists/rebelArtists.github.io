@@ -2,7 +2,7 @@
   <div v-if="this.stateLoaded" class="wrapper2">
     <div class="box item2">
       <div>
-        <img :src="getImgUrl(routedUser.profPicHash)" class="round-image" />
+        <img :src="url" class="round-image" />
       </div>
     </div>
     <div class="box item3">
@@ -48,6 +48,8 @@
 import { useRebelStore } from "@src/store/index";
 import { storeToRefs } from "pinia";
 import { getImgUrl } from "@src/services/helpers";
+import { createAvatar } from '@dicebear/avatars';
+import * as style from '@dicebear/avatars-bottts-sprites';
 
 export default {
   name: "UserProfileHeader",
@@ -98,14 +100,25 @@ export default {
   },
   setup() {
     const rebelStore = useRebelStore();
-    const { postedItems, routedUser, isFollowingUser } =
+    const { postedItems, routedUser, isFollowingUser, account } =
       storeToRefs(rebelStore);
+
+    let svgAvatar = createAvatar(style, {
+      seed: account.value,
+      // background: "#303030",
+      scale: 80,
+      translateY: -3
+    });
+
+    let blob = new Blob([svgAvatar], {type: 'image/svg+xml'});
+    let url = URL.createObjectURL(blob);
 
     return {
       postedItems,
       routedUser,
       getImgUrl,
       isFollowingUser,
+      url
     };
   },
 };
@@ -176,6 +189,7 @@ export default {
   width: 150px;
   height: 150px;
   border-radius: 50%;
+  background: var(--liniear-gradient-color-2);
 }
 
 @-webkit-keyframes MOVE-BG {
