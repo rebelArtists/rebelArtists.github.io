@@ -6,7 +6,7 @@ import { ethers } from "ethers";
 import contractABIrebel from "../artifacts/contracts/rebel.sol/Rebel.json";
 
 const db = new Storage("app");
-const contractAddressRebel = "0x13d188118482AF6a430580DB437dbeC3aB6B7478";
+const contractAddressRebel = "0xB7AEaDb58a8adb1e133145995a0B80a1f4C36602";
 
 db.read();
 db.data || { version: "0.0.1", results: [] };
@@ -101,7 +101,8 @@ export const useRebelStore = defineStore("rebel", () => {
           contractABIrebel.abi,
           signer
         );
-        const userPosts = await rebelContract.getPostsByOwner(address, await rebelContract.getUserPostCount(address));
+        const userPostCount = await rebelContract.getUserPostCount(address);
+        const userPosts = await rebelContract.getPostsByOwner(address, userPostCount.toNumber());
         postedItems.value = [];
         postsArray.value = [];
         for (let i = 0; i < userPosts.namesArray.length; i++) {
@@ -135,7 +136,6 @@ export const useRebelStore = defineStore("rebel", () => {
           signer
         );
         const totalPostCount = await rebelContract.getPostCount()
-        console.log(totalPostCount)
         const latestPostsResp = await rebelContract.getPosts(totalPostCount);
         latestPosts.value = [];
         latestPostsArray.value = [];

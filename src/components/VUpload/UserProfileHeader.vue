@@ -1,5 +1,5 @@
 <template>
-  <div v-if="this.stateLoaded" class="wrapper2">
+  <div v-if="this.stateLoaded && this.$route.params.name" class="wrapper2">
     <div class="box userAvatar">
       <div>
         <img :src="url" class="round-image" />
@@ -42,13 +42,13 @@ export default {
       this.checkIsFollowing();
     });
   },
-  watch: {
-    $route(to, from) {
-      if (to !== from) {
-        this.checkIsFollowing();
-      }
-    },
-  },
+  // watch: {
+  //   $route(to, from) {
+  //     if (to !== from) {
+  //       this.checkIsFollowing();
+  //     }
+  //   },
+  // },
   methods: {
     async checkIsFollowing() {
       const { getUserByOwner } = useRebelStore();

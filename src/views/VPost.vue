@@ -150,13 +150,13 @@ export default {
       this.componentKey += 1;
     },
   },
-  watch: {
-    $route(to, from) {
-      if (to !== from) {
-        this.getContent();
-      }
-    },
-  },
+  // watch: {
+  //   $route(to, from) {
+  //     if (to !== from) {
+  //       this.getContent();
+  //     }
+  //   },
+  // },
   setup() {
     const rebelStore = useRebelStore();
     const { individualPost, user, account, likedArray } =

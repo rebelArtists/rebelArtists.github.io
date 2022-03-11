@@ -3,6 +3,7 @@ import PanelUpload from "@src/components/VUpload/PanelUpload.vue";
 import { provide } from "vue";
 import { Notyf } from "notyf";
 import { useRebelStore } from "@src/store/index";
+import { storeToRefs } from "pinia";
 
 export default {
   name: "UploadModal",
@@ -21,7 +22,10 @@ export default {
   methods: {
     async updateparent() {
       const { getUserByOwner } = useRebelStore();
-      await getUserByOwner();
+      const rebelStore = useRebelStore();
+      const { account } =
+        storeToRefs(rebelStore);
+      await getUserByOwner(account._rawValue);
       this.$emit('close');
       this.componentKey += 1;
     },

@@ -64,13 +64,13 @@ export default {
       this.componentKey += 1;
     },
   },
-  watch: {
-    $route(to, from) {
-      if (to !== from) {
-        this.getUserContent();
-      }
-    },
-  },
+  // watch: {
+  //   $route(to, from) {
+  //     if (to !== from) {
+  //       this.getUserContent();
+  //     }
+  //   },
+  // },
   setup() {
     const NotfyProvider = new Notyf({
       duration: 2000,

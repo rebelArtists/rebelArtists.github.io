@@ -93,6 +93,7 @@ contract Rebel is PostFactory {
         metaHashes[loopCounter] = post.metaHash;
         likes[loopCounter] = post.likes;
         postIds[loopCounter] = ownerPostIds[i];
+        loopCounter = loopCounter.add(1);
     }
 
     return (names, mediaHashes, metaHashes, likes, postIds);
