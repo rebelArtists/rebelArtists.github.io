@@ -26,11 +26,14 @@ contract PostFactory is Ownable, UserFactory {
   mapping (uint32 => address) public postToOwner;
   mapping (address => uint32[]) public ownerToPostIds;
 
-  function createPost(string memory _name, string memory _mediaHash, string memory _metaHash) public {
-
-    if (!usersMap[msg.sender]) {
-      createUser(msg.sender)
+  modifier requiresUserExists() {
+    if (userExists[msg.sender] != true) {
+      createUser(msg.sender);
     }
+    _;
+  }
+
+  function createPost(string memory _name, string memory _mediaHash, string memory _metaHash) public requiresUserExists() {
 
     Post storage newPost = postsMap[postCounter];
     newPost.name = _name;
@@ -40,7 +43,7 @@ contract PostFactory is Ownable, UserFactory {
 
     postToOwner[postCounter] = msg.sender;
     ownerToPostIds[msg.sender].push(postCounter);
-    usersMap[msg.sender].postCount = usersMap[msg.sender].postCount.add(1)
+    usersMap[msg.sender].postCount = usersMap[msg.sender].postCount.add(1);
 
     emit NewPost(postCounter, _name, _mediaHash, _metaHash);
 

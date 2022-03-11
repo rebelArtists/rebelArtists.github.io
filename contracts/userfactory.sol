@@ -19,13 +19,15 @@ contract UserFactory is Ownable {
   }
 
   mapping (address => User) usersMap;
+  mapping (address => bool) userExists;
 
-  function createUser(address memory _address) internal {
+  function createUser(address _address) internal {
 
     User storage newUser = usersMap[_address];
     newUser.amtEarned = 0;
     newUser.postCount = 0;
     newUser.totalLikes = 0;
+    userExists[_address] = true;
 
     emit NewUser(_address);
   }

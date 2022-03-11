@@ -5,12 +5,12 @@ pragma solidity ^0.8.0;
 import "./postfactory.sol";
 import "./safemaths.sol";
 
-contract SocialHelper is PostFactory {
+contract Rebel is PostFactory {
 
   using SafeMath for uint256;
   using SafeMath32 for uint32;
 
-  uint txFee = 0.01 ether;
+  uint txFee = 0.02 ether;
 
   modifier aboveLikes(uint32 _likes) {
     require(usersMap[msg.sender].totalLikes >= _likes);
@@ -31,7 +31,13 @@ contract SocialHelper is PostFactory {
     txFee = _fee;
   }
 
-  function likePost(uint32 _postId) external payable canOnlyLikeOnce(_postId) {
+  function getTxFee() external view returns (
+    uint currentTxFee
+    ) {
+    return (txFee);
+  }
+
+  function likePost(uint32 _postId) external payable requiresUserExists() canOnlyLikeOnce(_postId) {
     require(msg.value >= txFee);
     postsMap[_postId].likes = postsMap[_postId].likes.add(1);
     address postOwner = postToOwner[_postId];
@@ -43,38 +49,68 @@ contract SocialHelper is PostFactory {
     usersMap[postOwner].totalLikes = usersMap[postOwner].totalLikes.add(1);
   }
 
-  function unlikePost(uint32 _postId) external {
+  function unlikePost(uint32 _postId) external requiresUserExists() {
     postsMap[_postId].likes = postsMap[_postId].likes.sub(1);
     postsMap[_postId].likesMap[msg.sender] = false;
     address postOwner = postToOwner[_postId];
     usersMap[postOwner].totalLikes = usersMap[postOwner].totalLikes.sub(1);
   }
 
-  function getPostsByOwner(address _owner) external view returns(
+  function getPostsByOwner(address _owner, uint endingIndex) external view returns(
     string[] memory namesArray,
     string[] memory mediaHashesArray,
     string[] memory metaHashesArray,
     uint32[] memory likesArray,
     uint32[] memory idArray
     ) {
-    uint32[] memory postIds = ownerToPostIds[_owner];
-    string[] memory names = new string[](postIds.length);
-    string[] memory mediaHashes = new string[](postIds.length);
-    string[] memory metaHashes = new string[](postIds.length);
-    uint32[] memory likes = new uint[](postIds.length);
 
-    for (uint32 i = 0; i < postIds.length; i++) {
-        Post storage post = postsMap[postIds[i]];
-        names[i] = post.name;
-        mediaHashes[i] = post.mediaHash;
-        metaHashes[i] = post.metaHash;
-        likes[i] = post.likes;
+    uint32[] memory ownerPostIds = ownerToPostIds[_owner];
+    uint assetsToFetch = 20;
+    if (endingIndex > ownerPostIds.length) {
+      endingIndex = ownerPostIds.length;
+    }
+    if (assetsToFetch > endingIndex) {
+      assetsToFetch = endingIndex;
+    }
+
+    string[] memory names = new string[](assetsToFetch);
+    string[] memory mediaHashes = new string[](assetsToFetch);
+    string[] memory metaHashes = new string[](assetsToFetch);
+    uint32[] memory likes = new uint32[](assetsToFetch);
+    uint32[] memory postIds = new uint32[](assetsToFetch);
+
+    if (ownerPostIds.length == 0) {
+      return (names, mediaHashes, metaHashes, likes, postIds);
+    }
+
+    uint startingIndex = endingIndex.sub(assetsToFetch);
+    uint32 loopCounter = 0;
+
+    for (uint i = startingIndex; i < endingIndex; i++) {
+        Post storage post = postsMap[ownerPostIds[i]];
+        names[loopCounter] = post.name;
+        mediaHashes[loopCounter] = post.mediaHash;
+        metaHashes[loopCounter] = post.metaHash;
+        likes[loopCounter] = post.likes;
+        postIds[loopCounter] = ownerPostIds[i];
     }
 
     return (names, mediaHashes, metaHashes, likes, postIds);
   }
 
-function getPostsLatest() external view returns(
+function getPostCount() external view returns (
+  uint32 postCount
+  ) {
+    return postCounter;
+  }
+
+function getUserPostCount(address _address) external view returns (
+  uint postCount
+  ) {
+    return ownerToPostIds[_address].length;
+  }
+
+function getPosts(uint32 endingIndex) external view returns(
   string[] memory namesArray,
   string[] memory mediaHashesArray,
   string[] memory metaHashesArray,
@@ -82,9 +118,12 @@ function getPostsLatest() external view returns(
   uint32[] memory idArray
   ) {
 
-  uint16 assetsToFetch = 20;
-  if (assetsToFetch > postCounter) {
-    assetsToFetch = postCounter;
+  uint32 assetsToFetch = 20;
+  if (endingIndex > postCounter) {
+    endingIndex = postCounter;
+  }
+  if (assetsToFetch > endingIndex) {
+    assetsToFetch = endingIndex;
   }
 
   string[] memory names = new string[](assetsToFetch);
@@ -97,10 +136,10 @@ function getPostsLatest() external view returns(
     return (names, mediaHashes, metaHashes, likes, postIds);
   }
 
-  uint32 startingIndex = postCounter.sub(assetsToFetch);
+  uint32 startingIndex = endingIndex.sub(assetsToFetch);
   uint32 loopCounter = 0;
 
-  for (uint32 i = startingIndex; i <= postCounter; i++) {
+  for (uint32 i = startingIndex; i <= endingIndex; i++) {
       Post storage post = postsMap[i];
       names[loopCounter] = post.name;
       mediaHashes[loopCounter] = post.mediaHash;
@@ -113,7 +152,7 @@ function getPostsLatest() external view returns(
   return (names, mediaHashes, metaHashes, likes, postIds);
 }
 
-  function getPostById(uint32 memory _postId) external view returns(
+  function getPostById(uint32 _postId) external view returns(
     string memory name,
     string memory mediaHash,
     string memory metaHash,
@@ -130,8 +169,9 @@ function getPostsLatest() external view returns(
     uint32 postCount,
     uint32 totalLikes
   ) {
-    if (!usersMap[_owner]) {
-      return ("", "", 0, 0, "", 0, false, 0, 0);
+
+    if (userExists[_owner] != true) {
+      return (0, 0, 0);
     }
 
     User storage user = usersMap[_owner];

@@ -12,16 +12,16 @@
     </div>
   </div>
   <div v-if="account && this.ready">
-  <AppHeader />
-  <div>
+    <AppHeader />
+    <div>
+    </div>
+    <router-view v-slot="{ Component }">
+      <keep-alive>
+        <component :is="Component" :key="$route.name" :ready="true" />
+      </keep-alive>
+    </router-view>
+    <ReloadPrompt />
   </div>
-  <router-view v-slot="{ Component }">
-    <keep-alive>
-      <component :is="Component" :key="$route.name" :ready="true" />
-    </keep-alive>
-  </router-view>
-  <ReloadPrompt />
-</div>
 </template>
 
 <script>
