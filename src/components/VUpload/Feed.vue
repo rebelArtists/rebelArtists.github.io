@@ -1,6 +1,6 @@
 <template>
   <div v-if="this.stateLoaded">
-    <div class="wrapper">
+    <div class="wrapperFeed">
       <div class="gallery-panel" v-for="(item, index) in latestPosts" :key="index">
         <div class="media-wrap">
           <MDBCard class="card-style hover-overlay">
@@ -223,9 +223,9 @@ export default {
   font-size: 13px;
 }
 
-.wrapper {
+.wrapperFeed {
   display: grid;
-  grid-template-columns: repeat(1, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-auto-rows: repeat(3, 1fr);
   width: 100%;
   grid-gap: 1rem;

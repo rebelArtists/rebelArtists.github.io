@@ -1,3 +1,5 @@
+import { ethers } from "ethers";
+
 /**
  * File size human readble
  * @param {Number} bytes
@@ -55,6 +57,13 @@ export const isVideo = (type) => {
 export const getImgUrl = (hash) => {
   return `https://ipfs.io/ipfs/${hash}`;
 };
+
+export const isAddress = (address) => {
+    try {
+        ethers.utils.getAddress(address);
+    } catch (e) { return false; }
+    return true;
+}
 
 export const fetchIpfsMeta = async (item) => {
   const response = await fetch(`https://ipfs.io/ipfs/${item}`);

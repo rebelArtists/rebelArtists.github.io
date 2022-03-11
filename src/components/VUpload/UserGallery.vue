@@ -111,8 +111,10 @@ export default {
       const { isLiked, getPostsByOwner } = useRebelStore();
       const rebelStore = useRebelStore();
       const { postsArray } = storeToRefs(rebelStore);
-      await getPostsByOwner(this.$route.params.name);
-      await isLiked(postsArray._rawValue);
+      if (this.$route.params.name) {
+        await getPostsByOwner(this.$route.params.name);
+        await isLiked(postsArray._rawValue);
+      }
       this.stateLoaded = true;
     },
     async updateparent() {
@@ -121,13 +123,13 @@ export default {
       this.$emit("like-event", true);
     },
   },
-  // watch: {
-  //   $route(to, from) {
-  //     if (to !== from) {
-  //       this.checkIsLiked();
-  //     }
-  //   },
-  // },
+  watch: {
+    $route(to, from) {
+      if (to !== from) {
+        this.checkIsLiked();
+      }
+    },
+  },
   setup() {
     const notyf = inject("notyf");
     const store = useStore();

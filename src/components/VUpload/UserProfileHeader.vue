@@ -2,7 +2,7 @@
   <div v-if="this.stateLoaded && this.$route.params.name" class="wrapper2">
     <div class="box userAvatar">
       <div>
-        <img :src="url" class="round-image" />
+        <img :src="getAvatar(this.$route.params.name.toLowerCase())" class="round-image" />
       </div>
     </div>
     <div class="box addressHash">
@@ -42,26 +42,22 @@ export default {
       this.checkIsFollowing();
     });
   },
-  // watch: {
-  //   $route(to, from) {
-  //     if (to !== from) {
-  //       this.checkIsFollowing();
-  //     }
-  //   },
-  // },
+  watch: {
+    $route(to, from) {
+      if (to !== from) {
+        this.checkIsFollowing();
+      }
+    },
+  },
   methods: {
     async checkIsFollowing() {
       const { getUserByOwner } = useRebelStore();
-      const rebelStore = useRebelStore();
-      await getUserByOwner(this.$route.params.name);
+      if (this.$route.params.name) {
+        await getUserByOwner(this.$route.params.name);
+      }
       this.stateLoaded = true;
     },
-    async fireFollowUser(userId) {
-      this.loading = true;
-      this.componentKey += 1;
-      this.loading = false;
-    },
-    async fireUnfollowUser(userId) {
+    async fireShareUser() {
       this.loading = true;
       this.componentKey += 1;
       this.loading = false;
@@ -72,22 +68,24 @@ export default {
     const { postedItems, user, account } =
       storeToRefs(rebelStore);
 
-    let svgAvatar = createAvatar(style, {
-      seed: account.value,
-      // background: "#303030",
-      scale: 80,
-      translateY: -3
-    });
+    const getAvatar = (address) => {
+      let svgAvatar = createAvatar(style, {
+        seed: address,
+        scale: 80,
+        translateY: -3
+      });
 
-    let blob = new Blob([svgAvatar], {type: 'image/svg+xml'});
-    let url = URL.createObjectURL(blob);
+      let blob = new Blob([svgAvatar], {type: 'image/svg+xml'});
+      let url = URL.createObjectURL(blob);
+      return url
+    };
 
     return {
       account,
       postedItems,
       user,
       getImgUrl,
-      url
+      getAvatar
     };
   },
 };

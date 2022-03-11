@@ -2,6 +2,9 @@
   <section id="content">
     <div v-if="account" class="main animated">
       <div class="main-content">
+        <div class="feedHeader">
+          <!-- Latest -->
+        </div>
         <div class="feedGrid">
           <div class="feedBox">
             <DiscoverFeed />
@@ -76,6 +79,12 @@ section#content {
   position: relative;
   height: 100%;
 
+  .feedHeader{
+    display: flex;
+    font-size: 14px;
+    font-weight: 999;
+  }
+
   .feedToggle {
     cursor: pointer;
     display: flex;
@@ -106,7 +115,7 @@ section#content {
     height: 20%;
     display: grid;
     grid-gap: 75px;
-    grid-template-columns: 75% 25%;
+    grid-template-columns: 100%;
     justify-content: center;
     align-content: end;
   }

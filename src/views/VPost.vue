@@ -18,7 +18,7 @@
           <img :src="getAvatar(individualPost.address.toLowerCase())" class="round-image-post" />
         </router-link>
         <div class="userName">
-          {{ individualPost.address.substring(0, 4) }}...{{ individualPost.address.slice(-4) }}
+            {{ individualPost.address.substring(0, 4) }}...{{ individualPost.address.slice(-4) }}
         </div>
       </div>
       <div class="box2 itemName">

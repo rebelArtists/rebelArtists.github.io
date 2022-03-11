@@ -2,10 +2,10 @@
   <section id="content">
     <div class="main animated">
       <div class="main-content">
-        <!-- <div v-if="this.stateLoaded && !routedUser.profPicHash">
+        <div v-if="!isAddress(this.$route.params.name)">
           <ErrorPage />
-        </div> -->
-        <div v-if="this.stateLoaded && user">
+        </div>
+        <div v-if="this.stateLoaded && user && isAddress(this.$route.params.name)">
           <UserProfileHeader />
           <UserGallery @like-event="updateparent" />
         </div>
@@ -18,18 +18,19 @@
 import { provide } from "vue";
 import { Notyf } from "notyf";
 
+import ErrorPage from "@src/components/VUpload/404.vue";
 import UserGallery from "@src/components/VUpload/UserGallery.vue";
 import UserProfileHeader from "@src/components/VUpload/UserProfileHeader.vue";
-import ErrorPage from "@src/components/VUpload/404.vue";
 import { storeToRefs } from "pinia";
 import { useRebelStore } from "@src/store/index";
+import { isAddress } from "@src/services/helpers";
 
 export default {
   name: "VUser",
   components: {
-    UserGallery,
-    UserProfileHeader,
     ErrorPage,
+    UserGallery,
+    UserProfileHeader
   },
   props: {
     'ready': {
@@ -52,9 +53,7 @@ export default {
   methods: {
     async getUserContent() {
       const { getUserByOwner } = useRebelStore();
-      const rebelStore = useRebelStore();
-      const { user } = storeToRefs(rebelStore);
-      if (this.$route.params.name) {
+      if (this.$route.params.name && isAddress(this.$route.params.name)) {
         await getUserByOwner(this.$route.params.name);
       }
       this.stateLoaded = true;
@@ -100,6 +99,7 @@ export default {
     return {
       account,
       user,
+      isAddress
     };
   },
 };

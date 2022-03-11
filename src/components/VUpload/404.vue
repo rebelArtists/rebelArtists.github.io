@@ -242,7 +242,6 @@ export default {
         />
       </svg>
     </div>
-    <div class="errorText">page does not exist</div>
   </div>
 </template>
 
@@ -252,10 +251,6 @@ export default {
 $firstColor: #0057b8;
 $listColors: #f11e4a, #237, #229c79, #f8a527, #266d7f, $firstColor;
 $delayCoeff: 0.04s;
-
-.errorText {
-  margin-top: 15px;
-}
 
 .errorWrapper {
   display: block;
@@ -272,7 +267,7 @@ $delayCoeff: 0.04s;
   width: 270px;
   line-height: 250px;
   text-align: center;
-  background-image: var(--liniear-gradient-color-2);
+  // background-image: var(--liniear-gradient-color-2);
   border-radius: 40px;
 }
 

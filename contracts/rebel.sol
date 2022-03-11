@@ -99,59 +99,59 @@ contract Rebel is PostFactory {
     return (names, mediaHashes, metaHashes, likes, postIds);
   }
 
-function getPostCount() external view returns (
-  uint32 postCount
-  ) {
-    return postCounter;
-  }
+  function getPostCount() external view returns (
+    uint32 postCount
+    ) {
+      return postCounter;
+    }
 
-function getUserPostCount(address _address) external view returns (
-  uint postCount
-  ) {
-    return ownerToPostIds[_address].length;
-  }
+  function getUserPostCount(address _address) external view returns (
+    uint postCount
+    ) {
+      return ownerToPostIds[_address].length;
+    }
 
-function getPosts(uint32 endingIndex) external view returns(
-  string[] memory namesArray,
-  string[] memory mediaHashesArray,
-  string[] memory metaHashesArray,
-  uint32[] memory likesArray,
-  uint32[] memory idArray
-  ) {
+  function getPosts(uint32 endingIndex) external view returns(
+    string[] memory namesArray,
+    string[] memory mediaHashesArray,
+    string[] memory metaHashesArray,
+    uint32[] memory likesArray,
+    uint32[] memory idArray
+    ) {
 
-  uint32 assetsToFetch = 20;
-  if (endingIndex > postCounter) {
-    endingIndex = postCounter;
-  }
-  if (assetsToFetch > endingIndex) {
-    assetsToFetch = endingIndex;
-  }
+    uint32 assetsToFetch = 20;
+    if (endingIndex > postCounter) {
+      endingIndex = postCounter;
+    }
+    if (assetsToFetch > endingIndex) {
+      assetsToFetch = endingIndex;
+    }
 
-  string[] memory names = new string[](assetsToFetch);
-  string[] memory mediaHashes = new string[](assetsToFetch);
-  string[] memory metaHashes = new string[](assetsToFetch);
-  uint32[] memory likes = new uint32[](assetsToFetch);
-  uint32[] memory postIds = new uint32[](assetsToFetch);
+    string[] memory names = new string[](assetsToFetch);
+    string[] memory mediaHashes = new string[](assetsToFetch);
+    string[] memory metaHashes = new string[](assetsToFetch);
+    uint32[] memory likes = new uint32[](assetsToFetch);
+    uint32[] memory postIds = new uint32[](assetsToFetch);
 
-  if (postCounter == 0) {
+    if (postCounter == 0) {
+      return (names, mediaHashes, metaHashes, likes, postIds);
+    }
+
+    uint32 startingIndex = endingIndex.sub(assetsToFetch);
+    uint32 loopCounter = 0;
+
+    for (uint32 i = startingIndex; i < endingIndex; i++) {
+        Post storage post = postsMap[i];
+        names[loopCounter] = post.name;
+        mediaHashes[loopCounter] = post.mediaHash;
+        metaHashes[loopCounter] = post.metaHash;
+        likes[loopCounter] = post.likes;
+        postIds[loopCounter] = i;
+        loopCounter = loopCounter.add(1);
+    }
+
     return (names, mediaHashes, metaHashes, likes, postIds);
   }
-
-  uint32 startingIndex = endingIndex.sub(assetsToFetch);
-  uint32 loopCounter = 0;
-
-  for (uint32 i = startingIndex; i < endingIndex; i++) {
-      Post storage post = postsMap[i];
-      names[loopCounter] = post.name;
-      mediaHashes[loopCounter] = post.mediaHash;
-      metaHashes[loopCounter] = post.metaHash;
-      likes[loopCounter] = post.likes;
-      postIds[loopCounter] = i;
-      loopCounter = loopCounter.add(1);
-  }
-
-  return (names, mediaHashes, metaHashes, likes, postIds);
-}
 
   function getPostById(uint32 _postId) external view returns(
     string memory name,
