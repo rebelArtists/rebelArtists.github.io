@@ -177,8 +177,8 @@ export const useRebelStore = defineStore("rebel", () => {
         postObj.name = post.name;
         postObj.mediaHash = post.mediaHash;
         postObj.metaHash = post.metaHash;
-        postObj.likes = post.likes.toNumber();
-        postObj.id = post.id.toNumber();
+        postObj.likes = post.likes;
+        postObj.id = post.id;
         postObj.address = post.addressOwner;
 
         const ipfsMetadata = await fetchIpfsMeta(postObj.metaHash);

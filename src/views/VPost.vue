@@ -14,11 +14,11 @@
         </div>
       </div>
       <div class="box2 userName">
-        <router-link :to="`/user/${user.name}`" exact>
-          <img :src="getImgUrl(user.profPicHash)" class="round-image-post" />
+        <router-link :to="`/user/${individualPost.address}`" exact>
+          <img :src="getAvatar(individualPost.address.toLowerCase())" class="round-image-post" />
         </router-link>
         <div class="userName">
-          {{ user.name }}
+          {{ individualPost.address.substring(0, 4) }}...{{ individualPost.address.slice(-4) }}
         </div>
       </div>
       <div class="box2 itemName">
@@ -114,6 +114,8 @@ import {
 import { storeToRefs } from "pinia";
 import { useRebelStore } from "@src/store/index";
 import ToggleFavorite from "@src/components/VUpload/ToggleFavorite.vue";
+import { createAvatar } from '@dicebear/avatars';
+import * as style from '@dicebear/avatars-bottts-sprites';
 
 export default {
   name: "VPost",
@@ -138,25 +140,25 @@ export default {
       this.postReady = false;
       const { getPostById, isLiked } = useRebelStore();
       if (this.$route.params.id) {
-        await getPostById([this.$route.params.id]);
+        await getPostById(this.$route.params.id);
         await isLiked([this.$route.params.id]);
       }
       this.postReady = true;
     },
     async updateparent() {
       const { getPostById, isLiked } = useRebelStore();
-      await getPostById([this.$route.params.id]);
+      await getPostById(this.$route.params.id);
       await isLiked([this.$route.params.id]);
       this.componentKey += 1;
     },
   },
-  // watch: {
-  //   $route(to, from) {
-  //     if (to !== from) {
-  //       this.getContent();
-  //     }
-  //   },
-  // },
+  watch: {
+    $route(to, from) {
+      if (to !== from) {
+        this.getContent();
+      }
+    },
+  },
   setup() {
     const rebelStore = useRebelStore();
     const { individualPost, user, account, likedArray } =
@@ -182,6 +184,18 @@ export default {
       ],
     });
 
+    const getAvatar = (address) => {
+      let svgAvatar = createAvatar(style, {
+        seed: address,
+        scale: 80,
+        translateY: -3
+      });
+
+      let blob = new Blob([svgAvatar], {type: 'image/svg+xml'});
+      let url = URL.createObjectURL(blob);
+      return url
+    };
+
     provide("notyf", NotfyProvider);
 
     return {
@@ -190,6 +204,7 @@ export default {
       account,
       getImgUrl,
       likedArray,
+      getAvatar
     };
   },
 };
@@ -355,9 +370,10 @@ export default {
 
 .round-image-post {
   object-fit: cover;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
+  background: var(--icon-color)
 }
 
 #favoriting.likeHeart {
