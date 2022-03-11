@@ -94,7 +94,7 @@ export const useRebelStore = defineStore("rebel", () => {
     }
   }
 
-  async function createUser(name, bio, profPicHash) {
+  async function getPostsByOwner(address) {
     try {
       const { ethereum } = window;
       if (ethereum) {
@@ -105,28 +105,7 @@ export const useRebelStore = defineStore("rebel", () => {
           contractABIrebel.abi,
           signer
         );
-        const user = await rebelContract.createUser(name, bio, profPicHash);
-        console.log("Creating user...", user.hash);
-        await user.wait();
-        console.log("Mined user -- ", user.hash);
-      }
-    } catch (e) {
-      console.log("e", e);
-    }
-  }
-
-  async function getPostsByUser() {
-    try {
-      const { ethereum } = window;
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const rebelContract = new ethers.Contract(
-          contractAddressRebel,
-          contractABIrebel.abi,
-          signer
-        );
-        const userPosts = await rebelContract.getPostsByOwner(account.value);
+        const userPosts = await rebelContract.getPostsByOwner(address, await rebelContract.getUserPostCount(address));
         postedItems.value = [];
         postsArray.value = [];
         for (let i = 0; i < userPosts.namesArray.length; i++) {
@@ -135,41 +114,6 @@ export const useRebelStore = defineStore("rebel", () => {
           postObj.mediaHash = userPosts.mediaHashesArray[i];
           postObj.metaHash = userPosts.metaHashesArray[i];
           postObj.likes = userPosts.likesArray[i].toNumber();
-          postObj.blacklisted = userPosts.blacklistedArray[i];
-          postObj.id = userPosts.idArray[i].toNumber();
-          postsArray.value.push(userPosts.idArray[i].toNumber());
-          postedItems.value.push(postObj);
-          // reverse so most recent items first in list
-          postsArray.value = postsArray.value.reverse();
-          postedItems.value = postedItems.value.reverse();
-        }
-      }
-    } catch (e) {
-      console.log("e", e);
-    }
-  }
-
-  async function getPostsByUserName(name) {
-    try {
-      const { ethereum } = window;
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const rebelContract = new ethers.Contract(
-          contractAddressRebel,
-          contractABIrebel.abi,
-          signer
-        );
-        const userPosts = await rebelContract.getPostsByUserName(name);
-        postedItems.value = [];
-        postsArray.value = [];
-        for (let i = 0; i < userPosts.namesArray.length; i++) {
-          const postObj = new Object();
-          postObj.name = userPosts.namesArray[i];
-          postObj.mediaHash = userPosts.mediaHashesArray[i];
-          postObj.metaHash = userPosts.metaHashesArray[i];
-          postObj.likes = userPosts.likesArray[i].toNumber();
-          postObj.blacklisted = userPosts.blacklistedArray[i];
           postObj.id = userPosts.idArray[i].toNumber();
           postsArray.value.push(userPosts.idArray[i].toNumber());
           postedItems.value.push(postObj);
@@ -194,8 +138,7 @@ export const useRebelStore = defineStore("rebel", () => {
           contractABIrebel.abi,
           signer
         );
-        const latestPostsResp = await rebelContract.getPostsLatest();
-        // console.log(latestPostsResp);
+        const latestPostsResp = await rebelContract.getPostsLatest(await rebelContract.getPostCount());
         latestPosts.value = [];
         latestPostsArray.value = [];
         for (let i = 0; i < latestPostsResp.namesArray.length; i++) {
@@ -205,7 +148,6 @@ export const useRebelStore = defineStore("rebel", () => {
             postObj.mediaHash = latestPostsResp.mediaHashesArray[i];
             postObj.metaHash = latestPostsResp.metaHashesArray[i];
             postObj.likes = latestPostsResp.likesArray[i].toNumber();
-            postObj.blacklisted = latestPostsResp.blacklistedArray[i];
             postObj.id = latestPostsResp.idArray[i].toNumber();
             latestPostsArray.value.push(latestPostsResp.idArray[i].toNumber());
             latestPosts.value.push(postObj);
@@ -214,47 +156,6 @@ export const useRebelStore = defineStore("rebel", () => {
             latestPosts.value = latestPosts.value.reverse();
           }
         }
-      }
-    } catch (e) {
-      console.log("e", e);
-    }
-  }
-
-  async function getPostsFollowing() {
-    try {
-      const { ethereum } = window;
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const rebelContract = new ethers.Contract(
-          contractAddressRebel,
-          contractABIrebel.abi,
-          signer
-        );
-        const followingPostsResp = await rebelContract.getPostsFollowing();
-        console.log(followingPostsResp);
-        followingPosts.value = [];
-        followingPostsArray.value = [];
-        for (let i = 0; i < followingPostsResp.namesArray.length; i++) {
-          const postObj = new Object();
-          if (followingPostsResp.namesArray[i]) {
-            postObj.name = followingPostsResp.namesArray[i];
-            postObj.mediaHash = followingPostsResp.mediaHashesArray[i];
-            postObj.likes = followingPostsResp.likesArray[i].toNumber();
-            postObj.id = followingPostsResp.idArray[i].toNumber();
-            if (
-              !followingPostsArray.value.includes(
-                followingPostsResp.idArray[i].toNumber()
-              )
-            ) {
-              followingPostsArray.value.push(
-                followingPostsResp.idArray[i].toNumber()
-              );
-              followingPosts.value.push(postObj);
-            }
-          }
-        }
-        // console.log(followingPosts._rawValue)
       }
     } catch (e) {
       console.log("e", e);
@@ -272,15 +173,14 @@ export const useRebelStore = defineStore("rebel", () => {
           contractABIrebel.abi,
           signer
         );
-        const postsList = await rebelContract.getPostsByIds(postId);
-        // only 1 item right now...
+        const postsList = await rebelContract.getPostById(postId);
+
         for (let i = 0; i < postsList.namesArray.length; i++) {
           const postObj = new Object();
           postObj.name = postsList.namesArray[i];
           postObj.mediaHash = postsList.mediaHashesArray[i];
           postObj.metaHash = postsList.metaHashesArray[i];
           postObj.likes = postsList.likesArray[i].toNumber();
-          postObj.blacklisted = postsList.blacklistedArray[i];
           postObj.id = postsList.idArray[i].toNumber();
           postObj.address = postsList.addressesArray[i];
 
@@ -296,103 +196,7 @@ export const useRebelStore = defineStore("rebel", () => {
     }
   }
 
-  async function getUserByOwner() {
-    try {
-      const { ethereum } = window;
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const rebelContract = new ethers.Contract(
-          contractAddressRebel,
-          contractABIrebel.abi,
-          signer
-        );
-        const userResp = await rebelContract.getUserByOwner(account.value);
-        if (userResp.profPicHash != "") {
-          const userObj = new Object();
-          userObj.name = userResp.name;
-          userObj.bio = userResp.bio;
-          userObj.followers = userResp.followers.toNumber();
-          userObj.following = userResp.following.toNumber();
-          userObj.profPicHash = userResp.profPicHash;
-          userObj.amtEarned = ethers.utils.formatEther(userResp.amtEarned);
-          userObj.blacklisted = userResp.blacklisted;
-          userObj.postCount = userResp.postCount.toNumber();
-          userObj.id = userResp.id.toNumber();
-          user.value = userObj;
-        }
-      }
-    } catch (e) {
-      console.log("e", e);
-    }
-  }
-
-  async function getUserByName(name) {
-    try {
-      const { ethereum } = window;
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const rebelContract = new ethers.Contract(
-          contractAddressRebel,
-          contractABIrebel.abi,
-          signer
-        );
-        const userResp = await rebelContract.getUserByName(name);
-        routedUser.value = new Object();
-        if (userResp.profPicHash != "") {
-          const userObj = new Object();
-          userObj.name = userResp.name;
-          userObj.bio = userResp.bio;
-          userObj.followers = userResp.followers.toNumber();
-          userObj.following = userResp.following.toNumber();
-          userObj.profPicHash = userResp.profPicHash;
-          userObj.amtEarned = ethers.utils.formatEther(userResp.amtEarned);
-          userObj.blacklisted = userResp.blacklisted;
-          userObj.postCount = userResp.postCount.toNumber();
-          userObj.id = userResp.id.toNumber();
-          routedUser.value = userObj;
-        }
-      }
-    } catch (e) {
-      console.log("e", e);
-    }
-  }
-
-  async function getUsersToFollow() {
-    try {
-      const { ethereum } = window;
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const rebelContract = new ethers.Contract(
-          contractAddressRebel,
-          contractABIrebel.abi,
-          signer
-        );
-        const userResp = await rebelContract.getUsersToFollow();
-        // console.log(userResp);
-        usersToFollow.value = [];
-        for (let i = 0; i < userResp.nameArray.length; i++) {
-          if (userResp.profPicHash != "") {
-            const userObj = new Object();
-            userObj.name = userResp.nameArray[i];
-            userObj.bio = userResp.bioArray[i];
-            userObj.followers = userResp.followersArray[i].toNumber();
-            userObj.following = userResp.followingArray[i].toNumber();
-            userObj.profPicHash = userResp.profPicHashArray[i];
-            userObj.blacklisted = userResp.blacklistArray[i];
-            userObj.id = userResp.idArray[i].toNumber();
-            usersToFollow.value.push(userObj);
-          }
-        }
-      }
-    } catch (e) {
-      console.log("e", e);
-    }
-  }
-
-  async function getUserByOwnerAddress(address) {
+  async function getUserByOwner(address) {
     try {
       const { ethereum } = window;
       if (ethereum) {
@@ -406,61 +210,11 @@ export const useRebelStore = defineStore("rebel", () => {
         const userResp = await rebelContract.getUserByOwner(address);
         if (userResp.profPicHash != "") {
           const userObj = new Object();
-          userObj.name = userResp.name;
-          userObj.bio = userResp.bio;
-          userObj.followers = userResp.followers.toNumber();
-          userObj.following = userResp.following.toNumber();
-          userObj.profPicHash = userResp.profPicHash;
           userObj.amtEarned = ethers.utils.formatEther(userResp.amtEarned);
-          userObj.blacklisted = userResp.blacklisted;
           userObj.postCount = userResp.postCount.toNumber();
-          userObj.id = userResp.id.toNumber();
+          userObj.totalLikes = userResp.totalLikes.toNumber();
           user.value = userObj;
         }
-      }
-    } catch (e) {
-      console.log("e", e);
-    }
-  }
-
-  async function followUser(userId) {
-    try {
-      const { ethereum } = window;
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const rebelContract = new ethers.Contract(
-          contractAddressRebel,
-          contractABIrebel.abi,
-          signer
-        );
-        const follow = await rebelContract.followUser(userId, {
-          value: ethers.utils.parseEther(".02"),
-        });
-        console.log("Following user...");
-        await follow.wait();
-        console.log("Followed user successfully ");
-      }
-    } catch (e) {
-      console.log("e", e);
-    }
-  }
-
-  async function unfollowUser(userId) {
-    try {
-      const { ethereum } = window;
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const rebelContract = new ethers.Contract(
-          contractAddressRebel,
-          contractABIrebel.abi,
-          signer
-        );
-        const unfollow = await rebelContract.unfollowUser(userId);
-        console.log("Unfollowing user...");
-        await unfollow.wait();
-        console.log("Unfollowed user successfully ");
       }
     } catch (e) {
       console.log("e", e);
@@ -505,25 +259,6 @@ export const useRebelStore = defineStore("rebel", () => {
         console.log("Unliking post...", unlike.hash);
         await unlike.wait();
         console.log("Unliked post successfully", unlike.hash);
-      }
-    } catch (e) {
-      console.log("e", e);
-    }
-  }
-
-  async function isFollowing(userId) {
-    try {
-      const { ethereum } = window;
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const rebelContract = new ethers.Contract(
-          contractAddressRebel,
-          contractABIrebel.abi,
-          signer
-        );
-        const following = await rebelContract.isFollowing(userId);
-        isFollowingUser.value = following;
       }
     } catch (e) {
       console.log("e", e);
