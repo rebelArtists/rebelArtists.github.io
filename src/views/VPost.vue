@@ -66,8 +66,8 @@
           <svg
             class="svgIpfs"
             xmlns="http://www.w3.org/2000/svg"
-            width="25"
-            height="25"
+            width="20"
+            height="20"
             viewBox="0 0 24 24"
             fill="none"
             stroke-width="1"
@@ -83,8 +83,8 @@
           <svg
             class="svgIpfs"
             xmlns="http://www.w3.org/2000/svg"
-            width="25"
-            height="25"
+            width="20"
+            height="20"
             viewBox="0 0 24 24"
             fill="none"
             stroke-width="1"
@@ -230,7 +230,7 @@ export default {
 
 .styled-table th,
 .styled-table td {
-  padding: 12px 15px;
+  padding: 12px 0px;
 }
 
 .styled-table tbody tr {
@@ -249,8 +249,8 @@ export default {
   height: 60vh;
   display: grid;
   grid-gap: 10px;
-  grid-template-columns: 17vw 17vw 25vw;
-  grid-template-rows: 15% 10% 15% 40% 17%;
+  grid-template-columns: 20% 15% 25%;
+  grid-template-rows: 15% 10% 15% 43% 12%;
   justify-content: center;
 }
 
@@ -286,8 +286,9 @@ export default {
 .itemName {
   grid-column: 3 / 3;
   grid-row: 2 / 2;
-  padding: 15px;
-  font-size: 11px;
+  padding: 10px;
+  padding-left: 15px;
+  font-size: 12px;
   font-weight: 999;
 }
 
@@ -314,7 +315,8 @@ export default {
 
 .itemIpfs {
   padding: 5px;
-  width: 50px;
+  width: 40px;
+  height: 20px;
 }
 
 .card-style {

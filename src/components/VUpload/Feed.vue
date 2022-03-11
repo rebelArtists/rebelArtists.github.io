@@ -16,7 +16,7 @@
               </figure>
             </router-link>
             <MDBCardBody class="card-body">
-              <MDBCardText>Name: {{ item.name }} </MDBCardText>
+              <MDBCardText class="cardName">{{ item.name }} </MDBCardText>
               <MDBCardText>
                 Likes: {{ item.likes }}
                 <div v-if="!likedArray[index]" id="favoriting">
@@ -164,6 +164,11 @@ export default {
   cursor: pointer;
 }
 
+.cardName {
+  font-size: 13px;
+  font-weight: 999;
+}
+
 .bg,
 .modalButton {
   position: relative;
@@ -218,8 +223,8 @@ export default {
 
 .card-body {
   padding-right: 10px;
-  padding-left: 10px;
-  padding-bottom: 10px;
+  padding-left: 15px;
+  padding-top: 3px;
   font-size: 13px;
 }
 

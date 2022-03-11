@@ -107,7 +107,7 @@ export default {
     const rebelStore = useRebelStore();
     const { account, user } = storeToRefs(rebelStore);
 
-    const isDarkClassAvailable = document.body.classList.contains("dark-theme");
+    const isDarkClassAvailable = document.body.classList.contains(".dark-theme");
 
     const isDark = ref(isDarkClassAvailable);
     const toggleTheme = () => {
