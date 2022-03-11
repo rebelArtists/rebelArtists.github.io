@@ -8,7 +8,7 @@
       <nav class="header-navbar">
         <router-link
           v-if="account && user"
-          :to="`/user/${user.name}`"
+          :to="`/user/${account}`"
           active-class="active"
           title="Home"
           exact

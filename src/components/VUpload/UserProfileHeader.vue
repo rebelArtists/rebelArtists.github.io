@@ -1,46 +1,23 @@
 <template>
   <div v-if="this.stateLoaded" class="wrapper2">
-    <div class="box item2">
+    <div class="box userAvatar">
       <div>
         <img :src="url" class="round-image" />
       </div>
     </div>
-    <div class="box item3">
-      {{ routedUser.name }}
+    <div class="box addressHash">
+      {{ this.$route.params.name.substring(0, 4) }}...{{ this.$route.params.name.slice(-4) }}
     </div>
-    <div class="box item8" v-if="!loading">
+    <div class="box shareButton" v-if="!loading">
       <button
-        v-if="!isFollowingUser"
         class="buttonConnectProfile"
-        @click="fireFollowUser(routedUser.id)"
       >
-        Follow
-      </button>
-      <button
-        v-if="isFollowingUser"
-        class="buttonConnectProfile"
-        @click="fireUnfollowUser(routedUser.id)"
-      >
-        Unfollow
+        Share
       </button>
     </div>
-    <div class="box item8" v-if="loading">
-      <button v-if="!isFollowingUser" class="loading animated fadeIn">
-        Follow
-        <div class="bgFollow"></div>
-      </button>
-      <button v-if="isFollowingUser" class="loading animated fadeIn">
-        Unfollow
-        <div class="bgFollow"></div>
-      </button>
-    </div>
-    <div class="box item5">{{ routedUser.followers }} followers</div>
-    <div class="box item6">{{ routedUser.following }} following</div>
-    <div class="box item4">{{ routedUser.postCount }} posts</div>
-    <div class="box item7">
-      {{ routedUser.bio }}
-    </div>
-    <div class="box item9">{{ routedUser.amtEarned }} MATIC earned</div>
+    <div class="box likeCount">{{ user.totalLikes }} likes</div>
+    <div class="box postCount">{{ user.postCount }} posts</div>
+    <div class="box amtEarned">{{ user.amtEarned  }} earned</div>
   </div>
 </template>
 
@@ -74,33 +51,25 @@ export default {
   },
   methods: {
     async checkIsFollowing() {
-      const { isFollowing, getUserByName } = useRebelStore();
+      const { getUserByOwner } = useRebelStore();
       const rebelStore = useRebelStore();
-      const { routedUser } = storeToRefs(rebelStore);
-      await getUserByName(this.$route.params.name);
-      await isFollowing(routedUser.value.id);
+      await getUserByOwner(this.$route.params.name);
       this.stateLoaded = true;
     },
     async fireFollowUser(userId) {
       this.loading = true;
-      const { followUser } = useRebelStore();
-      await followUser(userId);
-      await this.checkIsFollowing();
       this.componentKey += 1;
       this.loading = false;
     },
     async fireUnfollowUser(userId) {
       this.loading = true;
-      const { unfollowUser } = useRebelStore();
-      await unfollowUser(userId);
-      await this.checkIsFollowing();
       this.componentKey += 1;
       this.loading = false;
     },
   },
   setup() {
     const rebelStore = useRebelStore();
-    const { postedItems, routedUser, isFollowingUser, account } =
+    const { postedItems, user, account } =
       storeToRefs(rebelStore);
 
     let svgAvatar = createAvatar(style, {
@@ -114,10 +83,10 @@ export default {
     let url = URL.createObjectURL(blob);
 
     return {
+      account,
       postedItems,
-      routedUser,
+      user,
       getImgUrl,
-      isFollowingUser,
       url
     };
   },
@@ -161,27 +130,40 @@ export default {
   color: white;
 }
 
-.item2 {
+.userAvatar {
   grid-column: 1 / 3;
   grid-row: 1 / 5;
   justify-content: center;
   align-content: end;
 }
 
-.item3 {
+.addressHash {
+  font-size: 13px;
+  grid-row: 1 / 1;
+  grid-column: 3 / 3;
+  font-weight: 999;
+}
+
+.shareButton {
   font-size: 15px;
-  grid-column: 3 / 5;
+  grid-row: 1 / 1;
+  grid-column: 5 / 5;
   font-weight: 900;
 }
 
-.item7 {
-  grid-column: 3 / 5;
-  grid-row: 3 / 5;
+.likeCount {
+  grid-column: 3 / 3;
+  grid-row: 2 / 2;
 }
 
-.item9 {
-  grid-column: 5 / 6;
-  grid-row: 3 / 5;
+.postCount {
+  grid-column: 4 / 4;
+  grid-row: 2 / 2;
+}
+
+.amtEarned {
+  grid-column: 5 / 5;
+  grid-row: 2 / 2;
 }
 
 .round-image {

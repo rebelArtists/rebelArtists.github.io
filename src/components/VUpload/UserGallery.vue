@@ -1,6 +1,21 @@
 <template>
   <div v-if="this.stateLoaded">
-    <div class="container" v-if="!postedItems[0]">no posts yet.</div>
+
+
+    <div class="container" v-if="!postedItems[0] && account == this.$route.params.name">
+      <div class="bg"></div>
+      <button class="modalButton" id="show-modal" @click="showModal = true">
+        +
+      </button>
+      <Teleport to="body">
+        <UploadModal :show="showModal" @close="showModal = false">
+          <template #header>
+            <h3>custom header</h3>
+          </template>
+        </UploadModal>
+      </Teleport>
+    </div>
+    <div class="container" v-if="!postedItems[0] && account != this.$route.params.name">no posts yet.</div>
 
     <div class="wrapper">
       <div
@@ -66,6 +81,7 @@ import {
 import { useRebelStore } from "@src/store/index";
 import { storeToRefs } from "pinia";
 import ToggleFavorite from "@src/components/VUpload/ToggleFavorite.vue";
+import UploadModal from "@src/components/VUpload/Modal.vue";
 
 export default {
   name: "UserGallery",
@@ -75,7 +91,8 @@ export default {
     MDBCardBody,
     MDBCardText,
     MDBCardImg,
-    ToggleFavorite
+    ToggleFavorite,
+    UploadModal
   },
   data() {
     return {
@@ -91,19 +108,15 @@ export default {
   },
   methods: {
     async checkIsLiked() {
-      const { isLiked, getPostsByUserName } = useRebelStore();
+      const { isLiked, getPostsByOwner } = useRebelStore();
       const rebelStore = useRebelStore();
       const { postsArray } = storeToRefs(rebelStore);
-      await getPostsByUserName(this.$route.params.name);
+      await getPostsByOwner(this.$route.params.name);
       await isLiked(postsArray._rawValue);
       this.stateLoaded = true;
     },
     async updateparent() {
-      const { isLiked, getPostsByUserName } = useRebelStore();
-      const rebelStore = useRebelStore();
-      const { postsArray } = storeToRefs(rebelStore);
-      await getPostsByUserName(this.$route.params.name);
-      await isLiked(postsArray._rawValue);
+      this.checkIsLiked()
       this.componentKey += 1;
       this.$emit("like-event", true);
     },
@@ -121,7 +134,7 @@ export default {
 
     const search = ref("");
     const rebelStore = useRebelStore();
-    const { postedItems, likedArray } = storeToRefs(rebelStore);
+    const { postedItems, likedArray, account } = storeToRefs(rebelStore);
 
     const shortenLink = async (item) => {
       const url = generateLink(item);
@@ -178,6 +191,7 @@ export default {
       isVideo,
       postedItems,
       likedArray,
+      account
     };
   },
 };

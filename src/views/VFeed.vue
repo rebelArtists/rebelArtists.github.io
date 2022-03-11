@@ -2,46 +2,9 @@
   <section id="content">
     <div v-if="account" class="main animated">
       <div class="main-content">
-        <span class="feedToggle">
-          <a
-            @click="toggleFeedOn"
-            v-if="followFeedToggle"
-            class="activeDiscover"
-          >
-            discover
-          </a>
-          <a
-            @click="toggleFeedOn"
-            v-if="!followFeedToggle"
-            class="inactiveDiscover"
-          >
-            discover
-          </a>
-          <div class="dividerLine">|</div>
-          <a
-            @click="toggleFeedOff"
-            v-if="!followFeedToggle"
-            class="activeFollowing"
-          >
-            following
-          </a>
-          <a
-            @click="toggleFeedOff"
-            v-if="followFeedToggle"
-            class="inactiveFollowing"
-          >
-            following
-          </a>
-        </span>
         <div class="feedGrid">
-          <div v-if="followFeedToggle" class="feedBox">
+          <div class="feedBox">
             <DiscoverFeed />
-          </div>
-          <div v-if="!followFeedToggle" class="feedBox">
-            <FollowFeed />
-          </div>
-          <div class="usersToFollowBox">
-            <UserToFollow />
           </div>
         </div>
       </div>
@@ -54,17 +17,13 @@ import { provide } from "vue";
 import { Notyf } from "notyf";
 
 import DiscoverFeed from "@src/components/VUpload/Feed.vue";
-import FollowFeed from "@src/components/VUpload/FollowFeed.vue";
-import UserToFollow from "@src/components/VUpload/UserToFollow.vue";
 import { storeToRefs } from "pinia";
 import { useRebelStore } from "@src/store/index";
 
 export default {
   name: "VFeed",
   components: {
-    UserToFollow,
-    DiscoverFeed,
-    FollowFeed,
+    DiscoverFeed
   },
   data() {
     return {

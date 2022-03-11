@@ -6,7 +6,7 @@ import { ethers } from "ethers";
 import contractABIrebel from "../artifacts/contracts/rebel.sol/Rebel.json";
 
 const db = new Storage("app");
-const contractAddressRebel = "0xE5f434273c0371df374D04300B728f021FB7245c";
+const contractAddressRebel = "0x13d188118482AF6a430580DB437dbeC3aB6B7478";
 
 db.read();
 db.data || { version: "0.0.1", results: [] };
@@ -109,9 +109,9 @@ export const useRebelStore = defineStore("rebel", () => {
           postObj.name = userPosts.namesArray[i];
           postObj.mediaHash = userPosts.mediaHashesArray[i];
           postObj.metaHash = userPosts.metaHashesArray[i];
-          postObj.likes = userPosts.likesArray[i].toNumber();
-          postObj.id = userPosts.idArray[i].toNumber();
-          postsArray.value.push(userPosts.idArray[i].toNumber());
+          postObj.likes = userPosts.likesArray[i];
+          postObj.id = userPosts.idArray[i];
+          postsArray.value.push(userPosts.idArray[i]);
           postedItems.value.push(postObj);
           // reverse so most recent items first in list
           postsArray.value = postsArray.value.reverse();
@@ -134,7 +134,9 @@ export const useRebelStore = defineStore("rebel", () => {
           contractABIrebel.abi,
           signer
         );
-        const latestPostsResp = await rebelContract.getPostsLatest(await rebelContract.getPostCount());
+        const totalPostCount = await rebelContract.getPostCount()
+        console.log(totalPostCount)
+        const latestPostsResp = await rebelContract.getPosts(totalPostCount);
         latestPosts.value = [];
         latestPostsArray.value = [];
         for (let i = 0; i < latestPostsResp.namesArray.length; i++) {
@@ -143,9 +145,9 @@ export const useRebelStore = defineStore("rebel", () => {
             postObj.name = latestPostsResp.namesArray[i];
             postObj.mediaHash = latestPostsResp.mediaHashesArray[i];
             postObj.metaHash = latestPostsResp.metaHashesArray[i];
-            postObj.likes = latestPostsResp.likesArray[i].toNumber();
-            postObj.id = latestPostsResp.idArray[i].toNumber();
-            latestPostsArray.value.push(latestPostsResp.idArray[i].toNumber());
+            postObj.likes = latestPostsResp.likesArray[i];
+            postObj.id = latestPostsResp.idArray[i];
+            latestPostsArray.value.push(latestPostsResp.idArray[i]);
             latestPosts.value.push(postObj);
             // reverse so most recent is first in list
             latestPostsArray.value = latestPostsArray.value.reverse();
@@ -203,13 +205,11 @@ export const useRebelStore = defineStore("rebel", () => {
           signer
         );
         const userResp = await rebelContract.getUserByOwner(address);
-        if (userResp.postCount.toNumber() != 0) {
-          const userObj = new Object();
-          userObj.amtEarned = ethers.utils.formatEther(userResp.amtEarned);
-          userObj.postCount = userResp.postCount.toNumber();
-          userObj.totalLikes = userResp.totalLikes.toNumber();
-          user.value = userObj;
-        }
+        const userObj = new Object();
+        userObj.amtEarned = ethers.utils.formatEther(userResp.amtEarned);
+        userObj.postCount = userResp.postCount;
+        userObj.totalLikes = userResp.totalLikes;
+        user.value = userObj;
       }
     } catch (e) {
       console.log("e", e);

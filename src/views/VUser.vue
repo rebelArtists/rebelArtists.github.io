@@ -5,7 +5,7 @@
         <!-- <div v-if="this.stateLoaded && !routedUser.profPicHash">
           <ErrorPage />
         </div> -->
-        <div v-if="this.stateLoaded && routedUser.profPicHash">
+        <div v-if="this.stateLoaded && user">
           <UserProfileHeader />
           <UserGallery @like-event="updateparent" />
         </div>
@@ -93,13 +93,13 @@ export default {
     });
 
     const rebelStore = useRebelStore();
-    const { account, routedUser } = storeToRefs(rebelStore);
+    const { account, user } = storeToRefs(rebelStore);
 
     provide("notyf", NotfyProvider);
 
     return {
       account,
-      routedUser,
+      user,
     };
   },
 };

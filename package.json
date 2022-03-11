@@ -4,6 +4,8 @@
   "description": "NFT Share File",
   "scripts": {
     "build": "vite build",
+    "compile": "npx hardhat compile",
+    "deploy-poly-dev": "npx hardhat run scripts/deploy-rebel.js --network mumbai",
     "dev": "vite",
     "format": "prettier .  --write",
     "lint-save": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",

@@ -57,7 +57,7 @@ export default {
     const isDragged = ref(false);
     const finished = ref(0);
     const isUploading = ref(false);
-    const { postContent, getPostsByUser } = useRebelStore();
+    const { postContent, getPostsByOwner } = useRebelStore();
     const rebelStore = useRebelStore();
     const { account } = storeToRefs(rebelStore);
     const name = ref("");
@@ -111,7 +111,7 @@ export default {
       );
       const { data } = result;
       await postContent(name.value, data.fileCid, data.metaCid);
-      getPostsByUser(account.value);
+      getPostsByOwner(account._rawValue);
 
       finished.value++;
 

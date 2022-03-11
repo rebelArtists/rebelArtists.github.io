@@ -139,7 +139,7 @@ function getPosts(uint32 endingIndex) external view returns(
   uint32 startingIndex = endingIndex.sub(assetsToFetch);
   uint32 loopCounter = 0;
 
-  for (uint32 i = startingIndex; i <= endingIndex; i++) {
+  for (uint32 i = startingIndex; i < endingIndex; i++) {
       Post storage post = postsMap[i];
       names[loopCounter] = post.name;
       mediaHashes[loopCounter] = post.mediaHash;
