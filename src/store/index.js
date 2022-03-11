@@ -3,10 +3,10 @@ import { ref } from "vue";
 import Storage from "@src/services/storage";
 import { fetchIpfsMeta } from "@src/services/helpers";
 import { ethers } from "ethers";
-import contractABIrebel from "../artifacts/contracts/SocialHelper.sol/SocialHelper.json";
+import contractABIrebel from "../artifacts/contracts/rebel.sol/Rebel.json";
 
 const db = new Storage("app");
-const contractAddressRebel = "0xA2C793f51028897a76AA11908eF8CB7FA9cf39af";
+const contractAddressRebel = "0xE5f434273c0371df374D04300B728f021FB7245c";
 
 db.read();
 db.data || { version: "0.0.1", results: [] };
@@ -59,15 +59,11 @@ export const useRebelStore = defineStore("rebel", () => {
   const user = ref(null);
   const postedItems = ref([]);
   const postsArray = ref([]);
-  const isFollowingUser = ref(false);
   const likedArray = ref([]);
   const individualPost = ref([]);
   const routedUser = ref(null);
   const latestPosts = ref([]);
   const latestPostsArray = ref([]);
-  const usersToFollow = ref([]);
-  const followingPosts = ref([]);
-  const followingPostsArray = ref([]);
 
   async function postContent(name, mediaHash, metaHash) {
     try {
@@ -173,23 +169,22 @@ export const useRebelStore = defineStore("rebel", () => {
           contractABIrebel.abi,
           signer
         );
-        const postsList = await rebelContract.getPostById(postId);
+        const post = await rebelContract.getPostById(postId);
 
-        for (let i = 0; i < postsList.namesArray.length; i++) {
-          const postObj = new Object();
-          postObj.name = postsList.namesArray[i];
-          postObj.mediaHash = postsList.mediaHashesArray[i];
-          postObj.metaHash = postsList.metaHashesArray[i];
-          postObj.likes = postsList.likesArray[i].toNumber();
-          postObj.id = postsList.idArray[i].toNumber();
-          postObj.address = postsList.addressesArray[i];
+        const postObj = new Object();
+        postObj.name = post.name;
+        postObj.mediaHash = post.mediaHash;
+        postObj.metaHash = post.metaHash;
+        postObj.likes = post.likes.toNumber();
+        postObj.id = post.id.toNumber();
+        postObj.address = post.addressOwner;
 
-          const ipfsMetadata = await fetchIpfsMeta(postObj.metaHash);
-          postObj.description = ipfsMetadata.description;
-          postObj.attributes = ipfsMetadata.attributes;
-          individualPost.value = postObj;
-        }
-        await getUserByOwnerAddress(individualPost.value.address);
+        const ipfsMetadata = await fetchIpfsMeta(postObj.metaHash);
+        postObj.description = ipfsMetadata.description;
+        postObj.attributes = ipfsMetadata.attributes;
+        individualPost.value = postObj;
+
+        await getUserByOwner(individualPost.value.address);
       }
     } catch (e) {
       console.log("e", e);
@@ -208,7 +203,7 @@ export const useRebelStore = defineStore("rebel", () => {
           signer
         );
         const userResp = await rebelContract.getUserByOwner(address);
-        if (userResp.profPicHash != "") {
+        if (userResp.postCount.toNumber() != 0) {
           const userObj = new Object();
           userObj.amtEarned = ethers.utils.formatEther(userResp.amtEarned);
           userObj.postCount = userResp.postCount.toNumber();
@@ -297,9 +292,9 @@ export const useRebelStore = defineStore("rebel", () => {
 
       console.log("Connected: ", myAccounts[0]);
       account.value = myAccounts[0];
-      await getUserByOwner();
+      await getUserByOwner(account.value);
       if (user.value) {
-        await getPostsByUser(account.value);
+        await getPostsByOwner(account.value);
       }
     } catch (error) {
       console.log(error);
@@ -310,32 +305,20 @@ export const useRebelStore = defineStore("rebel", () => {
     connectWallet,
     account,
     postContent,
-    getPostsByUser,
+    getPostsByOwner,
     postedItems,
-    createUser,
     getUserByOwner,
     user,
-    followUser,
     likePost,
-    isFollowing,
-    isFollowingUser,
     isLiked,
     likedArray,
     postsArray,
     unlikePost,
-    unfollowUser,
     getPostById,
     individualPost,
-    getUserByName,
-    getPostsByUserName,
     routedUser,
     getPostsLatest,
     latestPosts,
-    latestPostsArray,
-    getUsersToFollow,
-    usersToFollow,
-    followingPosts,
-    followingPostsArray,
-    getPostsFollowing,
+    latestPostsArray
   };
 });

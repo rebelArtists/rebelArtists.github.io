@@ -35,8 +35,8 @@ export default {
   },
   methods: {
     async updateparent() {
-      const { getUserByOwner } = useRebelStore();
-      await getUserByOwner();
+      // const { getUserByOwner } = useRebelStore();
+      // await getUserByOwner();
       this.componentKey += 1;
     },
   },

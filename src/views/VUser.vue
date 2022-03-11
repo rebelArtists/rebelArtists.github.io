@@ -51,12 +51,11 @@ export default {
   },
   methods: {
     async getUserContent() {
-      const { isFollowing, getUserByName } = useRebelStore();
+      const { getUserByOwner } = useRebelStore();
       const rebelStore = useRebelStore();
       const { user } = storeToRefs(rebelStore);
       if (this.$route.params.name) {
-        await getUserByName(this.$route.params.name);
-        await isFollowing(user.value.id);
+        await getUserByOwner(this.$route.params.name);
       }
       this.stateLoaded = true;
     },

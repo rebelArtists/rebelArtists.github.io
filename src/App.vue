@@ -27,7 +27,6 @@
 <script>
 import AppHeader from "@src/components/AppHeader.vue";
 import ReloadPrompt from "@src/components/ReloadPrompt.vue";
-import CreateProfile from "@src/components/VUpload/CreateProfile.vue";
 import { storeToRefs } from "pinia";
 import { useRebelStore } from "@src/store/index";
 import { provide } from "vue";
@@ -38,8 +37,7 @@ export default {
   name: "App",
   components: {
     AppHeader,
-    ReloadPrompt,
-    CreateProfile,
+    ReloadPrompt
   },
   data() {
     return {
