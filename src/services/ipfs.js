@@ -18,9 +18,9 @@ export const uploadBlob = async (file, name, description, attributes) => {
 
   let detail = getCidDetail({ metaCid: null, fileCid: null, file });
 
-  // Max 50MB Upload
-  if (file.size > 52428800) {
-    return [new Error(`Maximum file size to be upload is 50 MB`), detail];
+  // Max 100MB Upload
+  if (file.size > 104857600) {
+    return [new Error(`Maximum file size to be upload is 100 MB`), detail];
   }
 
   try {

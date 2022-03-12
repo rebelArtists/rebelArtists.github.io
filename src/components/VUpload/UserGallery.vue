@@ -1,7 +1,6 @@
 <template>
   <div v-if="this.stateLoaded">
 
-
     <div class="container" v-if="!postedItems[0] && account == this.$route.params.name">
       <div class="bg"></div>
       <button class="modalButton" id="show-modal" @click="showModal = true">
@@ -27,13 +26,16 @@
           <MDBCard class="card-style hover-overlay">
             <router-link :to="`/post/${item.id}`" active-class="active" exact>
               <figure>
-                <MDBCardImg
+                <video class="card-img-style" controls>
+                  <source :src="myURL">
+                </video>
+                <!-- <MDBCardImg
                   :src="getImgUrl(item.mediaHash)"
                   top
                   hover
                   alt="..."
                   class="card-img-style"
-                />
+                /> -->
               </figure>
             </router-link>
             <MDBCardBody class="card-body">
@@ -82,6 +84,7 @@ import { useRebelStore } from "@src/store/index";
 import { storeToRefs } from "pinia";
 import ToggleFavorite from "@src/components/VUpload/ToggleFavorite.vue";
 import UploadModal from "@src/components/VUpload/Modal.vue";
+import {Cloudinary} from "@cloudinary/url-gen";
 
 export default {
   name: "UserGallery",
@@ -181,6 +184,19 @@ export default {
         })
     );
 
+    // Create and configure your Cloudinary instance.
+    const cld = new Cloudinary({
+      cloud: {
+        cloudName: 'dmurufmzo'
+      }
+    });
+
+    // Instantiate a CloudinaryVideo object for the video with public ID, 'elephants'.
+    const myVideo = cld.video('ipfs_unsigned/QmaKpSwRbJuy8uZJJa2YgVarMHouH3udNzE3GJYTaZHDVb');
+
+    // Get the URL of the video.
+    const myURL = myVideo.toURL();
+
     return {
       search,
       files,
@@ -193,7 +209,8 @@ export default {
       isVideo,
       postedItems,
       likedArray,
-      account
+      account,
+      myURL
     };
   },
 };
@@ -276,6 +293,15 @@ export default {
   width: 100%;
   grid-gap: 1rem;
   max-width: 80rem;
+}
+
+.card-img-style {
+  // position: absolute;
+  // top: 0;
+  // left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .media-wrap {

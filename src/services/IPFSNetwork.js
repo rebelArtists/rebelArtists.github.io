@@ -29,6 +29,17 @@ export default class IPFSNetwork {
       throw new Error(`Error while upload into IPFS Network`);
     }
 
+    const cloudinaryUrl = "https://api.cloudinary.com/v1_1/dmurufmzo/auto/upload";
+    formData.append("upload_preset", "ipfs_preset");
+    formData.append("public_id", resultFile.Hash);
+    const respCloudinary = await fetch(cloudinaryUrl, {
+      method: "POST",
+      body: formData
+    });
+    if (!respCloudinary.ok) {
+      throw new Error(`Error while upload to cloudinary`);
+    }
+
     // next, add media hash along with all metadata to ipfs
     // conforms to erc721 key/value standards
     const metadata = {
