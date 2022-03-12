@@ -197,7 +197,7 @@ export default {
   font-size: 13px;
   grid-row: 1 / 1;
   grid-column: 3 / 3;
-  font-weight: 999;
+  font-weight: 900;
 }
 
 .shareButton {
@@ -205,10 +205,11 @@ export default {
   grid-row: 1 / 1;
   grid-column: 5 / 5;
   font-weight: 900;
+  margin-left: -55px;
 }
 
 .likeCount {
-  grid-column: 3 / 3;
+  grid-column: 5 / 5;
   grid-row: 2 / 2;
 }
 
@@ -218,7 +219,7 @@ export default {
 }
 
 .amtEarned {
-  grid-column: 5 / 5;
+  grid-column: 3 / 3;
   grid-row: 2 / 2;
 }
 
