@@ -27,7 +27,9 @@
     "notyf": "^3.10.0",
     "pinia": "^2.0.0-rc.6",
     "vue": "^3.2.4",
-    "vue-router": "^4.0.10"
+    "vue-router": "^4.0.10",
+    "vue-social-sharing": "^4.0.0-alpha4",
+    "vue-socialmedia-share": "^1.0.1"
   },
   "devDependencies": {
     "@iconify/json": "^1.1.390",

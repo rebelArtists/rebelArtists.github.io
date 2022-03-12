@@ -4,6 +4,7 @@ import { isRunningOnPWA } from "@src/services/helpers";
 
 import App from "@src/App.vue";
 import router from "@src/router";
+import VueSocialSharing from 'vue-social-sharing'
 
 import "@src/styles/styles.scss";
 import "notyf/notyf.min.css";
@@ -11,7 +12,7 @@ import "notyf/notyf.min.css";
 const app = createApp(App);
 const pinia = createPinia();
 
-app.use(pinia).use(router);
+app.use(pinia).use(router).use(VueSocialSharing);
 
 if (isRunningOnPWA()) window.resizeTo(985, 677);
 
