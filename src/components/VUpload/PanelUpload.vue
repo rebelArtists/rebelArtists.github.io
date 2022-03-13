@@ -110,7 +110,15 @@ export default {
         attributes.value
       );
       const { data } = result;
-      await postContent(name.value, data.fileCid, data.metaCid);
+      let fileType = "";
+      if (data.file.type.includes("image")) {
+        fileType = "image"
+      } else if (data.file.type.includes("video")) {
+        fileType = "video"
+      } else if (data.file.type.includes("audio")) {
+        fileType = "audio"
+      }
+      await postContent(name.value, data.fileCid, data.metaCid, fileType);
       getPostsByOwner(account._rawValue);
 
       finished.value++;

@@ -59,7 +59,7 @@ contract Rebel is PostFactory {
   function getPostsByOwner(address _owner, uint endingIndex) external view returns(
     string[] memory namesArray,
     string[] memory mediaHashesArray,
-    string[] memory metaHashesArray,
+    string[] memory mediaTypeArray,
     uint32[] memory likesArray,
     uint32[] memory idArray
     ) {
@@ -75,12 +75,12 @@ contract Rebel is PostFactory {
 
     string[] memory names = new string[](assetsToFetch);
     string[] memory mediaHashes = new string[](assetsToFetch);
-    string[] memory metaHashes = new string[](assetsToFetch);
+    string[] memory mediaTypes = new string[](assetsToFetch);
     uint32[] memory likes = new uint32[](assetsToFetch);
     uint32[] memory postIds = new uint32[](assetsToFetch);
 
     if (ownerPostIds.length == 0) {
-      return (names, mediaHashes, metaHashes, likes, postIds);
+      return (names, mediaHashes, mediaTypes, likes, postIds);
     }
 
     uint startingIndex = endingIndex.sub(assetsToFetch);
@@ -90,13 +90,13 @@ contract Rebel is PostFactory {
         Post storage post = postsMap[ownerPostIds[i]];
         names[loopCounter] = post.name;
         mediaHashes[loopCounter] = post.mediaHash;
-        metaHashes[loopCounter] = post.metaHash;
+        mediaTypes[loopCounter] = post.mediaType;
         likes[loopCounter] = post.likes;
         postIds[loopCounter] = ownerPostIds[i];
         loopCounter = loopCounter.add(1);
     }
 
-    return (names, mediaHashes, metaHashes, likes, postIds);
+    return (names, mediaHashes, mediaTypes, likes, postIds);
   }
 
   function getPostCount() external view returns (
@@ -114,7 +114,7 @@ contract Rebel is PostFactory {
   function getPosts(uint32 endingIndex) external view returns(
     string[] memory namesArray,
     string[] memory mediaHashesArray,
-    string[] memory metaHashesArray,
+    string[] memory mediaTypeArray,
     uint32[] memory likesArray,
     uint32[] memory idArray
     ) {
@@ -129,12 +129,12 @@ contract Rebel is PostFactory {
 
     string[] memory names = new string[](assetsToFetch);
     string[] memory mediaHashes = new string[](assetsToFetch);
-    string[] memory metaHashes = new string[](assetsToFetch);
+    string[] memory mediaTypes = new string[](assetsToFetch);
     uint32[] memory likes = new uint32[](assetsToFetch);
     uint32[] memory postIds = new uint32[](assetsToFetch);
 
     if (postCounter == 0) {
-      return (names, mediaHashes, metaHashes, likes, postIds);
+      return (names, mediaHashes, mediaTypes, likes, postIds);
     }
 
     uint32 startingIndex = endingIndex.sub(assetsToFetch);
@@ -144,25 +144,27 @@ contract Rebel is PostFactory {
         Post storage post = postsMap[i];
         names[loopCounter] = post.name;
         mediaHashes[loopCounter] = post.mediaHash;
-        metaHashes[loopCounter] = post.metaHash;
+        mediaTypes[loopCounter] = post.mediaType;
         likes[loopCounter] = post.likes;
         postIds[loopCounter] = i;
         loopCounter = loopCounter.add(1);
     }
 
-    return (names, mediaHashes, metaHashes, likes, postIds);
+    return (names, mediaHashes, mediaTypes, likes, postIds);
   }
 
   function getPostById(uint32 _postId) external view returns(
     string memory name,
     string memory mediaHash,
     string memory metaHash,
+    string memory mediaType,
     uint32 likes,
     uint32 id,
     address addressOwner
   ) {
     Post storage post = postsMap[_postId];
-    return (post.name, post.mediaHash, post.metaHash, post.likes, _postId, postToOwner[_postId]);
+    address owner = postToOwner[_postId];
+    return (post.name, post.mediaHash, post.metaHash, post.mediaType, post.likes, _postId, owner);
   }
 
   function getUserByOwner(address _owner) external view returns(

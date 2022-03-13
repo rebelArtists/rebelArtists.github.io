@@ -26,16 +26,17 @@
           <MDBCard class="card-style hover-overlay">
             <router-link :to="`/post/${item.id}`" active-class="active" exact>
               <figure>
-                <video class="card-img-style" controls>
-                  <source :src="myURL">
+                <video v-if="item.mediaType == 'video' || item.mediaType == 'audio'" class="card-img-style" controls>
+                  <source :src="getCloudinaryUrlVideo(item.mediaHash)">
                 </video>
-                <!-- <MDBCardImg
-                  :src="getImgUrl(item.mediaHash)"
+                <MDBCardImg
+                  v-if="item.mediaType == 'image'"
+                  :src="getCloudinaryUrlImage(item.mediaHash)"
                   top
                   hover
                   alt="..."
                   class="card-img-style"
-                /> -->
+                />
               </figure>
             </router-link>
             <MDBCardBody class="card-body">
@@ -191,11 +192,15 @@ export default {
       }
     });
 
-    // Instantiate a CloudinaryVideo object for the video with public ID, 'elephants'.
-    const myVideo = cld.video('ipfs_unsigned/QmaKpSwRbJuy8uZJJa2YgVarMHouH3udNzE3GJYTaZHDVb');
+    const getCloudinaryUrlVideo = (ifpsHash) => {
+      const myVideo = cld.video(`ipfs_unsigned/${ifpsHash}`);
+      return myVideo.toURL();
+    };
 
-    // Get the URL of the video.
-    const myURL = myVideo.toURL();
+    const getCloudinaryUrlImage = (ifpsHash) => {
+      const myImage = cld.image(`ipfs_unsigned/${ifpsHash}`);
+      return myImage.toURL();
+    };
 
     return {
       search,
@@ -210,7 +215,8 @@ export default {
       postedItems,
       likedArray,
       account,
-      myURL
+      getCloudinaryUrlImage,
+      getCloudinaryUrlVideo
     };
   },
 };

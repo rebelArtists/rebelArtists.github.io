@@ -6,7 +6,7 @@ import { ethers } from "ethers";
 import contractABIrebel from "../artifacts/contracts/rebel.sol/Rebel.json";
 
 const db = new Storage("app");
-const contractAddressRebel = "0xB7AEaDb58a8adb1e133145995a0B80a1f4C36602";
+const contractAddressRebel = "0x0F9Faa391aBe93C548C68E1262eE7Caa04e75E79";
 
 db.read();
 db.data || { version: "0.0.1", results: [] };
@@ -65,7 +65,7 @@ export const useRebelStore = defineStore("rebel", () => {
   const latestPosts = ref([]);
   const latestPostsArray = ref([]);
 
-  async function postContent(name, mediaHash, metaHash) {
+  async function postContent(name, mediaHash, metaHash, mediaType) {
     try {
       const { ethereum } = window;
       if (ethereum) {
@@ -79,7 +79,8 @@ export const useRebelStore = defineStore("rebel", () => {
         const posted = await rebelContract.createPost(
           name,
           mediaHash,
-          metaHash
+          metaHash,
+          mediaType
         );
         console.log("Mining...", posted.hash);
         await posted.wait();
@@ -109,7 +110,7 @@ export const useRebelStore = defineStore("rebel", () => {
           const postObj = new Object();
           postObj.name = userPosts.namesArray[i];
           postObj.mediaHash = userPosts.mediaHashesArray[i];
-          postObj.metaHash = userPosts.metaHashesArray[i];
+          postObj.mediaType = userPosts.mediaTypeArray[i];
           postObj.likes = userPosts.likesArray[i];
           postObj.id = userPosts.idArray[i];
           postsArray.value.push(userPosts.idArray[i]);
@@ -144,7 +145,7 @@ export const useRebelStore = defineStore("rebel", () => {
           if (latestPostsResp.namesArray[i]) {
             postObj.name = latestPostsResp.namesArray[i];
             postObj.mediaHash = latestPostsResp.mediaHashesArray[i];
-            postObj.metaHash = latestPostsResp.metaHashesArray[i];
+            postObj.mediaType = latestPostsResp.mediaTypeArray[i];
             postObj.likes = latestPostsResp.likesArray[i];
             postObj.id = latestPostsResp.idArray[i];
             latestPostsArray.value.push(latestPostsResp.idArray[i]);
@@ -177,6 +178,7 @@ export const useRebelStore = defineStore("rebel", () => {
         postObj.name = post.name;
         postObj.mediaHash = post.mediaHash;
         postObj.metaHash = post.metaHash;
+        postObj.mediaType = post.mediaType;
         postObj.likes = post.likes;
         postObj.id = post.id;
         postObj.address = post.addressOwner;
