@@ -110,26 +110,20 @@ export default {
         attributes.value
       );
       const { data } = result;
-      let fileType = "";
-      if (data.file.type.includes("image")) {
-        fileType = "image"
-      } else if (data.file.type.includes("video")) {
-        fileType = "video"
-      } else if (data.file.type.includes("audio")) {
-        fileType = "audio"
-      }
+      const { error } = result;
 
       // figure out how to handle cancelled tx's by user
-      try {
-        await postContent(name.value, data.fileCid, data.metaCid, fileType);
-        getPostsByOwner(account._rawValue);
-      } catch (err) {
-        notyf.error("tx cancelled by user")
+      if (!error) {
+        try {
+          await postContent(name.value, data.fileCid, data.metaCid, data.fileType);
+          getPostsByOwner(account._rawValue);
+        } catch (err) {
+          notyf.error(`tx cancelled by user`);
+        }
       }
 
       finished.value++;
 
-      const { error } = result;
       if (error && error instanceof Error) notyf.error(error.message);
 
       context.emit("post-event", true);
@@ -144,18 +138,20 @@ export default {
 
       try {
         let results = await Promise.all(files);
-        const successfully = results.filter(({ error }) => !error);
+        const unsuccessfully = results.filter(({ error }) => Error);
+        console.log(successfully)
 
         store.resetFiles();
 
         fileRef.value.value = null;
 
-        if (successfully.length > 0) {
+        if (unsuccessfully.length == 0) {
           notyf.success(`NFT successfully created!`);
         }
       } catch (error) {
-        console.log(error);
-        notyf.error(`Shoot! Something went wrong creating NFT`);
+        finished.value = 0;
+        isUploading.value = false;
+        store.resetFiles();
       } finally {
         finished.value = 0;
         isUploading.value = false;
