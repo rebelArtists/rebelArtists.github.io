@@ -118,8 +118,14 @@ export default {
       } else if (data.file.type.includes("audio")) {
         fileType = "audio"
       }
-      await postContent(name.value, data.fileCid, data.metaCid, fileType);
-      getPostsByOwner(account._rawValue);
+
+      // figure out how to handle cancelled tx's by user
+      try {
+        await postContent(name.value, data.fileCid, data.metaCid, fileType);
+        getPostsByOwner(account._rawValue);
+      } catch (err) {
+        notyf.error("tx cancelled by user")
+      }
 
       finished.value++;
 
