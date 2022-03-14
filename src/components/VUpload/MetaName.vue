@@ -1,7 +1,13 @@
 <template>
   <div class="meta-name">
     <div class="name-span">
-      <span>Name:</span>
+      <span>Name</span>
+      <span v-if="!this.valid" class="warningText">
+        (alphanumeric between 3-60 characters)
+      </span>
+      <span v-if="this.valid" class="successfulText">
+        ✓
+      </span>
     </div>
     <input
       type="text"
@@ -23,6 +29,10 @@ export default {
       type: String,
       default: "new dope single",
     },
+    valid: {
+      type: Boolean,
+      default: false,
+    },
   },
 };
 </script>
@@ -37,6 +47,18 @@ export default {
 .name-span {
   padding-bottom: 10px;
   font-size: 13px;
+  font-weight: 900;
+}
+
+.warningText {
+  font-size: 9px;
+  color: yellow;
+  font-style: italic;
+}
+
+.successfulText {
+  font-size: 12px;
+  color: green;
 }
 
 .name-input {
