@@ -13,7 +13,7 @@
           <MDBCard class="card-style hover-overlay">
             <router-link :to="`/post/${item.id}`" active-class="active" exact>
               <figure>
-                <video v-if="item.mediaType == 'video' || item.mediaType == 'audio'" class="card-img-style" controls>
+                <video v-if="item.mediaType == 'video' || item.mediaType == 'audio'" class="card-img-style" controls controlsList="nodownload">
                   <source :src="getCloudinaryUrlVideo(item.mediaHash)">
                 </video>
                 <MDBCardImg
@@ -71,7 +71,7 @@ import { useRebelStore } from "@src/store/index";
 import { storeToRefs } from "pinia";
 import ToggleFavorite from "@src/components/VUpload/ToggleFavorite.vue";
 import UploadModal from "@src/components/VUpload/Modal.vue";
-import {Cloudinary} from "@cloudinary/url-gen";
+import { getCloudinaryUrlImage, getCloudinaryUrlVideo } from "@src/services/helpers";
 
 export default {
   name: "UserLikedGallery",
@@ -127,23 +127,6 @@ export default {
 
     const rebelStore = useRebelStore();
     const { likedPostItems, likedPostArray, account } = storeToRefs(rebelStore);
-
-    // Create and configure your Cloudinary instance.
-    const cld = new Cloudinary({
-      cloud: {
-        cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
-      }
-    });
-
-    const getCloudinaryUrlVideo = (ifpsHash) => {
-      const myVideo = cld.video(`ipfs_signed/${ifpsHash}`);
-      return myVideo.toURL();
-    };
-
-    const getCloudinaryUrlImage = (ifpsHash) => {
-      const myImage = cld.image(`ipfs_signed/${ifpsHash}`);
-      return myImage.toURL();
-    };
 
     return {
       likedPostItems,

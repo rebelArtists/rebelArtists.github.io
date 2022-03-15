@@ -6,8 +6,12 @@
           <MDBCard class="card-style hover-overlay">
             <router-link :to="`/post/${item.id}`" active-class="active" exact>
               <figure>
+                <video v-if="item.mediaType == 'video' || item.mediaType == 'audio'" class="card-img-style" controls controlsList="nodownload">
+                  <source :src="getCloudinaryUrlVideo(item.mediaHash)">
+                </video>
                 <MDBCardImg
-                  :src="getImgUrl(item.mediaHash)"
+                  v-if="item.mediaType == 'image'"
+                  :src="getCloudinaryUrlImage(item.mediaHash)"
                   top
                   hover
                   alt="..."
@@ -54,6 +58,7 @@ import { useRebelStore } from '@src/store/index';
 import { storeToRefs } from 'pinia';
 import LikersModal from "@src/components/VUpload/LikersModal.vue";
 import ToggleFavorite from "@src/components/VUpload/ToggleFavorite.vue";
+import { getCloudinaryUrlImage, getCloudinaryUrlVideo } from "@src/services/helpers";
 
 export default {
   name: "DiscoverFeed",
@@ -159,7 +164,9 @@ export default {
       getImgUrl,
       isVideo,
       latestPosts,
-      likedArray
+      likedArray,
+      getCloudinaryUrlImage,
+      getCloudinaryUrlVideo
     }
   }
 }
@@ -208,6 +215,15 @@ export default {
 .bg {
   animation: pulse 1.2s ease infinite;
   background: var(--loader-color-primary);
+}
+
+.card-img-style {
+  // position: absolute;
+  // top: 0;
+  // left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .modalButton {

@@ -4,9 +4,14 @@
       <div class="box2 itemMedia">
         <div class="media-wrap">
           <MDBCard class="card-style hover-overlay">
+            <video v-if="individualPost.mediaType == 'video' || individualPost.mediaType == 'audio'" class="card-img-style" controls controlsList="nodownload">
+              <source :src="getCloudinaryUrlVideo(individualPost.mediaHash)">
+            </video>
             <MDBCardImg
-              :src="getImgUrl(individualPost.mediaHash)"
+              v-if="individualPost.mediaType == 'image'"
+              :src="getCloudinaryUrlImage(individualPost.mediaHash)"
               top
+              hover
               alt="..."
               class="card-img-style"
             />
@@ -126,6 +131,7 @@ import ToggleFavorite from "@src/components/VUpload/ToggleFavorite.vue";
 import LikersModal from "@src/components/VUpload/LikersModal.vue";
 import { createAvatar } from '@dicebear/avatars';
 import * as style from '@dicebear/avatars-bottts-sprites';
+import { getCloudinaryUrlImage, getCloudinaryUrlVideo } from "@src/services/helpers";
 
 export default {
   name: "VPost",
@@ -217,7 +223,9 @@ export default {
       account,
       getImgUrl,
       likedArray,
-      getAvatar
+      getAvatar,
+      getCloudinaryUrlImage,
+      getCloudinaryUrlVideo
     };
   },
 };
@@ -402,6 +410,15 @@ export default {
   position: relative;
   margin-top: -3px;
   margin-left: 15px;
+}
+
+.card-img-style {
+  // position: absolute;
+  // top: 0;
+  // left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .svgIpfs {

@@ -1,4 +1,22 @@
 import { ethers } from "ethers";
+import {Cloudinary} from "@cloudinary/url-gen";
+
+// Create and configure your Cloudinary instance.
+const cld = new Cloudinary({
+  cloud: {
+    cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+  }
+});
+
+export const getCloudinaryUrlVideo = (ifpsHash) => {
+  const myVideo = cld.video(`ipfs_signed/${ifpsHash}`);
+  return myVideo.toURL();
+};
+
+export const getCloudinaryUrlImage = (ifpsHash) => {
+  const myImage = cld.image(`ipfs_signed/${ifpsHash}`);
+  return myImage.toURL();
+};
 
 /**
  * File size human readble
