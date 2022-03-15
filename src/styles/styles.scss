@@ -20,6 +20,11 @@ body {
     #facc15,
     #f97316
   );
+  --linear-gradient-post-panel: linear-gradient(
+    to bottom right,
+    rgba(250, 204, 21, .5),
+    rgba(249, 115, 22, .5)
+  );
   --loader-color-primary: #facc15;
   --loader-color-secondary: #f97316;
   --svg-color: black;
@@ -64,6 +69,11 @@ body {
       to bottom right,
       #a855f7,
       #6366f1
+    );
+    --linear-gradient-post-panel: linear-gradient(
+      to bottom right,
+      rgba(168, 85, 247, .5)
+      rgba(99, 102, 241, .5)
     );
     --loader-color-primary: #a855f7;
     --loader-color-secondary: #6366f1;

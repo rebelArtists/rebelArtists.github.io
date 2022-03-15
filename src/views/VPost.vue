@@ -2,8 +2,7 @@
   <div v-if="this.postReady">
     <div class="wrapper3">
       <div class="box2 itemMedia">
-        <div class="media-wrap">
-          <MDBCard class="card-style hover-overlay">
+          <MDBCard class="card-style-post hover-overlay">
             <figure class="figureClassPost">
               <video v-if="individualPost.mediaType == 'video' || individualPost.mediaType == 'audio'" class="card-img-style-post" controls controlsList="nodownload">
                 <source :src="getCloudinaryUrlVideo(individualPost.mediaHash)">
@@ -18,7 +17,6 @@
               />
             </figure>
           </MDBCard>
-        </div>
       </div>
       <div class="box2 userName">
         <router-link :to="`/user/${individualPost.address}`" exact>
@@ -67,15 +65,18 @@
         </Teleport>
 
         <div v-if="!likedArray[0]" id="favoriting" class="likeHeart">
-          <ToggleFavorite :id="individualPost.id" @like-event="updateparent" />
+          <ToggleFavorite class="faveButton" :id="individualPost.id" @like-event="updateparent" />
         </div>
         <div v-if="likedArray[0]" id="favoriting" class="likeHeart">
           <ToggleFavorite
+            class="faveButton"
             :id="individualPost.id"
             :intialFavorited="true"
             @like-event="updateparent"
           />
         </div>
+      </div>
+      <div class="itemBackground">
       </div>
       <div class="box2 itemIpfs">
         <a :href="getImgUrl(individualPost.mediaHash)" title="IPFS Media">
@@ -235,6 +236,11 @@ export default {
 
 <style lang="scss">
 
+.faveButton {
+  margin-left: 2px;
+  margin-top: -2px;
+}
+
 .figureClassPost {
   width: 100%;
   height: 100%;
@@ -287,21 +293,23 @@ export default {
   height: 60vh;
   display: grid;
   grid-gap: 10px;
-  grid-template-columns: 20% 15% 25%;
-  grid-template-rows: 15% 10% 15% 43% 12%;
+  grid-template-columns: 250px 120px 250px;
+  grid-template-rows: 15% 10% 15% 38% 12%;
   justify-content: center;
 }
 
 .card-img-style-post {
   width: 100%;
   height: 100%;
+  display: flex;
   object-fit: cover;
+  border-radius: 0.6rem;
+  margin-top: -13px;
 }
 
 .box2 {
-  background-image: var(--liniear-gradient-color-2);
+  // background-image: var(--liniear-gradient-color-2);
   border-radius: 10px;
-  max-width: 80rem;
   display: flex;
 }
 
@@ -309,12 +317,12 @@ export default {
   grid-column: 1 / 3;
   grid-row: 1 / 6;
   justify-content: center;
-  align-content: end;
-  background-color: transparent;
+  z-index: -1;
+  background-image: var(--liniear-gradient-color-2);
 }
 
 .userName {
-  font-size: 13px;
+  font-size: 11px;
   grid-column: 3 / 3;
   grid-row: 1 / 1;
   font-weight: 999;
@@ -327,8 +335,8 @@ export default {
   grid-row: 2 / 2;
   padding: 10px;
   padding-left: 15px;
-  font-size: 12px;
-  font-weight: 999;
+  font-size: 13px;
+  font-weight: 900;
 }
 
 .itemDescription {
@@ -356,57 +364,22 @@ export default {
   padding: 5px;
   width: 40px;
   height: 20px;
+  margin-top: -5px;
 }
 
-.card-style {
-  background-image: var(--liniear-gradient-color-2);
+.itemBackground {
+  grid-column: 3 / 3;
+  grid-row: 1 / 6;
+  z-index: -1;
+  // background-image: var(--linear-gradient-post-panel);
+  border-radius: 10px;
+}
+
+.card-style-post {
   border-radius: 0.8rem;
-}
-
-.card-body {
-  padding-right: 10px;
-  padding-left: 10px;
-  padding-bottom: 10px;
-  font-size: 13px;
-}
-
-.media-wrap {
-  overflow: hidden;
-  position: relative;
-  max-width: 80rem;
-  height: 100%;
-}
-
-.gallery {
-  display: grid;
-  grid-template-columns: 200px 200px 200px;
-  grid-gap: 1rem;
-  max-width: 80rem;
-  margin: 5rem auto;
-  padding: 0.8rem;
-}
-
-.gallery-panel img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 0.75rem;
-}
-
-.image-fit {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  width: 300px; /*set the width or max-width*/
-  height: auto; /*this makes sure to maintain the aspect ratio*/
-  text-align: center; /*for centering images inside*/
-}
-
-.vid-fit {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  border-radius: 0.8rem;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
 }
 
 .round-image-post {
