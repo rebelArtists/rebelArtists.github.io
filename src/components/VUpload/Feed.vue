@@ -5,7 +5,7 @@
         <div class="media-wrap">
           <MDBCard class="card-style hover-overlay">
             <router-link :to="`/post/${item.id}`" active-class="active" exact>
-              <figure>
+              <figure class="figureClassFeed">
                 <video v-if="item.mediaType == 'video' || item.mediaType == 'audio'" class="card-img-style" controls controlsList="nodownload">
                   <source :src="getCloudinaryUrlVideo(item.mediaHash)">
                 </video>
@@ -174,6 +174,14 @@ export default {
 
 <style lang="scss">
 
+.figureClassFeed {
+  width: 100%;
+  height: 100%;
+  align-content: center;
+  margin-left: auto;
+  object-fit: cover;
+}
+
 .likesHover {
   cursor: pointer;
   font-size: 11px;
@@ -258,9 +266,12 @@ export default {
 
 .card-body {
   padding-right: 10px;
-  padding-left: 15px;
-  padding-top: 3px;
+  padding-left: 20px;
+  padding-bottom: 10px;
   font-size: 13px;
+  margin-left: 7px;
+  height: 60px;
+  margin-top: -2px;
 }
 
 .wrapperFeed {

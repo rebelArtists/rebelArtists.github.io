@@ -17,17 +17,17 @@
 
     <div class="container" v-if="!postedItems[0] && account != this.$route.params.name">no posts yet.</div>
 
-    <div class="wrapper">
+    <div class="wrapperGallery">
       <div
         class="gallery-panel"
         v-for="(item, index) in postedItems"
         :key="index"
       >
-        <div class="media-wrap">
+        <div class="media-wrap-gallery">
           <MDBCard class="card-style hover-overlay">
             <router-link :to="`/post/${item.id}`" active-class="active" exact>
-              <figure>
-                <video v-if="item.mediaType == 'video' || item.mediaType == 'audio'" class="card-img-style" controls controlsList="nodownload">
+              <figure class="figureClass">
+                <video v-if="item.mediaType == 'video' || item.mediaType == 'audio'" class="card-img-style-gallery" controls controlsList="nodownload">
                   <source :src="getCloudinaryUrlVideo(item.mediaHash)">
                 </video>
                 <MDBCardImg
@@ -36,7 +36,7 @@
                   top
                   hover
                   alt="..."
-                  class="card-img-style"
+                  class="card-img-style-gallery"
                 />
               </figure>
             </router-link>
@@ -177,6 +177,16 @@ export default {
   cursor: pointer;
 }
 
+.card-style figure video {
+  opacity: 1;
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
+.card-style figure:hover video {
+  opacity: 0.5;
+  cursor: pointer;
+}
+
 .bg,
 .modalButton {
   position: relative;
@@ -227,6 +237,10 @@ export default {
 .card-style {
   background-image: var(--liniear-gradient-color-2);
   border-radius: 0.8rem;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
 }
 
 .card-body {
@@ -234,43 +248,48 @@ export default {
   padding-left: 20px;
   padding-bottom: 10px;
   font-size: 13px;
-  margin-left: 15px;
+  margin-left: 7px;
+  height: 60px;
+  margin-top: -2px;
 }
 
-.wrapper {
+.wrapperGallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   grid-auto-rows: repeat(3, 1fr);
   width: 100%;
   grid-gap: 1rem;
   max-width: 80rem;
 }
 
-.card-img-style {
-  // position: absolute;
-  // top: 0;
-  // left: 0;
+.card-img-style-gallery {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.media-wrap {
+.figureClass {
+  width: 100%;
+  height: 100%;
+  align-content: center;
+  margin-left: auto;
+  object-fit: cover;
+}
+
+.media-wrap-gallery {
   overflow: hidden;
   position: relative;
   max-width: 80rem;
 }
 
-.gallery {
-  display: grid;
-  grid-template-columns: 200px 200px 200px;
-  grid-gap: 1rem;
-  max-width: 80rem;
-  margin: 5rem auto;
-  padding: 0.8rem;
+.gallery-panel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.75rem;
 }
 
-.gallery-panel img {
+.gallery-panel video {
   width: 100%;
   height: 100%;
   object-fit: cover;

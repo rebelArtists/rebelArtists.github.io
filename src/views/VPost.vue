@@ -4,17 +4,19 @@
       <div class="box2 itemMedia">
         <div class="media-wrap">
           <MDBCard class="card-style hover-overlay">
-            <video v-if="individualPost.mediaType == 'video' || individualPost.mediaType == 'audio'" class="card-img-style" controls controlsList="nodownload">
-              <source :src="getCloudinaryUrlVideo(individualPost.mediaHash)">
-            </video>
-            <MDBCardImg
-              v-if="individualPost.mediaType == 'image'"
-              :src="getCloudinaryUrlImage(individualPost.mediaHash)"
-              top
-              hover
-              alt="..."
-              class="card-img-style"
-            />
+            <figure class="figureClassPost">
+              <video v-if="individualPost.mediaType == 'video' || individualPost.mediaType == 'audio'" class="card-img-style-post" controls controlsList="nodownload">
+                <source :src="getCloudinaryUrlVideo(individualPost.mediaHash)">
+              </video>
+              <MDBCardImg
+                v-if="individualPost.mediaType == 'image'"
+                :src="getCloudinaryUrlImage(individualPost.mediaHash)"
+                top
+                hover
+                alt="..."
+                class="card-img-style-post"
+              />
+            </figure>
           </MDBCard>
         </div>
       </div>
@@ -233,6 +235,14 @@ export default {
 
 <style lang="scss">
 
+.figureClassPost {
+  width: 100%;
+  height: 100%;
+  align-content: center;
+  margin-left: auto;
+  object-fit: cover;
+}
+
 .likesHover {
   cursor: pointer;
   font-size: 11px;
@@ -282,9 +292,10 @@ export default {
   justify-content: center;
 }
 
-.card-img-style {
-  max-width: 100%;
-  max-height: 100%;
+.card-img-style-post {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .box2 {
@@ -410,15 +421,6 @@ export default {
   position: relative;
   margin-top: -3px;
   margin-left: 15px;
-}
-
-.card-img-style {
-  // position: absolute;
-  // top: 0;
-  // left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .svgIpfs {

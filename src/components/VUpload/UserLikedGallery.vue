@@ -12,7 +12,7 @@
         <div class="media-wrap">
           <MDBCard class="card-style hover-overlay">
             <router-link :to="`/post/${item.id}`" active-class="active" exact>
-              <figure>
+              <figure class="figureClassLiked">
                 <video v-if="item.mediaType == 'video' || item.mediaType == 'audio'" class="card-img-style" controls controlsList="nodownload">
                   <source :src="getCloudinaryUrlVideo(item.mediaHash)">
                 </video>
@@ -141,6 +141,14 @@ export default {
 
 <style lang="scss">
 
+.figureClassLiked {
+  width: 100%;
+  height: 100%;
+  align-content: center;
+  margin-left: auto;
+  object-fit: cover;
+}
+
 .likesHover {
   cursor: pointer;
   font-size: 11px;
@@ -207,22 +215,29 @@ export default {
 .card-style {
   background-image: var(--liniear-gradient-color-2);
   border-radius: 0.8rem;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
 }
 
 .card-body {
   padding-right: 10px;
-  padding-left: 10px;
+  padding-left: 20px;
   padding-bottom: 10px;
   font-size: 13px;
+  margin-left: 7px;
+  height: 60px;
+  margin-top: -2px;
 }
 
 .wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   grid-auto-rows: repeat(3, 1fr);
   width: 100%;
   grid-gap: 1rem;
-  max-width: 80rem;
+  // max-width: 80rem;
 }
 
 .card-img-style {

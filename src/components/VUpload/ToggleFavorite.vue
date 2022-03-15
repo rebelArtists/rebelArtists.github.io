@@ -125,6 +125,8 @@ $icon-border-color: var(--svg-color);
 .toggle-favorite {
   font-size: 20px;
   position: relative;
+  margin-left: -13px;
+  margin-top: -5px;
 
   &__icon {
     height: 1em;
