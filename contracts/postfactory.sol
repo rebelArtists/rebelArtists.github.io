@@ -26,6 +26,7 @@ contract PostFactory is Ownable, UserFactory {
   mapping (uint32 => Post) postsMap;
   mapping (uint32 => address) public postToOwner;
   mapping (address => uint32[]) public ownerToPostIds;
+  mapping (uint32 => address[]) public postToLikingUsers;
 
   modifier requiresUserExists() {
     if (userExists[msg.sender] != true) {

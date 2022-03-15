@@ -20,6 +20,7 @@ contract UserFactory is Ownable {
 
   mapping (address => User) usersMap;
   mapping (address => bool) userExists;
+  mapping (address => uint32[]) userLikedPosts;
 
   function createUser(address _address) internal {
 

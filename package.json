@@ -10,7 +10,8 @@
     "format": "prettier .  --write",
     "lint-save": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
     "lint-check": "eslint --ext .js,.vue --ignore-path .gitignore --fix-dry-run src",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "test": "export NODE_OPTIONS=--openssl-legacy-provider; npx hardhat test"
   },
   "homepage": "https://share.nyan.my.id",
   "dependencies": {

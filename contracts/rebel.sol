@@ -42,6 +42,8 @@ contract Rebel is PostFactory {
     postsMap[_postId].likes = postsMap[_postId].likes.add(1);
     address postOwner = postToOwner[_postId];
     postsMap[_postId].likesMap[msg.sender] = true;
+    userLikedPosts[msg.sender].push(_postId);
+    postToLikingUsers[_postId].push(msg.sender);
 
     uint fundsForOwner = msg.value.div(100).mul(98); // 2% cut for rebel
     payable(postOwner).transfer(fundsForOwner);
@@ -54,6 +56,73 @@ contract Rebel is PostFactory {
     postsMap[_postId].likesMap[msg.sender] = false;
     address postOwner = postToOwner[_postId];
     usersMap[postOwner].totalLikes = usersMap[postOwner].totalLikes.sub(1);
+  }
+
+  function getPostsLikedByOwnerList(address _owner) public view returns(
+    uint32[] memory postIdArray,
+    uint likesCount
+  ) {
+    uint32[] memory ownerLikedPostIds = userLikedPosts[_owner];
+    uint32 counter = 0;
+
+    for (uint i = 0; i < ownerLikedPostIds.length; i++) {
+      bool isLikedPost = postsMap[ownerLikedPostIds[i]].likesMap[_owner];
+      if (isLikedPost = true) {
+        counter = counter.add(1);
+      }
+    }
+    uint32[] memory trueLikes = new uint32[](counter);
+    for (uint i = 0; i < ownerLikedPostIds.length; i++) {
+      bool isLikedPost = postsMap[ownerLikedPostIds[i]].likesMap[_owner];
+      if (isLikedPost = true) {
+        trueLikes[i] = ownerLikedPostIds[i];
+      }
+    }
+
+    return (trueLikes, counter);
+  }
+
+  function getPostsLikedByOwner(address _owner, uint endingIndex) external view returns(
+    string[] memory namesArray,
+    string[] memory mediaHashesArray,
+    string[] memory mediaTypeArray,
+    uint32[] memory likesArray,
+    uint32[] memory idArray
+    ) {
+
+    (uint32[] memory ownerLikedPostIds,) = getPostsLikedByOwnerList(_owner);
+    uint assetsToFetch = 20;
+    if (endingIndex > ownerLikedPostIds.length) {
+      endingIndex = ownerLikedPostIds.length;
+    }
+    if (assetsToFetch > endingIndex) {
+      assetsToFetch = endingIndex;
+    }
+
+    string[] memory names = new string[](assetsToFetch);
+    string[] memory mediaHashes = new string[](assetsToFetch);
+    string[] memory mediaTypes = new string[](assetsToFetch);
+    uint32[] memory likes = new uint32[](assetsToFetch);
+    uint32[] memory postIds = new uint32[](assetsToFetch);
+
+    if (ownerLikedPostIds.length == 0) {
+      return (names, mediaHashes, mediaTypes, likes, postIds);
+    }
+
+    uint startingIndex = endingIndex.sub(assetsToFetch);
+    uint32 loopCounter = 0;
+
+    for (uint i = startingIndex; i < endingIndex; i++) {
+        Post storage post = postsMap[ownerLikedPostIds[i]];
+        names[loopCounter] = post.name;
+        mediaHashes[loopCounter] = post.mediaHash;
+        mediaTypes[loopCounter] = post.mediaType;
+        likes[loopCounter] = post.likes;
+        postIds[loopCounter] = ownerLikedPostIds[i];
+        loopCounter = loopCounter.add(1);
+    }
+
+    return (names, mediaHashes, mediaTypes, likes, postIds);
   }
 
   function getPostsByOwner(address _owner, uint endingIndex) external view returns(
@@ -98,6 +167,31 @@ contract Rebel is PostFactory {
 
     return (names, mediaHashes, mediaTypes, likes, postIds);
   }
+
+  function getAddresesWhoLiked(uint32 _postId) external view returns(
+    address[] memory addressArray
+    ) {
+
+      address[] memory likingUserAddresses = postToLikingUsers[_postId];
+      uint32 counter = 0;
+
+      for (uint i = 0; i < likingUserAddresses.length; i++) {
+        bool isLikedPost = postsMap[_postId].likesMap[likingUserAddresses[i]];
+        if (isLikedPost = true) {
+          counter = counter.add(1);
+        }
+      }
+      address[] memory trueLikeAddresses = new address[](counter);
+      for (uint i = 0; i < likingUserAddresses.length; i++) {
+        bool isLikedPost = postsMap[_postId].likesMap[likingUserAddresses[i]];
+        if (isLikedPost = true) {
+          trueLikeAddresses[i] = likingUserAddresses[i];
+        }
+      }
+
+      return (trueLikeAddresses);
+  }
+
 
   function getPostCount() external view returns (
     uint32 postCount

@@ -11,6 +11,7 @@ describe("Rebel Contract", function () {
   const postName = "rebel_one";
   const postMediaHash = "azv5dbk.XEQ8nmr0nah";
   const postMetaHash = "vkg-rap.tej6nvt0ZFC";
+  const postMediaType = "image";
 
   beforeEach(async function () {
     Rebel = await ethers.getContractFactory("Rebel");
@@ -22,7 +23,7 @@ describe("Rebel Contract", function () {
   describe("Post Creation", function () {
 
     it("Should create post at proper first index", async function () {
-      const newPost = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash);
+      const newPost = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash, postMediaType);
       await newPost.wait();
 
       // expect new post to be at first index
@@ -35,7 +36,7 @@ describe("Rebel Contract", function () {
       expect(postResp.addressOwner).to.equal(addr1.address)
     });
     it("Should create user if first time posting", async function () {
-      const newPost = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash);
+      const newPost = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash, postMediaType);
       await newPost.wait();
 
       const userResp = await rebel.getUserByOwner(addr1.address);
@@ -47,12 +48,12 @@ describe("Rebel Contract", function () {
       expect(postResp.namesArray.length).to.equal(1);
       expect(postResp.namesArray[0]).to.equal("rebel_one");
       expect(postResp.mediaHashesArray[0]).to.equal("azv5dbk.XEQ8nmr0nah");
-      expect(postResp.metaHashesArray[0]).to.equal("vkg-rap.tej6nvt0ZFC");
+      expect(postResp.mediaTypeArray[0]).to.equal("image");
       expect(postResp.likesArray[0]).to.equal(0);
       expect(postResp.idArray[0]).to.equal(0)
     });
     it("Should properly increment data on like", async function () {
-      const newPost = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash);
+      const newPost = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash, postMediaType);
       await newPost.wait();
 
       const likePost = await rebel.connect(addr2).likePost(
@@ -72,7 +73,7 @@ describe("Rebel Contract", function () {
       expect(likeBoolArray[0]).to.equal(true)
     });
     it("Should properly decrement data on unlike", async function () {
-      const newPost = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash);
+      const newPost = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash, postMediaType);
       await newPost.wait();
 
       // first another user likes
@@ -100,7 +101,7 @@ describe("Rebel Contract", function () {
       expect(ethers.utils.formatEther(userRespUnlike.amtEarned)).to.equal('0.0196');
     });
     it("Should properly udpate acct balances on like event", async function () {
-      const newPost = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash);
+      const newPost = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash, postMediaType);
       await newPost.wait();
 
       // get initial balances so we can compare money changes later
@@ -127,7 +128,7 @@ describe("Rebel Contract", function () {
       expect(ethers.utils.formatEther(contractBalance)).to.equal('0.0004');
     });
     it("Should error if user tries to like same NFT more than once", async function () {
-      const newPost = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash);
+      const newPost = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash, postMediaType);
       await newPost.wait();
 
       const likePost = await rebel.connect(addr2).likePost(
@@ -156,7 +157,7 @@ describe("Rebel Contract", function () {
     it("Should increment overall post counter correctly", async function () {
       const maxPosts = 3;
       for (i = 0; i < maxPosts; i++) {
-        const newPost = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash);
+        const newPost = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash, postMediaType);
         await newPost.wait();
       }
 
@@ -165,14 +166,14 @@ describe("Rebel Contract", function () {
     it("Should increment user post count correctly", async function () {
       const maxPosts = 3;
       for (i = 0; i < maxPosts; i++) {
-        const newPost = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash);
+        const newPost = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash, postMediaType);
         await newPost.wait();
       }
 
       expect(await rebel.getUserPostCount(addr1.address)).to.equal(3);
     });
     it("Should error if non-owner tries withdrawing contract balance", async function () {
-      const newPost = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash);
+      const newPost = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash, postMediaType);
       await newPost.wait();
 
       // after like event 2% tx fee kept in Rebel contract address
@@ -195,7 +196,7 @@ describe("Rebel Contract", function () {
       await nonOwnerTriesWithdrawal()
     });
     it("Should update owner balance correctly after withdrawal", async function () {
-      const newPost = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash);
+      const newPost = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash, postMediaType);
       await newPost.wait();
 
       // get initial balances so we can compare money changes later
@@ -242,6 +243,60 @@ describe("Rebel Contract", function () {
       // ensure new fee set correctly
       const newFee = await rebel.connect(owner).getTxFee()
       expect(ethers.utils.formatEther(newFee)).to.equal('0.05');
+    });
+    it("Should get owner liked posts", async function () {
+      const newPost1 = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash, postMediaType);
+      await newPost1.wait();
+
+      const newPost2 = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash, postMediaType);
+      await newPost2.wait();
+
+      // after like event 2% tx fee kept in Rebel contract address
+      const likePost1 = await rebel.connect(addr1).likePost(
+        0,
+        {value: ethers.utils.parseEther(".02")}
+      );
+      await likePost1.wait();
+
+      // after like event 2% tx fee kept in Rebel contract address
+      const likePost2 = await rebel.connect(addr1).likePost(
+        1,
+        {value: ethers.utils.parseEther(".02")}
+      );
+      await likePost2.wait();
+
+      const likedPostsCount = await rebel.getPostsLikedByOwnerList(addr1.address)
+      const totalCount = likedPostsCount.likesCount;
+      const getLikedPostsResp = await rebel.getPostsLikedByOwner(addr1.address, totalCount)
+
+      expect(getLikedPostsResp.idArray.length).to.equal(2)
+      expect(getLikedPostsResp.idArray[0]).to.equal(0)
+      expect(getLikedPostsResp.idArray[1]).to.equal(1)
+    });
+    it("Should get list of owners who like post", async function () {
+      const newPost1 = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash, postMediaType);
+      await newPost1.wait();
+
+      // after like event 2% tx fee kept in Rebel contract address
+      const likePost1 = await rebel.connect(addr1).likePost(
+        0,
+        {value: ethers.utils.parseEther(".02")}
+      );
+      await likePost1.wait();
+
+      // after like event 2% tx fee kept in Rebel contract address
+      const likePost2 = await rebel.connect(addr2).likePost(
+        0,
+        {value: ethers.utils.parseEther(".02")}
+      );
+      await likePost2.wait();
+
+      // check post id 0
+      const getLikedPostAddresses = await rebel.getAddresesWhoLiked(0)
+
+      expect(getLikedPostAddresses.length).to.equal(2)
+      expect(getLikedPostAddresses[0]).to.equal(addr1.address)
+      expect(getLikedPostAddresses[1]).to.equal(addr2.address)
     });
   });
 });
