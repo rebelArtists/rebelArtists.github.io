@@ -14,6 +14,7 @@
         </UploadModal>
       </Teleport>
     </div>
+
     <div class="container" v-if="!postedItems[0] && account != this.$route.params.name">no posts yet.</div>
 
     <div class="wrapper">
@@ -40,9 +41,17 @@
               </figure>
             </router-link>
             <MDBCardBody class="card-body">
-              <MDBCardText>Name: {{ item.name }} </MDBCardText>
+              <MDBCardText class="cardName"> {{ item.name }} </MDBCardText>
               <MDBCardText>
-                Likes: {{ item.likes }}
+                <a class="likesHover" @click="showLikersModal = true, idToCheck = item.id">
+                  {{ item.likes }} likes
+                </a>
+
+                <Teleport v-if="showLikersModal && idToCheck == item.id" to="body">
+                  <LikersModal :show="showLikersModal" :postId="item.id" @close="showLikersModal = false">
+                  </LikersModal>
+                </Teleport>
+
                 <div v-if="!likedArray[index]" id="favoriting">
                   <ToggleFavorite :id="item.id" @like-event="updateparent" />
                 </div>
@@ -79,6 +88,7 @@ import { useRebelStore } from "@src/store/index";
 import { storeToRefs } from "pinia";
 import ToggleFavorite from "@src/components/VUpload/ToggleFavorite.vue";
 import UploadModal from "@src/components/VUpload/Modal.vue";
+import LikersModal from "@src/components/VUpload/LikersModal.vue";
 import {Cloudinary} from "@cloudinary/url-gen";
 
 export default {
@@ -90,13 +100,16 @@ export default {
     MDBCardText,
     MDBCardImg,
     ToggleFavorite,
+    LikersModal,
     UploadModal
   },
   data() {
     return {
       componentKey: 0,
       showModal: false,
+      showLikersModal: false,
       stateLoaded: false,
+      idToCheck: null
     };
   },
   mounted() {
@@ -164,6 +177,13 @@ export default {
 </script>
 
 <style lang="scss">
+
+.likesHover {
+  cursor: pointer;
+  font-size: 11px;
+  text-decoration: underline;
+}
+
 .card-style figure img {
   opacity: 1;
   -webkit-transition: 0.3s ease-in-out;
@@ -228,9 +248,10 @@ export default {
 
 .card-body {
   padding-right: 10px;
-  padding-left: 10px;
+  padding-left: 20px;
   padding-bottom: 10px;
   font-size: 13px;
+  margin-left: 15px;
 }
 
 .wrapper {
@@ -287,6 +308,11 @@ export default {
   width: 100%;
   object-fit: cover;
   border-radius: 0.8rem;
+}
+
+.cardName {
+  font-size: 13px;
+  font-weight: 900;
 }
 
 #favoriting {

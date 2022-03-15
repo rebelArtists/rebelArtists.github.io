@@ -1,13 +1,24 @@
 <template>
   <div v-if="this.stateLoaded">
-    <div class="wrapperFeed">
-      <div class="gallery-panel" v-for="(item, index) in latestPosts" :key="index">
+
+    <div class="container" v-if="!likedPostItems[0]">no liked posts yet.</div>
+
+    <div class="wrapper">
+      <div
+        class="gallery-panel"
+        v-for="(item, index) in likedPostItems"
+        :key="index"
+      >
         <div class="media-wrap">
           <MDBCard class="card-style hover-overlay">
             <router-link :to="`/post/${item.id}`" active-class="active" exact>
               <figure>
+                <video v-if="item.mediaType == 'video' || item.mediaType == 'audio'" class="card-img-style" controls>
+                  <source :src="getCloudinaryUrlVideo(item.mediaHash)">
+                </video>
                 <MDBCardImg
-                  :src="getImgUrl(item.mediaHash)"
+                  v-if="item.mediaType == 'image'"
+                  :src="getCloudinaryUrlImage(item.mediaHash)"
                   top
                   hover
                   alt="..."
@@ -16,7 +27,7 @@
               </figure>
             </router-link>
             <MDBCardBody class="card-body">
-              <MDBCardText class="cardName">{{ item.name }} </MDBCardText>
+              <MDBCardText class="cardName"> {{ item.name }} </MDBCardText>
               <MDBCardText>
 
                 <a class="likesHover" @click="showLikersModal = true, idToCheck = item.id">
@@ -28,43 +39,50 @@
                   </LikersModal>
                 </Teleport>
 
-                <div v-if="!likedArray[index]" id="favoriting">
-                  <ToggleFavorite  :id="item.id" @like-event="updateparent" />
+                <div v-if="!likedPostArray[index]" id="favoriting">
+                  <ToggleFavorite :id="item.id" @like-event="updateparent" />
                 </div>
-                <div v-if="likedArray[index]" id="favoriting">
-                  <ToggleFavorite  :id="item.id" :intialFavorited="true"  @like-event="updateparent" />
+                <div v-if="likedPostArray[index]" id="favoriting">
+                  <ToggleFavorite
+                    :id="item.id"
+                    :intialFavorited="true"
+                    @like-event="updateparent"
+                  />
                 </div>
               </MDBCardText>
             </MDBCardBody>
           </MDBCard>
-      </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, computed, inject } from "vue";
+import { ref, inject } from "vue";
 
-import { useStore } from "@src/store";
-import { fileSize, copyToClipboard, generateLink, generateShortLink, getImgUrl, isVideo} from "@src/services/helpers";
-
-import { MDBCard, MDBCardBody, MDBCardText, MDBCardImg } from "mdb-vue-ui-kit";
-import { useRebelStore } from '@src/store/index';
-import { storeToRefs } from 'pinia';
-import LikersModal from "@src/components/VUpload/LikersModal.vue";
+import {
+  MDBCard,
+  MDBCardBody,
+  MDBCardText,
+  MDBCardImg
+} from "mdb-vue-ui-kit";
+import { useRebelStore } from "@src/store/index";
+import { storeToRefs } from "pinia";
 import ToggleFavorite from "@src/components/VUpload/ToggleFavorite.vue";
+import UploadModal from "@src/components/VUpload/Modal.vue";
+import {Cloudinary} from "@cloudinary/url-gen";
 
 export default {
-  name: "DiscoverFeed",
+  name: "UserLikedGallery",
   emits: ["like-event"],
   components: {
     MDBCard,
     MDBCardBody,
     MDBCardText,
     MDBCardImg,
-    LikersModal,
     ToggleFavorite,
+    UploadModal
   },
   data() {
     return {
@@ -82,87 +100,60 @@ export default {
   },
   methods: {
     async checkIsLiked() {
-      const { isLiked, getPostsLatest } = useRebelStore()
-      const rebelStore = useRebelStore()
-      const { latestPostsArray } = storeToRefs(rebelStore)
-      await getPostsLatest();
-      await isLiked(latestPostsArray._rawValue);
+      const { isLiked, getLikedPostsByOwner } = useRebelStore();
+      const rebelStore = useRebelStore();
+      const { likedPostArray } = storeToRefs(rebelStore);
+      if (this.$route.params.name) {
+        await getLikedPostsByOwner(this.$route.params.name);
+        await isLiked(likedPostArray._rawValue);
+      }
       this.stateLoaded = true;
     },
     async updateparent() {
-      const { isLiked, getPostsLatest } = useRebelStore()
-      const rebelStore = useRebelStore()
-      const { latestPostsArray } = storeToRefs(rebelStore)
-      await getPostsLatest();
-      await isLiked(latestPostsArray._rawValue);
+      this.checkIsLiked()
       this.componentKey += 1;
-      this.$emit('like-event', true);
-    }
+      this.$emit("like-event", true);
+    },
+  },
+  watch: {
+    $route(to, from) {
+      if (to !== from) {
+        this.checkIsLiked();
+      }
+    },
   },
   setup() {
     const notyf = inject("notyf");
-    const store = useStore();
 
-    const search = ref("");
-    const rebelStore = useRebelStore()
-    const { latestPosts, likedArray } = storeToRefs(rebelStore)
+    const rebelStore = useRebelStore();
+    const { likedPostItems, likedPostArray, account } = storeToRefs(rebelStore);
 
-    const shortenLink = async (item) => {
-      const url = generateLink(item);
-
-      const loadingIndicator = notyf.open({
-        type: "loading",
-        message: "Please wait, we generate shorten link for you."
-      });
-
-      const [ error, data ] = await generateShortLink(url);
-
-      notyf.dismiss(loadingIndicator);
-
-      if (error) {
-        notyf.error(error.message);
-      } else {
-        const shortenLink = `https://s.id/${data.short}`;
-        store.updateShortenLink(item.metaCid, shortenLink);
-
-        notyf.success(`Shorten Link has successfully generated.`);
+    // Create and configure your Cloudinary instance.
+    const cld = new Cloudinary({
+      cloud: {
+        cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
       }
-    }
-    const copyFileLink = (item) => {
-      const url = generateLink(item);
-      copyToClipboard(url);
+    });
 
-      notyf.success("Copied to clipboard!");
-    }
-    const onSearchChanged = ($event) => {
-      search.value = $event.target.value;
-    }
+    const getCloudinaryUrlVideo = (ifpsHash) => {
+      const myVideo = cld.video(`ipfs_signed/${ifpsHash}`);
+      return myVideo.toURL();
+    };
 
-    const files = computed(() => store
-        .results.slice()
-        .reverse()
-        .filter(item => !!item.metaCid)
-        .filter(item => {
-          if (search.value === "") return true;
-
-          return item.file.name.indexOf(search.value) >= 0;
-        }));
+    const getCloudinaryUrlImage = (ifpsHash) => {
+      const myImage = cld.image(`ipfs_signed/${ifpsHash}`);
+      return myImage.toURL();
+    };
 
     return {
-      search,
-      files,
-      fileSize,
-      shortenLink,
-      copyFileLink,
-      generateLink,
-      onSearchChanged,
-      getImgUrl,
-      isVideo,
-      latestPosts,
-      likedArray
-    }
-  }
-}
+      likedPostItems,
+      likedPostArray,
+      account,
+      getCloudinaryUrlImage,
+      getCloudinaryUrlVideo
+    };
+  },
+};
 </script>
 
 <style lang="scss">
@@ -174,18 +165,13 @@ export default {
 }
 
 .card-style figure img {
-	opacity: 1;
-	-webkit-transition: .3s ease-in-out;
-	transition: .3s ease-in-out;
+  opacity: 1;
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
 }
 .card-style figure:hover img {
-	opacity: .5;
+  opacity: 0.5;
   cursor: pointer;
-}
-
-.cardName {
-  font-size: 13px;
-  font-weight: 999;
 }
 
 .bg,
@@ -242,18 +228,27 @@ export default {
 
 .card-body {
   padding-right: 10px;
-  padding-left: 15px;
-  padding-top: 3px;
+  padding-left: 10px;
+  padding-bottom: 10px;
   font-size: 13px;
 }
 
-.wrapperFeed {
+.wrapper {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-auto-rows: repeat(3, 1fr);
   width: 100%;
   grid-gap: 1rem;
   max-width: 80rem;
+}
+
+.card-img-style {
+  // position: absolute;
+  // top: 0;
+  // left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .media-wrap {
@@ -276,10 +271,9 @@ export default {
   height: 100%;
   object-fit: cover;
   border-radius: 0.75rem;
-
 }
 
-.image-fit{
+.image-fit {
   height: 100%;
   width: 100%;
   object-fit: cover;
@@ -288,7 +282,7 @@ export default {
   text-align: center; /*for centering images inside*/
 }
 
-.vid-fit{
+.vid-fit {
   height: 100%;
   width: 100%;
   object-fit: cover;
@@ -305,6 +299,11 @@ export default {
   margin-left: 85%;
 }
 
+.cardName {
+  font-size: 13px;
+  font-weight: 900;
+}
+
 button {
   background: none;
   border: none;
@@ -318,7 +317,7 @@ body.dark-theme {
     background-color: var(--gradient-900);
 
     .content-file--items .content-file--item {
-      background-color: rgba(255, 255, 255, .05);
+      background-color: rgba(255, 255, 255, 0.05);
 
       .item-detail--subtitle {
         color: rgba(255, 255, 255, 0.5);

@@ -168,7 +168,7 @@ contract Rebel is PostFactory {
     return (names, mediaHashes, mediaTypes, likes, postIds);
   }
 
-  function getAddresesWhoLiked(uint32 _postId) external view returns(
+  function getAddressesWhoLiked(uint32 _postId) external view returns(
     address[] memory addressArray
     ) {
 

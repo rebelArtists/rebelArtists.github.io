@@ -292,7 +292,7 @@ describe("Rebel Contract", function () {
       await likePost2.wait();
 
       // check post id 0
-      const getLikedPostAddresses = await rebel.getAddresesWhoLiked(0)
+      const getLikedPostAddresses = await rebel.getAddressesWhoLiked(0)
 
       expect(getLikedPostAddresses.length).to.equal(2)
       expect(getLikedPostAddresses[0]).to.equal(addr1.address)

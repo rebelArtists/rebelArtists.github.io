@@ -6,7 +6,7 @@ import { ethers } from "ethers";
 import contractABIrebel from "../artifacts/contracts/rebel.sol/Rebel.json";
 
 const db = new Storage("app");
-const contractAddressRebel = "0x0F9Faa391aBe93C548C68E1262eE7Caa04e75E79";
+const contractAddressRebel = "0x3Df110ECB9c3a4b95a75f1fb5321C848a7B2eA5B";
 
 db.read();
 db.data || { version: "0.0.1", results: [] };
@@ -64,6 +64,9 @@ export const useRebelStore = defineStore("rebel", () => {
   const routedUser = ref(null);
   const latestPosts = ref([]);
   const latestPostsArray = ref([]);
+  const likedPostItems = ref([]);
+  const likedPostArray = ref([]);
+  const likedAddressesArray = ref([]);
 
   async function postContent(name, mediaHash, metaHash, mediaType) {
     try {
@@ -118,6 +121,41 @@ export const useRebelStore = defineStore("rebel", () => {
           // reverse so most recent items first in list
           postsArray.value = postsArray.value.reverse();
           postedItems.value = postedItems.value.reverse();
+        }
+      }
+    } catch (e) {
+      console.log("e", e);
+    }
+  }
+
+  async function getLikedPostsByOwner(address) {
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const rebelContract = new ethers.Contract(
+          contractAddressRebel,
+          contractABIrebel.abi,
+          signer
+        );
+        const likedPostsCount = await rebelContract.getPostsLikedByOwnerList(address)
+        const totalCount = likedPostsCount.likesCount;
+        const getLikedPostsResp = await rebelContract.getPostsLikedByOwner(address, totalCount)
+        likedPostItems.value = [];
+        likedPostArray.value = [];
+        for (let i = 0; i < getLikedPostsResp.namesArray.length; i++) {
+          const postObj = new Object();
+          postObj.name = getLikedPostsResp.namesArray[i];
+          postObj.mediaHash = getLikedPostsResp.mediaHashesArray[i];
+          postObj.mediaType = getLikedPostsResp.mediaTypeArray[i];
+          postObj.likes = getLikedPostsResp.likesArray[i];
+          postObj.id = getLikedPostsResp.idArray[i];
+          likedPostArray.value.push(getLikedPostsResp.idArray[i]);
+          likedPostItems.value.push(postObj);
+          // reverse so most recent items first in list
+          likedPostArray.value = likedPostArray.value.reverse();
+          likedPostItems.value = likedPostItems.value.reverse();
         }
       }
     } catch (e) {
@@ -262,6 +300,25 @@ export const useRebelStore = defineStore("rebel", () => {
     }
   }
 
+  async function likersOfPost(postId) {
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const rebelContract = new ethers.Contract(
+          contractAddressRebel,
+          contractABIrebel.abi,
+          signer
+        );
+        const likedAddresses = await rebelContract.getAddressesWhoLiked(postId);
+        likedAddressesArray.value = likedAddresses;
+      }
+    } catch (e) {
+      console.log("e", e);
+    }
+  }
+
   async function isLiked(postIds) {
     try {
       const { ethereum } = window;
@@ -321,6 +378,11 @@ export const useRebelStore = defineStore("rebel", () => {
     routedUser,
     getPostsLatest,
     latestPosts,
-    latestPostsArray
+    latestPostsArray,
+    getLikedPostsByOwner,
+    likedPostItems,
+    likedPostArray,
+    likersOfPost,
+    likedAddressesArray
   };
 });

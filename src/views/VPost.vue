@@ -49,7 +49,16 @@
         </table>
       </div>
       <div class="box2 itemLikes">
-        {{ individualPost.likes }} likes
+
+        <a class="likesHover" @click="showLikersModal = true, idToCheck = individualPost.id">
+          {{ individualPost.likes }} likes
+        </a>
+
+        <Teleport v-if="showLikersModal && idToCheck == individualPost.id" to="body">
+          <LikersModal :show="showLikersModal" :postId="individualPost.id" @close="showLikersModal = false">
+          </LikersModal>
+        </Teleport>
+
         <div v-if="!likedArray[0]" id="favoriting" class="likeHeart">
           <ToggleFavorite :id="individualPost.id" @like-event="updateparent" />
         </div>
@@ -114,6 +123,7 @@ import {
 import { storeToRefs } from "pinia";
 import { useRebelStore } from "@src/store/index";
 import ToggleFavorite from "@src/components/VUpload/ToggleFavorite.vue";
+import LikersModal from "@src/components/VUpload/LikersModal.vue";
 import { createAvatar } from '@dicebear/avatars';
 import * as style from '@dicebear/avatars-bottts-sprites';
 
@@ -122,12 +132,15 @@ export default {
   components: {
     MDBCard,
     MDBCardImg,
+    LikersModal,
     ToggleFavorite,
   },
   data() {
     return {
       componentKey: 0,
       postReady: false,
+      showLikersModal: false,
+      idToCheck: null
     };
   },
   mounted() {
@@ -211,6 +224,13 @@ export default {
 </script>
 
 <style lang="scss">
+
+.likesHover {
+  cursor: pointer;
+  font-size: 11px;
+  text-decoration: underline;
+}
+
 .styled-table {
   border-collapse: collapse;
   margin: 0 0;
