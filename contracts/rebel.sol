@@ -125,6 +125,7 @@ contract Rebel is PostFactory {
     return (names, mediaHashes, mediaTypes, likes, postIds);
   }
 
+  // remove this fake comment
   function getPostsByOwner(address _owner, uint endingIndex) external view returns(
     string[] memory namesArray,
     string[] memory mediaHashesArray,

@@ -114,19 +114,7 @@ export default {
     const toggleTheme = () => {
       document.body.classList.toggle("dark-theme");
 
-      requestAnimationFrame(toggleAnimation);
-
       isDark.value = !isDark.value;
-    };
-    const toggleAnimation = () => {
-      const element = document.querySelector("section#content .main");
-      try {
-        element.classList.remove("animated");
-        void element.offsetWidth;
-        element.classList.add("animated");
-      } catch (error) {
-        console.log(error)
-      }
     };
 
     let svgAvatar = createAvatar(style, {

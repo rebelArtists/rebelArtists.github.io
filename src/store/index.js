@@ -6,7 +6,7 @@ import { ethers } from "ethers";
 import contractABIrebel from "../artifacts/contracts/rebel.sol/Rebel.json";
 
 const db = new Storage("app");
-const contractAddressRebel = "0x3Df110ECB9c3a4b95a75f1fb5321C848a7B2eA5B";
+const contractAddressRebel = "0x2B2Ad112C11dcE8b45765D66f2AD5Db5Ea8012eb";
 
 db.read();
 db.data || { version: "0.0.1", results: [] };

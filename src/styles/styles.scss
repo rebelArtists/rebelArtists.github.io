@@ -135,6 +135,8 @@ body,
 
     .header-menu {
       width: 35vw;
+      margin-top: -20px;
+      margin-right: 40px;
 
       nav {
         text-align: left;
@@ -277,91 +279,84 @@ body,
 }
 
 // original max 768px
-@media only screen and (max-width: 1010px) {
-  .wrapper2 {
-    font-size: 10px;
-    margin: 15px 0 35px 0;
-    width: 100%;
-    height: 20%;
-    display: grid;
-    grid-gap: 5px;
-    grid-template-columns: repeat(4, 60px);
-    grid-auto-rows: repeat(3, 1fr);
-    justify-content: center;
-    align-content: end;
-    margin-bottom: 25px;
-  }
+@media only screen and (max-width: 815px) {
 
-  .box {
-    // background-color: #444;
-    // color: #fff;
-    border-radius: 5px;
-    padding: 10px;
-  }
-
-  .item2 {
-    grid-column: 2 / 4;
-    grid-row: 1 / 3;
-    justify-content: center;
-    align-content: end;
-    margin-left: 25%;
-  }
-
-  .item3 {
-    font-size: 13px;
-    grid-column: 2 / 4;
-    grid-row: 3 / 3;
-    font-weight: 900;
-    margin-left: -25px;
-  }
-
-  .item4 {
-    font-size: 15px;
-    grid-column: 4 / 5;
-    grid-row: 4 / 5;
-    font-weight: 900;
-    font-size: 10px;
-  }
-
-  .item5 {
-    font-size: 15px;
-    grid-column: 1 / 2;
-    grid-row: 4 / 5;
-    font-weight: 900;
-    font-size: 10px;
-    margin-left: 10px;
-  }
-
-  .item6 {
-    font-size: 15px;
-    grid-column: 3 / 3;
-    grid-row: 4 / 5;
-    font-weight: 900;
-    font-size: 10px;
-    margin-left: -30px;
-  }
-
-  .item7 {
-    grid-column: 3 / 5;
-    grid-row: 3 / 5;
-    opacity: 0;
-  }
-
-  .item8 {
-    grid-column: 4 / 5;
-    grid-row: 3 / 3;
-    margin-top: -4px;
-  }
-
-  .item9 {
-    grid-column: 5 / 6;
-    grid-row: 4 / 5;
-    font-size: 10px;
-  }
 
   #app {
-    // padding: 1rem;
-    // height: calc(100% - 2rem);
+
+    .wrapper2 {
+      font-size: 10px;
+      margin: 15px 0 35px 0;
+      width: 100%;
+      height: 20%;
+      display: grid;
+      grid-gap: 5px;
+      grid-template-columns: repeat(4, minmax(12vw, 100));
+      grid-auto-rows: repeat(3, 1fr);
+      justify-content: center;
+      align-content: end;
+      margin-bottom: 30px;
+    }
+
+    .box {
+      // background-color: #444;
+      // color: #fff;
+      border-radius: 5px;
+      padding: 10px;
+    }
+
+    .userAvatar {
+      grid-column: 1 / 4;
+      grid-row: 0 / 1;
+      justify-content: center;
+      align-content: end;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .addressHash {
+      font-size: 13px;
+      grid-column: 1 / 2;
+      grid-row: 2 / 2;
+      font-weight: 900;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 170px;
+    }
+
+    .shareButton {
+      font-size: 15px;
+      grid-column: 2 / 4;
+      grid-row: 2 / 2;
+      font-weight: 900;
+      font-size: 10px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 162px;
+    }
+
+    .likeCount {
+      font-size: 15px;
+      grid-column: 1 / 2;
+      grid-row: 3 / 3;
+      font-weight: 900;
+      font-size: 10px;
+      margin-left: 10px;
+    }
+
+    .postCount {
+      font-size: 15px;
+      grid-column: 2 / 3;
+      grid-row: 3 / 3;
+      font-weight: 900;
+      font-size: 10px;
+      margin-left: -30px;
+    }
+
+    .amtEarned {
+      grid-column: 3 / 4;
+      grid-row: 3 / 3;
+    }
 
     #header {
       padding: 0 0 0.8em 0;
@@ -372,6 +367,7 @@ body,
       .header-title {
         width: 100%;
         margin-bottom: 8px;
+        margin-left: 20px;
 
         h1 {
           font-size: 50px;
@@ -384,7 +380,8 @@ body,
       }
 
       .header-menu {
-        margin-top: -70px;
+        margin-top: -90px;
+        margin-right: 35px;
         width: 70vw;
         padding-right: 20px;
         // background: white;
