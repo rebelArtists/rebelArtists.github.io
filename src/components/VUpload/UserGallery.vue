@@ -27,9 +27,10 @@
           <MDBCard class="card-style hover-overlay">
             <router-link :to="`/post/${item.id}`" active-class="active" exact>
               <figure class="figureClass">
-                <video v-if="item.mediaType == 'video' || item.mediaType == 'audio'" class="card-img-style-gallery" controls controlsList="nodownload">
+                <video v-if="item.mediaType == 'video'" class="card-img-style-gallery" controls controlsList="nodownload">
                   <source :src="getCloudinaryUrlVideo(item.mediaHash)">
                 </video>
+                <wavesurfer v-if="item.mediaType == 'audio'" :src="getCloudinaryUrlVideo(item.mediaHash)" :options="waveformOptions"></wavesurfer>
                 <MDBCardImg
                   v-if="item.mediaType == 'image'"
                   :src="getCloudinaryUrlImage(item.mediaHash)"
@@ -109,7 +110,13 @@ export default {
       showModal: false,
       showLikersModal: false,
       stateLoaded: false,
-      idToCheck: null
+      idToCheck: null,
+      waveformOptions: {
+        backend: "MediaElement",
+        mediaControls: true,
+        barWidth: 2,
+        responsive: true
+      },
     };
   },
   mounted() {
@@ -160,6 +167,29 @@ export default {
 </script>
 
 <style lang="scss">
+
+// audio::-webkit-media-controls-panel {
+//   background-color: rgba(177,212,224, .1);
+// }
+//
+// audio::-webkit-media-controls-play-button {
+//   background-color: #B1D4E0;
+//   border-radius: 50%;
+// }
+
+audio::-webkit-media-controls-play-button:hover {
+  background-color: rgba(177,212,224, .7);
+}
+
+audio::-webkit-media-controls-enclosure {
+    overflow: hidden;width: 350px;
+    margin-left: 70px;
+    border-radius: 0%;
+}
+
+audio::-webkit-media-controls-panel {
+    width: calc(100% + 30px);
+}
 
 .likesHover {
   cursor: pointer;

@@ -31,9 +31,12 @@
     "notyf": "^3.10.0",
     "pinia": "^2.0.0-rc.6",
     "vue": "^3.2.4",
+    "vue-audio-visual": "^2.4.1",
     "vue-router": "^4.0.10",
     "vue-social-sharing": "^4.0.0-alpha4",
-    "vue-socialmedia-share": "^1.0.1"
+    "vue-socialmedia-share": "^1.0.1",
+    "wavesurfer.js": "^6.0.4",
+    "wavesurfer.js-vue": "^1.0.0"
   },
   "devDependencies": {
     "@iconify/json": "^1.1.390",
