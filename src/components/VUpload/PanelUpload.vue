@@ -241,6 +241,7 @@ section#panel-upload {
   border-bottom-left-radius: 1rem;
   border-top-right-radius: 1rem;
   border-bottom-right-radius: 1rem;
+  align-content: center;
 
   .panel-upload--content,
   .panel-upload--content .panel-upload--dropzone {
@@ -280,7 +281,7 @@ section#panel-upload {
       padding: 0.8rem;
       border-radius: 0.5rem;
       text-align: center;
-      width: 50%;
+      width: 80%;
 
       svg {
         height: 48px;

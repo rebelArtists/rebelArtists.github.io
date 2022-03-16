@@ -1,5 +1,8 @@
 <template>
   <div v-if="this.stateLoaded">
+    <div class="noPostsDiv" v-if="!latestPosts[0]">
+      no posts yet.
+    </div>
     <div class="wrapperFeed">
       <div class="gallery-panel" v-for="(item, index) in latestPosts" :key="index">
         <div class="media-wrap">
@@ -186,6 +189,13 @@ export default {
 </script>
 
 <style lang="scss">
+
+.noPostsDiv {
+  align-content: center;
+  text-align: center;
+  margin-top: 20%;
+  font-size: 15px;
+}
 
 wave {
   z-index: 0;

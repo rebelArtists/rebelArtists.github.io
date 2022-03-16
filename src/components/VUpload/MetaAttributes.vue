@@ -51,7 +51,7 @@ export default {
 
 .warningText {
   font-size: 9px;
-  color: yellow;
+  color: red;
   font-style: italic;
 }
 
