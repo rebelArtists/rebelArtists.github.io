@@ -100,12 +100,15 @@ export default {
   src: local("RebelNew"), url(./fonts/Rebel/RebelNew.ttf) format("truetype");
 }
 
+.bottomMargin {
+  margin-bottom: 50px;
+}
+
 div.testing {
   background: var(--landing-gradient);
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
   height: 100%;
-  overflow-x: hidden; 
 }
 
 @keyframes gradient {

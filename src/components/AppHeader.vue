@@ -40,6 +40,7 @@
         <!-- <router-link :to="{ name: 'about' }" active-class="active" exact>About</router-link> -->
         <div>
           <button
+            class="mintButton"
             v-if="account && user"
             id="show-modal"
             @click="showModal = true"
@@ -160,6 +161,11 @@ export default {
 .mintContent {
   padding-top: 7px;
   margin-right: 15px;
+}
+
+.mintButton {
+  background: transparent;
+  border: 0px;
 }
 
 #header {
