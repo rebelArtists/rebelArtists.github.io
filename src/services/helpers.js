@@ -9,7 +9,7 @@ const cld = new Cloudinary({
 });
 
 export const getCloudinaryUrlVideo = (ifpsHash) => {
-  const myVideo = cld.video(`ipfs_signed/${ifpsHash}`);
+  const myVideo = cld.video(`ipfs_signed/${ifpsHash}`, {quality: 50});
   return myVideo.toURL();
 };
 

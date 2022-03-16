@@ -6,9 +6,12 @@
           <MDBCard class="card-style hover-overlay">
             <router-link :to="`/post/${item.id}`" active-class="active" exact>
               <figure class="figureClassFeed">
-                <video v-if="item.mediaType == 'video' || item.mediaType == 'audio'" class="card-img-style" controls controlsList="nodownload">
+                <video v-if="item.mediaType == 'video'" class="card-img-style" controls controlsList="nodownload">
                   <source :src="getCloudinaryUrlVideo(item.mediaHash)">
                 </video>
+                <div class="audioCard" v-if="item.mediaType == 'audio'">
+                  <wavesurfer :src="getCloudinaryUrlVideo(item.mediaHash)" :options="waveformOptions"></wavesurfer>
+                </div>
                 <MDBCardImg
                   v-if="item.mediaType == 'image'"
                   :src="getCloudinaryUrlImage(item.mediaHash)"
@@ -77,7 +80,17 @@ export default {
       showModal: false,
       showLikersModal: false,
       stateLoaded: false,
-      idToCheck: null
+      idToCheck: null,
+      waveformOptions: {
+        backend: "MediaElement",
+        mediaControls: true,
+        interact: false,
+        barWidth: 2,
+        responsive: true,
+        height: 145,
+        hideScrollbar: true,
+        cursorWidth: 0
+      },
     };
   },
   mounted() {
@@ -173,6 +186,61 @@ export default {
 </script>
 
 <style lang="scss">
+
+wave {
+  z-index: 0;
+  display: flex;
+  cursor: pointer !important;
+}
+
+audio::-webkit-media-controls-panel {
+  background-color: lightgrey;
+}
+
+audio::-webkit-media-controls-current-time-display {
+  font-size: 10px;
+}
+
+audio::-webkit-media-controls-time-remaining-display {
+  font-size: 10px;
+}
+
+audio::-webkit-media-controls-play-button {
+  color: var(--icon-color-opposite);
+  border-radius: 50%;
+}
+
+audio::-webkit-media-controls-volume-slider {
+  background-color: #B1D4E0;
+  border-radius: 25px;
+  padding-left: 200px;
+  // margin-right: 500px;
+}
+
+audio::-webkit-media-controls-timeline {
+  width: 80px;
+}
+
+audio::-webkit-media-controls-enclosure {
+    position: absolute;
+    height: 40px;
+    width: 150%;
+    margin-left: 45%;
+    border-radius: 0%;
+    overflow: hidden;
+}
+
+.card-style figure {
+  opacity: 1;
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+  cursor: pointer;
+}
+.card-style figure:hover {
+  opacity: 0.5;
+  cursor: pointer;
+}
+
 
 .figureClassFeed {
   width: 100%;

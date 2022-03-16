@@ -30,7 +30,9 @@
                 <video v-if="item.mediaType == 'video'" class="card-img-style-gallery" controls controlsList="nodownload">
                   <source :src="getCloudinaryUrlVideo(item.mediaHash)">
                 </video>
-                <wavesurfer v-if="item.mediaType == 'audio'" :src="getCloudinaryUrlVideo(item.mediaHash)" :options="waveformOptions"></wavesurfer>
+                <div class="audioCard" v-if="item.mediaType == 'audio'">
+                  <wavesurfer :src="getCloudinaryUrlVideo(item.mediaHash)" :options="waveformOptions"></wavesurfer>
+                </div>
                 <MDBCardImg
                   v-if="item.mediaType == 'image'"
                   :src="getCloudinaryUrlImage(item.mediaHash)"
@@ -114,8 +116,12 @@ export default {
       waveformOptions: {
         backend: "MediaElement",
         mediaControls: true,
+        interact: false,
         barWidth: 2,
-        responsive: true
+        responsive: true,
+        height: 145,
+        hideScrollbar: true,
+        cursorWidth: 0
       },
     };
   },
@@ -168,28 +174,49 @@ export default {
 
 <style lang="scss">
 
-// audio::-webkit-media-controls-panel {
-//   background-color: rgba(177,212,224, .1);
-// }
-//
-// audio::-webkit-media-controls-play-button {
-//   background-color: #B1D4E0;
-//   border-radius: 50%;
-// }
-
-audio::-webkit-media-controls-play-button:hover {
-  background-color: rgba(177,212,224, .7);
-}
-
-audio::-webkit-media-controls-enclosure {
-    overflow: hidden;width: 350px;
-    margin-left: 70px;
-    border-radius: 0%;
+wave {
+  z-index: 0;
+  display: flex;
+  cursor: pointer !important;
 }
 
 audio::-webkit-media-controls-panel {
-    width: calc(100% + 30px);
+  background-color: lightgrey;
 }
+
+audio::-webkit-media-controls-current-time-display {
+  font-size: 10px;
+}
+
+audio::-webkit-media-controls-time-remaining-display {
+  font-size: 10px;
+}
+
+audio::-webkit-media-controls-play-button {
+  color: var(--icon-color-opposite);
+  border-radius: 50%;
+}
+
+audio::-webkit-media-controls-volume-slider {
+  background-color: #B1D4E0;
+  border-radius: 25px;
+  padding-left: 200px;
+  // margin-right: 500px;
+}
+
+audio::-webkit-media-controls-timeline {
+  width: 80px;
+}
+
+audio::-webkit-media-controls-enclosure {
+    position: absolute;
+    height: 40px;
+    width: 150%;
+    margin-left: 45%;
+    border-radius: 0%;
+    overflow: hidden;
+}
+
 
 .likesHover {
   cursor: pointer;
@@ -213,6 +240,17 @@ audio::-webkit-media-controls-panel {
   transition: 0.3s ease-in-out;
 }
 .card-style figure:hover video {
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.card-style figure {
+  opacity: 1;
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+  cursor: pointer;
+}
+.card-style figure:hover {
   opacity: 0.5;
   cursor: pointer;
 }

@@ -94,6 +94,7 @@ export default {
 </script>
 
 <style lang="scss">
+
 @font-face {
   font-family: "Rebel";
   src: local("RebelNew"), url(./fonts/Rebel/RebelNew.ttf) format("truetype");
@@ -104,6 +105,7 @@ div.testing {
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
   height: 100%;
+  overflow-x: hidden; 
 }
 
 @keyframes gradient {
