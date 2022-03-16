@@ -16,7 +16,7 @@
                 <video v-if="item.mediaType == 'video'" class="card-img-style" controls controlsList="nodownload">
                   <source :src="getCloudinaryUrlVideo(item.mediaHash)">
                 </video>
-                <div class="audioCard" v-if="item.mediaType == 'audio'">
+                <div class="audioCardLiked" v-if="item.mediaType == 'audio'">
                   <wavesurfer :src="getCloudinaryUrlVideo(item.mediaHash)" :options="waveformOptions"></wavesurfer>
                 </div>
                 <MDBCardImg
@@ -160,35 +160,35 @@ wave {
   cursor: pointer !important;
 }
 
-audio::-webkit-media-controls-panel {
+.audioCardLiked audio::-webkit-media-controls-panel {
   background-color: lightgrey;
 }
 
-audio::-webkit-media-controls-current-time-display {
+.audioCardLiked audio::-webkit-media-controls-current-time-display {
   font-size: 10px;
 }
 
-audio::-webkit-media-controls-time-remaining-display {
+.audioCardLiked audio::-webkit-media-controls-time-remaining-display {
   font-size: 10px;
 }
 
-audio::-webkit-media-controls-play-button {
+.audioCardLiked audio::-webkit-media-controls-play-button {
   color: var(--icon-color-opposite);
   border-radius: 50%;
 }
 
-audio::-webkit-media-controls-volume-slider {
+.audioCardLiked audio::-webkit-media-controls-volume-slider {
   background-color: #B1D4E0;
   border-radius: 25px;
   padding-left: 200px;
   // margin-right: 500px;
 }
 
-audio::-webkit-media-controls-timeline {
+.audioCardLiked audio::-webkit-media-controls-timeline {
   width: 80px;
 }
 
-audio::-webkit-media-controls-enclosure {
+.audioCardLiked audio::-webkit-media-controls-enclosure {
     position: absolute;
     height: 40px;
     width: 150%;

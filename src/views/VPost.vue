@@ -158,7 +158,7 @@ export default {
         mediaControls: true,
         barWidth: 2,
         responsive: true,
-        height: 278,
+        height: 240,
         hideScrollbar: true,
         cursorWidth: 1
       },
@@ -252,8 +252,6 @@ wave {
   z-index: 0;
   display: flex;
   cursor: pointer !important;
-  // margin-left: 1px;
-  // margin-bottom: 27px;
 }
 
 .card-img-style-post-audio audio::-webkit-media-controls-panel {
@@ -280,10 +278,15 @@ wave {
 .card-img-style-post-audio audio::-webkit-media-controls-enclosure {
     position: absolute;
     height: 40px;
+    margin-top: 150px;
     border-radius: 0%;
     overflow: hidden;
     border-bottom-left-radius: 0.6rem;
     border-bottom-right-radius: 0.6rem;
+}
+
+.card-img-style-post-audio audio {
+    margin-top: 37px;
 }
 
 .card-style figure {
