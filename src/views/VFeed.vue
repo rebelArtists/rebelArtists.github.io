@@ -135,7 +135,7 @@ section#content {
     margin-left: 35px;
   }
   .randomActive {
-    position: absolute;
+    position: absolute; //
     font-size: 13px;
     font-weight: 900;
     cursor: pointer;
