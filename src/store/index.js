@@ -210,23 +210,25 @@ export const useRebelStore = defineStore("rebel", () => {
           contractABIrebel.abi,
           signer
         );
+        individualPost.value = null;
         const post = await rebelContract.getPostById(postId);
+        if (post.name) {
+          const postObj = new Object();
+          postObj.name = post.name;
+          postObj.mediaHash = post.mediaHash;
+          postObj.metaHash = post.metaHash;
+          postObj.mediaType = post.mediaType;
+          postObj.likes = post.likes;
+          postObj.id = post.id;
+          postObj.address = post.addressOwner;
 
-        const postObj = new Object();
-        postObj.name = post.name;
-        postObj.mediaHash = post.mediaHash;
-        postObj.metaHash = post.metaHash;
-        postObj.mediaType = post.mediaType;
-        postObj.likes = post.likes;
-        postObj.id = post.id;
-        postObj.address = post.addressOwner;
+          const ipfsMetadata = await fetchIpfsMeta(postObj.metaHash);
+          postObj.description = ipfsMetadata.description;
+          postObj.attributes = ipfsMetadata.attributes;
+          individualPost.value = postObj;
 
-        const ipfsMetadata = await fetchIpfsMeta(postObj.metaHash);
-        postObj.description = ipfsMetadata.description;
-        postObj.attributes = ipfsMetadata.attributes;
-        individualPost.value = postObj;
-
-        await getUserByOwner(individualPost.value.address);
+          await getUserByOwner(individualPost.value.address);
+        }
       }
     } catch (e) {
       console.log("e", e);

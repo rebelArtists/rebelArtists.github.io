@@ -141,7 +141,7 @@ export default {
 .toggleWrapper {
   display: flex;
   text-align: center;
-  background-color: grey;
+  // background-color: grey;
   align-content: center;
   justify-content: center;
   margin: auto;

@@ -10,7 +10,7 @@
           v-if="account && user"
           :to="`/user/${account}`"
           active-class="active"
-          title="Home"
+          title="Profile"
           exact
         >
           <img :src="url" class="round-image-header" />
@@ -19,7 +19,7 @@
           v-if="account && user"
           :to="{ name: 'feed' }"
           active-class="active"
-          title="Home"
+          title="Discover Feed"
           exact
         >
           <svg

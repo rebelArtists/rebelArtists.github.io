@@ -243,6 +243,9 @@ export default {
       </svg>
     </div>
   </div>
+  <div class="errorText">
+    page / post / user does not exist
+  </div>
 </template>
 
 <style lang="scss">
@@ -251,6 +254,11 @@ export default {
 $firstColor: #0057b8;
 $listColors: #f11e4a, #237, #229c79, #f8a527, #266d7f, $firstColor;
 $delayCoeff: 0.04s;
+
+.errorText {
+  text-align: center;
+  margin-top: -20px;
+}
 
 .errorWrapper {
   display: block;

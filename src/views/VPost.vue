@@ -1,6 +1,9 @@
 <template>
   <div v-if="this.postReady">
-    <div class="wrapper3">
+    <div v-if="!individualPost">
+      <ErrorPage />
+    </div>
+    <div v-if="individualPost" class="wrapper3">
       <div class="box2 itemMedia">
           <MDBCard class="card-style-post hover-overlay">
             <figure class="figureClassPost">
@@ -44,14 +47,14 @@
           <thead class="roundedHeader">
             <tr>
               <th>Trait</th>
-              <th>Value</th>
+              <th class="valueStyle">Value</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(item, index) in individualPost.attributes"
                     :key="index">
               <td>{{ item.trait_type }}</td>
-              <td>{{ item.value }}</td>
+              <td class="valueStyle">{{ item.value }}</td>
             </tr>
           </tbody>
         </table>
@@ -126,6 +129,7 @@
 import { provide } from "vue";
 import { Notyf } from "notyf";
 
+import ErrorPage from "@src/components/VUpload/404.vue";
 import { getImgUrl } from "@src/services/helpers";
 import {
   MDBCard,
@@ -146,6 +150,7 @@ export default {
     MDBCardImg,
     LikersModal,
     ToggleFavorite,
+    ErrorPage
   },
   data() {
     return {
@@ -247,6 +252,10 @@ export default {
 </script>
 
 <style lang="scss">
+
+.valueStyle {
+  color: lightgrey;
+}
 
 wave {
   z-index: 0;

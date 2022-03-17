@@ -3,7 +3,27 @@
     <div v-if="account" class="main animated">
       <div class="main-content">
         <div class="feedHeader">
-          <!-- Latest -->
+          <div class="toggleWrapper">
+            <a @click="toggleShowRandomItems">
+              <div v-if="showRandomPosts" class="latestInactive">
+                latest
+              </div>
+            </a>
+              <div v-if="!showRandomPosts"  class="latestActive">
+                latest
+              </div>
+            <div class="divider">
+              |
+            </div>
+            <a @click="toggleShowRandomItems">
+              <div v-if="!showRandomPosts"  class="randomInactive">
+                random
+              </div>
+            </a>
+            <div v-if="showRandomPosts" class="randomActive">
+              random
+            </div>
+          </div>
         </div>
         <div class="feedGrid">
           <div class="feedBox">
@@ -30,15 +50,12 @@ export default {
   },
   data() {
     return {
-      followFeedToggle: false,
+      showRandomPosts: false
     };
   },
   methods: {
-    toggleFeedOn() {
-      this.followFeedToggle = true;
-    },
-    toggleFeedOff() {
-      this.followFeedToggle = false;
+    toggleShowRandomItems() {
+      this.showRandomPosts = !this.showRandomPosts;
     },
   },
   setup() {
@@ -78,6 +95,52 @@ export default {
 section#content {
   position: relative;
   height: 100%;
+
+  .toggleWrapper {
+    display: flex;
+    text-align: center;
+    align-content: center;
+    justify-content: center;
+    margin: auto;
+    margin-bottom: 35px;
+    // margin-left: 50%;
+    // margin-right: 50%;
+  }
+
+  .divider {
+    position: absolute;
+    color: grey;
+    font-weight: 900;
+    margin-top: -2px;
+  }
+  .latestInactive {
+    position: absolute;
+    font-size: 11px;
+    cursor: pointer;
+    padding-top: 1px;
+    margin-left: -75px
+  }
+  .latestActive {
+    position: absolute;
+    font-size: 13px;
+    font-weight: 900;
+    cursor: pointer;
+    margin-left: -100px
+  }
+  .randomInactive {
+    position: absolute;
+    font-size: 11px;
+    cursor: pointer;
+    padding-top: 1px;
+    margin-left: 35px;
+  }
+  .randomActive {
+    position: absolute;
+    font-size: 13px;
+    font-weight: 900;
+    cursor: pointer;
+    margin-left: 105px;
+  }
 
   .feedHeader{
     display: flex;

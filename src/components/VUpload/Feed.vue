@@ -340,6 +340,10 @@ wave {
 .card-style {
   background-image: var(--liniear-gradient-color-2);
   border-radius: 0.8rem;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
 }
 
 .card-body {
