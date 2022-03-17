@@ -198,23 +198,22 @@ wave {
 }
 
 .audioCardGallery audio::-webkit-media-controls-volume-slider {
-  background-color: #B1D4E0;
-  border-radius: 25px;
-  padding-left: 200px;
+  // background-color: #B1D4E0;
+  // border-radius: 25px;
+  // padding-left: 200px;
   // margin-right: 500px;
 }
 
 .audioCardGallery audio::-webkit-media-controls-timeline {
-  width: 80px;
+  // width: 80px;
 }
 
 .audioCardGallery audio::-webkit-media-controls-enclosure {
     position: absolute;
     height: 40px;
-    width: 150%;
-    margin-left: 45%;
     border-radius: 0%;
-    overflow: hidden;
+    border-bottom-left-radius: 0.6rem;
+    border-bottom-right-radius: 0.6rem;
 }
 
 
@@ -323,7 +322,7 @@ wave {
 
 .wrapperGallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-auto-rows: repeat(3, 1fr);
   width: 100%;
   grid-gap: 1rem;

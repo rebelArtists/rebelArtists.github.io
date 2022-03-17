@@ -94,12 +94,23 @@ export default {
 }
 
 .modal-container {
-  width: 80%;
+  width: 45%;
   height: 70%;
   margin: 0px auto;
   padding: 20px 30px;
   border-radius: 2px;
   transition: all 0.3s ease;
+}
+
+@media only screen and (max-width: 815px) {
+  .modal-container {
+    width: 80%;
+    height: 70%;
+    margin: 0px auto;
+    padding: 20px 30px;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
 }
 
 .modal-header h3 {

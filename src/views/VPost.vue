@@ -437,6 +437,7 @@ wave {
   grid-row: 4 / 4;
   padding: 15px;
   font-size: 11px;
+  margin-top: -10px;
 }
 
 .itemLikes {
@@ -444,6 +445,7 @@ wave {
   grid-row: 5 / 5;
   padding: 15px;
   font-size: 12px;
+  margin-top: 10px;
   z-index: 1000;
 }
 

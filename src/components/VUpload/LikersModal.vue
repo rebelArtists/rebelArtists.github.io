@@ -119,7 +119,10 @@ export default {
 <style>
 
 .noLikesDiv {
-  margin-top: 70%;
+  margin-top: 80%;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
   text-align: center;
 }
 
@@ -194,9 +197,69 @@ export default {
   cursor: pointer;
   position: absolute;
   top: 70px;
-  right: 38%;
+  right: 37%;
   padding-bottom: 3px;
   background-image: var(--liniear-gradient-color-2);
+}
+
+@media only screen and (max-width: 1150px) {
+  .modal-likers-default-button {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    z-index: 9999;
+    cursor: pointer;
+    position: absolute;
+    top: 70px;
+    right: 33%;
+    padding-bottom: 3px;
+    background-image: var(--liniear-gradient-color-2);
+  }
+}
+
+@media only screen and (max-width: 815px) {
+  .modal-likers-default-button {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    z-index: 9999;
+    cursor: pointer;
+    position: absolute;
+    top: 70px;
+    right: 30%;
+    padding-bottom: 3px;
+    background-image: var(--liniear-gradient-color-2);
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  .modal-likers-default-button {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    z-index: 9999;
+    cursor: pointer;
+    position: absolute;
+    top: 70px;
+    right: 25%;
+    padding-bottom: 3px;
+    background-image: var(--liniear-gradient-color-2);
+  }
+}
+
+@media only screen and (max-width: 430px) {
+  .modal-likers-default-button {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    z-index: 9999;
+    cursor: pointer;
+    position: absolute;
+    top: 70px;
+    right: 10%;
+    padding-bottom: 3px;
+    background-image: var(--liniear-gradient-color-2);
+  }
 }
 
 .modal-likers-enter-from {

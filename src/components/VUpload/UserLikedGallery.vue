@@ -178,23 +178,22 @@ wave {
 }
 
 .audioCardLiked audio::-webkit-media-controls-volume-slider {
-  background-color: #B1D4E0;
-  border-radius: 25px;
-  padding-left: 200px;
+  // background-color: #B1D4E0;
+  // border-radius: 25px;
+  // padding-left: 200px;
   // margin-right: 500px;
 }
 
 .audioCardLiked audio::-webkit-media-controls-timeline {
-  width: 80px;
+  // width: 80px;
 }
 
 .audioCardLiked audio::-webkit-media-controls-enclosure {
     position: absolute;
     height: 40px;
-    width: 150%;
-    margin-left: 45%;
     border-radius: 0%;
-    overflow: hidden;
+    border-bottom-left-radius: 0.6rem;
+    border-bottom-right-radius: 0.6rem;
 }
 
 .card-style figure {
