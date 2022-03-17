@@ -261,6 +261,8 @@ export const useRebelStore = defineStore("rebel", () => {
           individualPost.value = postObj;
 
           await getUserByOwner(individualPost.value.address);
+        } else {
+          individualPost.value = null;     
         }
       }
     } catch (e) {

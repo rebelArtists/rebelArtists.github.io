@@ -149,6 +149,7 @@ section#content {
 
   .feedHeader{
     display: flex;
+    margin-top: 50px;
     font-size: 14px;
     font-weight: 999;
   }
