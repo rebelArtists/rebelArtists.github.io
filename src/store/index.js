@@ -6,7 +6,7 @@ import { ethers } from "ethers";
 import contractABIrebel from "../artifacts/contracts/rebel.sol/Rebel.json";
 
 const db = new Storage("app");
-const contractAddressRebel = "0x2B2Ad112C11dcE8b45765D66f2AD5Db5Ea8012eb";
+const contractAddressRebel = "0xf310669e3A88412E6b27394b70EC7F60557B9984";
 
 db.read();
 db.data || { version: "0.0.1", results: [] };
@@ -67,6 +67,8 @@ export const useRebelStore = defineStore("rebel", () => {
   const likedPostItems = ref([]);
   const likedPostArray = ref([]);
   const likedAddressesArray = ref([]);
+  const randomPosts = ref([]);
+  const randomPostsArray = ref([]);
 
   async function postContent(name, mediaHash, metaHash, mediaType) {
     try {
@@ -199,6 +201,38 @@ export const useRebelStore = defineStore("rebel", () => {
     }
   }
 
+  async function getRandomPosts() {
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const rebelContract = new ethers.Contract(
+          contractAddressRebel,
+          contractABIrebel.abi,
+          signer
+        );
+        const randomPostsResp = await rebelContract.getRandomPosts();
+        randomPosts.value = [];
+        randomPostsArray.value = [];
+        for (let i = 0; i < randomPostsResp.namesArray.length; i++) {
+          const postObj = new Object();
+          if (randomPostsResp.namesArray[i] && !randomPostsArray.value.includes(randomPostsResp.idArray[i])) {
+            postObj.name = randomPostsResp.namesArray[i];
+            postObj.mediaHash = randomPostsResp.mediaHashesArray[i];
+            postObj.mediaType = randomPostsResp.mediaTypeArray[i];
+            postObj.likes = randomPostsResp.likesArray[i];
+            postObj.id = randomPostsResp.idArray[i];
+            randomPostsArray.value.push(randomPostsResp.idArray[i]);
+            randomPosts.value.push(postObj);
+          }
+        }
+      }
+    } catch (e) {
+      console.log("e", e);
+    }
+  }
+
   async function getPostById(postId) {
     try {
       const { ethereum } = window;
@@ -210,7 +244,6 @@ export const useRebelStore = defineStore("rebel", () => {
           contractABIrebel.abi,
           signer
         );
-        individualPost.value = null;
         const post = await rebelContract.getPostById(postId);
         if (post.name) {
           const postObj = new Object();
@@ -385,6 +418,9 @@ export const useRebelStore = defineStore("rebel", () => {
     likedPostItems,
     likedPostArray,
     likersOfPost,
-    likedAddressesArray
+    likedAddressesArray,
+    randomPosts,
+    randomPostsArray,
+    getRandomPosts
   };
 });

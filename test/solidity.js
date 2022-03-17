@@ -298,5 +298,17 @@ describe("Rebel Contract", function () {
       expect(getLikedPostAddresses[0]).to.equal(addr1.address)
       expect(getLikedPostAddresses[1]).to.equal(addr2.address)
     });
+    it("Get random posts", async function () {
+      const newPost1 = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash, postMediaType);
+      await newPost1.wait();
+
+      const newPost2 = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash, postMediaType);
+      await newPost2.wait();
+
+      const getAllRandomPosts = await rebel.connect(addr1).getRandomPosts();
+      console.log(getAllRandomPosts);
+
+      expect(getAllRandomPosts.namesArray.length).to.equal(20);
+    });
   });
 });

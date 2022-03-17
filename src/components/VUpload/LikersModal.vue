@@ -84,6 +84,10 @@ export default {
     <div v-if="show" class="modal-likers-mask">
       <div class="modal-likers-wrapper">
         <div class="modal-likers-container">
+          <span class="closeOut">
+          <div class="noLikesDiv" v-if="!likedAddressesArray[0]">
+            no likes yet.
+          </div>
           <div
             class="likers-list"
             v-for="(item, index) in likedAddressesArray"
@@ -101,12 +105,11 @@ export default {
             </span>
           </div>
           <div class="modal-likers-footer">
-            <slot name="footer">
               <button class="modal-likers-default-button" @click="$emit('close')">
                 x
               </button>
-            </slot>
           </div>
+          </span>
         </div>
       </div>
     </div>
@@ -115,8 +118,17 @@ export default {
 
 <style>
 
+.noLikesDiv {
+  margin-top: 70%;
+  text-align: center;
+}
+
 .likers-list {
   overflow: hidden;
+}
+
+.closeOut {
+  display: flex;
 }
 
 .singleLine {
@@ -170,24 +182,21 @@ export default {
   margin: 20px 0;
 }
 
+.modal-likers-footer {
+  display: flex;
+}
+
 .modal-likers-default-button {
   border-radius: 50%;
   width: 40px;
   height: 40px;
   z-index: 9999;
   cursor: pointer;
-  display: flex;
-  margin-top: 10px;
-  padding-bottom: 3px;
-  justify-content: center;
-  align-items: center;
-  background-image: var(--liniear-gradient-color-2);
-}
-
-.modal-likers-default-button {
   position: absolute;
-  margin-left: 237px;
-  margin-top: -65px;
+  top: 70px;
+  right: 38%;
+  padding-bottom: 3px;
+  background-image: var(--liniear-gradient-color-2);
 }
 
 .modal-likers-enter-from {

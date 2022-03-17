@@ -58,6 +58,43 @@ contract Rebel is PostFactory {
     usersMap[postOwner].totalLikes = usersMap[postOwner].totalLikes.sub(1);
   }
 
+  function getRandomPosts() external view returns(
+    string[] memory namesArray,
+    string[] memory mediaHashesArray,
+    string[] memory mediaTypeArray,
+    uint32[] memory likesArray,
+    uint32[] memory idArray
+  ) {
+
+  uint32 assetsToFetch = 20;
+  uint32 randNonce = 0;
+
+  string[] memory names = new string[](assetsToFetch);
+  string[] memory mediaHashes = new string[](assetsToFetch);
+  string[] memory mediaTypes = new string[](assetsToFetch);
+  uint32[] memory likes = new uint32[](assetsToFetch);
+  uint32[] memory postIds = new uint32[](assetsToFetch);
+
+  if (postCounter == 0) {
+    return (names, mediaHashes, mediaTypes, likes, postIds);
+  }
+
+  for (uint32 i = 0; i < assetsToFetch; i++) {
+    postIds[i] = uint32(uint(keccak256(abi.encodePacked(block.timestamp, msg.sender, randNonce))) % postCounter);
+    randNonce++;
+  }
+
+  for (uint32 i = 0; i < assetsToFetch; i++) {
+      Post storage post = postsMap[postIds[i]];
+      names[i] = post.name;
+      mediaHashes[i] = post.mediaHash;
+      mediaTypes[i] = post.mediaType;
+      likes[i] = post.likes;
+  }
+
+  return (names, mediaHashes, mediaTypes, likes, postIds);
+}
+
   function getPostsLikedByOwnerList(address _owner) public view returns(
     uint32[] memory postIdArray,
     uint likesCount

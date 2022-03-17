@@ -42,10 +42,10 @@
                   </LikersModal>
                 </Teleport>
 
-                <div v-if="!likedPostArray[index]" id="favoriting">
+                <div v-if="!likedArray[index]" id="favoriting">
                   <ToggleFavorite :id="item.id" @like-event="updateparent" />
                 </div>
-                <div v-if="likedPostArray[index]" id="favoriting">
+                <div v-if="likedArray[index]" id="favoriting">
                   <ToggleFavorite
                     :id="item.id"
                     :intialFavorited="true"
@@ -139,11 +139,11 @@ export default {
     const notyf = inject("notyf");
 
     const rebelStore = useRebelStore();
-    const { likedPostItems, likedPostArray, account } = storeToRefs(rebelStore);
+    const { likedPostItems, likedArray, account } = storeToRefs(rebelStore);
 
     return {
       likedPostItems,
-      likedPostArray,
+      likedArray,
       account,
       getCloudinaryUrlImage,
       getCloudinaryUrlVideo

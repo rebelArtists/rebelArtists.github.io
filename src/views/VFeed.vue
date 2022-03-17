@@ -26,8 +26,11 @@
           </div>
         </div>
         <div class="feedGrid">
-          <div class="feedBox">
+          <div v-if="!showRandomPosts" class="feedBox">
             <DiscoverFeed />
+          </div>
+          <div v-if="showRandomPosts" class="feedBox">
+            <RandomFeed />
           </div>
         </div>
       </div>
@@ -40,13 +43,15 @@ import { provide } from "vue";
 import { Notyf } from "notyf";
 
 import DiscoverFeed from "@src/components/VUpload/Feed.vue";
+import RandomFeed from "@src/components/VUpload/RandomFeed.vue";
 import { storeToRefs } from "pinia";
 import { useRebelStore } from "@src/store/index";
 
 export default {
   name: "VFeed",
   components: {
-    DiscoverFeed
+    DiscoverFeed,
+    RandomFeed
   },
   data() {
     return {

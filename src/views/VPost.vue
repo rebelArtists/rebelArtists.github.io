@@ -254,7 +254,7 @@ export default {
 <style lang="scss">
 
 .valueStyle {
-  color: lightgrey;
+  color: grey;
 }
 
 wave {
@@ -314,6 +314,7 @@ wave {
   margin-top: -2px;
   background: transparent;
   border: 0px;
+  cursor: pointer;
 }
 
 .figureClassPost {
@@ -443,6 +444,7 @@ wave {
   grid-row: 5 / 5;
   padding: 15px;
   font-size: 12px;
+  z-index: 1000;
 }
 
 .itemIpfs {
@@ -450,6 +452,7 @@ wave {
   width: 40px;
   height: 20px;
   margin-top: -5px;
+  z-index: 1000;
 }
 
 .itemBackground {
@@ -479,6 +482,8 @@ wave {
   position: relative;
   margin-top: -3px;
   margin-left: 15px;
+  z-index: 1000;
+  cursor: pointer;
 }
 
 .svgIpfs {
