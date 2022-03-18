@@ -4,47 +4,53 @@ pragma solidity ^0.8.0;
 
 import "./ownable.sol";
 import "./safemaths.sol";
+import "./userfactory.sol";
 
-contract PostFactory is Ownable {
+contract PostFactory is Ownable, UserFactory {
 
   using SafeMath for uint256;
   using SafeMath32 for uint32;
-  using SafeMath16 for uint16;
 
-  event NewPost(uint postId, string name, string mediaHash, string metaHash);
+  event NewPost(uint postId, string name, string mediaHash, string metaHash, string mediaType);
 
   struct Post {
     string name;
     string mediaHash;
     string metaHash;
-    uint likes;
-    bool blacklisted;
-    mapping (uint => bool) likesMap;
+    string mediaType;
+    uint32 likes;
+    mapping (address => bool) likesMap;
   }
 
-  uint postCounter;
-  mapping (uint => Post) postsMap;
+  uint32 postCounter;
+  mapping (uint32 => Post) postsMap;
+  mapping (uint32 => address) public postToOwner;
+  mapping (address => uint32[]) public ownerToPostIds;
+  mapping (uint32 => address[]) public postToLikingUsers;
 
-  mapping (uint => address) public postToOwner;
-  mapping (address => uint) ownerPostCount;
-  mapping (address => uint[]) public ownerToPostIds;
+  modifier requiresUserExists() {
+    if (userExists[msg.sender] != true) {
+      createUser(msg.sender);
+    }
+    _;
+  }
 
-  function createPost(string memory _name, string memory _mediaHash, string memory _metaHash) public {
+  function createPost(string memory _name, string memory _mediaHash, string memory _metaHash, string memory _mediaType) public requiresUserExists() {
 
     Post storage newPost = postsMap[postCounter];
     newPost.name = _name;
     newPost.mediaHash = _mediaHash;
     newPost.metaHash = _metaHash;
+    newPost.mediaType = _mediaType;
     newPost.likes = 0;
-    newPost.blacklisted = false;
 
     postToOwner[postCounter] = msg.sender;
-    ownerPostCount[msg.sender] = ownerPostCount[msg.sender].add(1);
     ownerToPostIds[msg.sender].push(postCounter);
-    emit NewPost(postCounter, _name, _mediaHash, _metaHash);
-    
-    postCounter = postCounter.add(1);
+    usersMap[msg.sender].postCount = usersMap[msg.sender].postCount.add(1);
 
+    emit NewPost(postCounter, _name, _mediaHash, _metaHash, _mediaType);
+
+    postCounter = postCounter.add(1);
   }
 
 }

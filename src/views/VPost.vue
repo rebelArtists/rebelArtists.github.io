@@ -1,24 +1,35 @@
 <template>
   <div v-if="this.postReady">
-    <div class="wrapper3">
+    <div v-if="!individualPost">
+      <ErrorPage />
+    </div>
+    <div v-if="individualPost" class="wrapper3">
       <div class="box2 itemMedia">
-        <div class="media-wrap">
-          <MDBCard class="card-style hover-overlay">
-            <MDBCardImg
-              :src="getImgUrl(individualPost.mediaHash)"
-              top
-              alt="..."
-              class="card-img-style"
-            />
+          <MDBCard class="card-style-post hover-overlay">
+            <figure class="figureClassPost">
+              <video v-if="individualPost.mediaType == 'video'" class="card-img-style-post" controls controlsList="nodownload">
+                <source :src="getCloudinaryUrlVideo(individualPost.mediaHash)">
+              </video>
+              <div class="card-img-style-post-audio" v-if="individualPost.mediaType == 'audio'">
+                <wavesurfer :src="getCloudinaryUrlVideo(individualPost.mediaHash)" :options="waveformOptions"></wavesurfer>
+              </div>
+              <MDBCardImg
+                v-if="individualPost.mediaType == 'image'"
+                :src="getCloudinaryUrlImage(individualPost.mediaHash)"
+                top
+                hover
+                alt="..."
+                class="card-img-style-post"
+              />
+            </figure>
           </MDBCard>
-        </div>
       </div>
       <div class="box2 userName">
-        <router-link :to="`/user/${user.name}`" exact>
-          <img :src="getImgUrl(user.profPicHash)" class="round-image-post" />
+        <router-link :to="`/user/${individualPost.address}`" exact>
+          <img :src="getAvatar(individualPost.address.toLowerCase())" class="round-image-post" />
         </router-link>
         <div class="userName">
-          {{ user.name }}
+            {{ individualPost.address.substring(0, 4) }}...{{ individualPost.address.slice(-4) }}
         </div>
       </div>
       <div class="box2 itemName">
@@ -36,38 +47,50 @@
           <thead class="roundedHeader">
             <tr>
               <th>Trait</th>
-              <th>Value</th>
+              <th class="valueStyle">Value</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(item, index) in individualPost.attributes"
                     :key="index">
               <td>{{ item.trait_type }}</td>
-              <td>{{ item.value }}</td>
+              <td class="valueStyle">{{ item.value }}</td>
             </tr>
           </tbody>
         </table>
       </div>
       <div class="box2 itemLikes">
-        {{ individualPost.likes }} likes
+
+        <a class="likesHover" @click="showLikersModal = true, idToCheck = individualPost.id">
+          {{ individualPost.likes }} likes
+        </a>
+
+        <Teleport v-if="showLikersModal && idToCheck == individualPost.id" to="body">
+          <LikersModal :show="showLikersModal" :postId="individualPost.id" @close="showLikersModal = false">
+          </LikersModal>
+        </Teleport>
+
         <div v-if="!likedArray[0]" id="favoriting" class="likeHeart">
-          <ToggleFavorite :id="individualPost.id" @like-event="updateparent" />
+          <ToggleFavorite class="faveButton" :id="individualPost.id" @like-event="updateparent" />
         </div>
         <div v-if="likedArray[0]" id="favoriting" class="likeHeart">
           <ToggleFavorite
+            class="faveButton"
             :id="individualPost.id"
             :intialFavorited="true"
             @like-event="updateparent"
           />
         </div>
       </div>
+      <div class="itemBackground">
+      </div>
       <div class="box2 itemIpfs">
         <a :href="getImgUrl(individualPost.mediaHash)" title="IPFS Media">
           <svg
             class="svgIpfs"
             xmlns="http://www.w3.org/2000/svg"
-            width="25"
-            height="25"
+            width="20"
+            height="20"
             viewBox="0 0 24 24"
             fill="none"
             stroke-width="1"
@@ -83,8 +106,8 @@
           <svg
             class="svgIpfs"
             xmlns="http://www.w3.org/2000/svg"
-            width="25"
-            height="25"
+            width="20"
+            height="20"
             viewBox="0 0 24 24"
             fill="none"
             stroke-width="1"
@@ -106,6 +129,7 @@
 import { provide } from "vue";
 import { Notyf } from "notyf";
 
+import ErrorPage from "@src/components/VUpload/404.vue";
 import { getImgUrl } from "@src/services/helpers";
 import {
   MDBCard,
@@ -114,18 +138,35 @@ import {
 import { storeToRefs } from "pinia";
 import { useRebelStore } from "@src/store/index";
 import ToggleFavorite from "@src/components/VUpload/ToggleFavorite.vue";
+import LikersModal from "@src/components/VUpload/LikersModal.vue";
+import { createAvatar } from '@dicebear/avatars';
+import * as style from '@dicebear/avatars-bottts-sprites';
+import { getCloudinaryUrlImage, getCloudinaryUrlVideo } from "@src/services/helpers";
 
 export default {
   name: "VPost",
   components: {
     MDBCard,
     MDBCardImg,
+    LikersModal,
     ToggleFavorite,
+    ErrorPage
   },
   data() {
     return {
       componentKey: 0,
       postReady: false,
+      showLikersModal: false,
+      idToCheck: null,
+      waveformOptions: {
+        backend: "MediaElement",
+        mediaControls: true,
+        barWidth: 2,
+        responsive: true,
+        height: 240,
+        hideScrollbar: true,
+        cursorWidth: 1
+      },
     };
   },
   mounted() {
@@ -138,14 +179,14 @@ export default {
       this.postReady = false;
       const { getPostById, isLiked } = useRebelStore();
       if (this.$route.params.id) {
-        await getPostById([this.$route.params.id]);
+        await getPostById(this.$route.params.id);
         await isLiked([this.$route.params.id]);
       }
       this.postReady = true;
     },
     async updateparent() {
       const { getPostById, isLiked } = useRebelStore();
-      await getPostById([this.$route.params.id]);
+      await getPostById(this.$route.params.id);
       await isLiked([this.$route.params.id]);
       this.componentKey += 1;
     },
@@ -182,6 +223,18 @@ export default {
       ],
     });
 
+    const getAvatar = (address) => {
+      let svgAvatar = createAvatar(style, {
+        seed: address,
+        scale: 80,
+        translateY: -3
+      });
+
+      let blob = new Blob([svgAvatar], {type: 'image/svg+xml'});
+      let url = URL.createObjectURL(blob);
+      return url
+    };
+
     provide("notyf", NotfyProvider);
 
     return {
@@ -190,12 +243,94 @@ export default {
       account,
       getImgUrl,
       likedArray,
+      getAvatar,
+      getCloudinaryUrlImage,
+      getCloudinaryUrlVideo
     };
   },
 };
 </script>
 
 <style lang="scss">
+
+.valueStyle {
+  color: grey;
+}
+
+wave {
+  z-index: 0;
+  display: flex;
+  cursor: pointer !important;
+}
+
+.card-img-style-post-audio audio::-webkit-media-controls-panel {
+  background-color: lightgrey;
+}
+
+.card-img-style-post-audio audio::-webkit-media-controls-current-time-display {
+  font-size: 10px;
+}
+
+.card-img-style-post-audio audio::-webkit-media-controls-time-remaining-display {
+  font-size: 10px;
+}
+
+.card-img-style-post-audio audio::-webkit-media-controls-play-button {
+  color: var(--icon-color-opposite);
+  border-radius: 50%;
+}
+
+.card-img-style-post-audio audio::-webkit-media-controls-timeline {
+  width: 150px;
+}
+
+.card-img-style-post-audio audio::-webkit-media-controls-enclosure {
+    position: absolute;
+    height: 40px;
+    margin-top: 150px;
+    border-radius: 0%;
+    overflow: hidden;
+    border-bottom-left-radius: 0.6rem;
+    border-bottom-right-radius: 0.6rem;
+}
+
+.card-img-style-post-audio audio {
+    margin-top: 37px;
+}
+
+.card-style figure {
+  opacity: 1;
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+  cursor: pointer;
+}
+.card-style figure:hover {
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.faveButton {
+  margin-left: 2px;
+  margin-top: -2px;
+  background: transparent;
+  border: 0px;
+  cursor: pointer;
+}
+
+.figureClassPost {
+  width: 100%;
+  height: 100%;
+  align-content: center;
+  margin-left: auto;
+  object-fit: cover;
+}
+
+.likesHover {
+  cursor: pointer;
+  font-size: 11px;
+  text-decoration: underline;
+}
+
 .styled-table {
   border-collapse: collapse;
   margin: 0 0;
@@ -215,7 +350,7 @@ export default {
 
 .styled-table th,
 .styled-table td {
-  padding: 12px 15px;
+  padding: 12px 0px;
 }
 
 .styled-table tbody tr {
@@ -234,20 +369,32 @@ export default {
   height: 60vh;
   display: grid;
   grid-gap: 10px;
-  grid-template-columns: 17vw 17vw 25vw;
-  grid-template-rows: 15% 10% 15% 40% 17%;
+  grid-template-columns: 250px 120px 250px;
+  grid-template-rows: 15% 10% 15% 38% 12%;
   justify-content: center;
 }
 
-.card-img-style {
-  max-width: 100%;
-  max-height: 100%;
+.card-img-style-post {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  object-fit: cover;
+  border-radius: 0.6rem;
+  margin-top: -13px;
+}
+
+.card-img-style-post-audio {
+  width: 380px;
+  position: relative;
+  object-fit: cover;
+  border-radius: 0.6rem;
+  margin-top: 15%;
+  margin-left: 40px;
 }
 
 .box2 {
-  background-image: var(--liniear-gradient-color-2);
+  // background-image: var(--liniear-gradient-color-2);
   border-radius: 10px;
-  max-width: 80rem;
   display: flex;
 }
 
@@ -255,12 +402,13 @@ export default {
   grid-column: 1 / 3;
   grid-row: 1 / 6;
   justify-content: center;
-  align-content: end;
-  background-color: transparent;
+  z-index: 1;
+  background-image: var(--liniear-gradient-color-2);
+  pointer-events: auto;
 }
 
 .userName {
-  font-size: 13px;
+  font-size: 11px;
   grid-column: 3 / 3;
   grid-row: 1 / 1;
   font-weight: 999;
@@ -271,9 +419,10 @@ export default {
 .itemName {
   grid-column: 3 / 3;
   grid-row: 2 / 2;
-  padding: 15px;
-  font-size: 11px;
-  font-weight: 999;
+  padding: 10px;
+  padding-left: 15px;
+  font-size: 13px;
+  font-weight: 900;
 }
 
 .itemDescription {
@@ -288,6 +437,7 @@ export default {
   grid-row: 4 / 4;
   padding: 15px;
   font-size: 11px;
+  margin-top: -10px;
 }
 
 .itemLikes {
@@ -295,75 +445,47 @@ export default {
   grid-row: 5 / 5;
   padding: 15px;
   font-size: 12px;
+  margin-top: 10px;
+  z-index: 1000;
 }
 
 .itemIpfs {
   padding: 5px;
-  width: 50px;
+  width: 40px;
+  height: 20px;
+  margin-top: -5px;
+  z-index: 1000;
 }
 
-.card-style {
-  background-image: var(--liniear-gradient-color-2);
+.itemBackground {
+  grid-column: 3 / 3;
+  grid-row: 1 / 6;
+  z-index: -1;
+  // background-image: var(--linear-gradient-post-panel);
+  border-radius: 10px;
+}
+
+.card-style-post {
   border-radius: 0.8rem;
-}
-
-.card-body {
-  padding-right: 10px;
-  padding-left: 10px;
-  padding-bottom: 10px;
-  font-size: 13px;
-}
-
-.media-wrap {
-  overflow: hidden;
-  position: relative;
-  max-width: 80rem;
-  height: 100%;
-}
-
-.gallery {
-  display: grid;
-  grid-template-columns: 200px 200px 200px;
-  grid-gap: 1rem;
-  max-width: 80rem;
-  margin: 5rem auto;
-  padding: 0.8rem;
-}
-
-.gallery-panel img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 0.75rem;
-}
-
-.image-fit {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  width: 300px; /*set the width or max-width*/
-  height: auto; /*this makes sure to maintain the aspect ratio*/
-  text-align: center; /*for centering images inside*/
-}
-
-.vid-fit {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  border-radius: 0.8rem;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
 }
 
 .round-image-post {
   object-fit: cover;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
+  background: var(--icon-color)
 }
 
 #favoriting.likeHeart {
   position: relative;
   margin-top: -3px;
   margin-left: 15px;
+  z-index: 1000;
+  cursor: pointer;
 }
 
 .svgIpfs {

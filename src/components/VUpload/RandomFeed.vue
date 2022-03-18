@@ -1,10 +1,10 @@
 <template>
   <div v-if="this.stateLoaded">
-    <div class="noPostsDiv" v-if="!latestPosts[0]">
+    <div class="noPostsDiv" v-if="!randomPosts[0]">
       no posts yet.
     </div>
     <div class="wrapperFeed">
-      <div class="gallery-panel" v-for="(item, index) in latestPosts" :key="index">
+      <div class="gallery-panel" v-for="(item, index) in randomPosts" :key="index">
         <div class="media-wrap">
           <MDBCard class="card-style hover-overlay">
             <router-link :to="`/post/${item.id}`" active-class="active" exact>
@@ -55,7 +55,6 @@
 
 <script>
 import { ref, inject } from "vue";
-
 import { MDBCard, MDBCardBody, MDBCardText, MDBCardImg } from "mdb-vue-ui-kit";
 import { useRebelStore } from '@src/store/index';
 import { storeToRefs } from 'pinia';
@@ -64,7 +63,7 @@ import ToggleFavorite from "@src/components/VUpload/ToggleFavorite.vue";
 import { getCloudinaryUrlImage, getCloudinaryUrlVideo } from "@src/services/helpers";
 
 export default {
-  name: "DiscoverFeed",
+  name: "RandomFeed",
   emits: ["like-event"],
   components: {
     MDBCard,
@@ -100,19 +99,15 @@ export default {
   },
   methods: {
     async checkIsLiked() {
-      const { isLiked, getPostsLatest } = useRebelStore()
+      const { isLiked, getRandomPosts } = useRebelStore()
       const rebelStore = useRebelStore()
-      const { latestPostsArray } = storeToRefs(rebelStore)
-      await getPostsLatest();
-      await isLiked(latestPostsArray._rawValue);
+      const { randomPostsArray } = storeToRefs(rebelStore)
+      await getRandomPosts();
+      await isLiked(randomPostsArray._rawValue);
       this.stateLoaded = true;
     },
     async updateparent() {
-      const { isLiked, getPostsLatest } = useRebelStore()
-      const rebelStore = useRebelStore()
-      const { latestPostsArray } = storeToRefs(rebelStore)
-      await getPostsLatest();
-      await isLiked(latestPostsArray._rawValue);
+      this.checkIsLiked();
       this.componentKey += 1;
       this.$emit('like-event', true);
     }
@@ -120,13 +115,13 @@ export default {
   setup() {
     const notyf = inject("notyf");
     const rebelStore = useRebelStore()
-    const { latestPosts, likedArray } = storeToRefs(rebelStore)
+    const { randomPosts, likedArray } = storeToRefs(rebelStore)
 
     return {
-      latestPosts,
-      likedArray,
+      randomPosts,
       getCloudinaryUrlImage,
-      getCloudinaryUrlVideo
+      getCloudinaryUrlVideo,
+      likedArray
     }
   }
 }
@@ -166,7 +161,7 @@ wave {
 
 .audioCardFeed audio::-webkit-media-controls-volume-slider {
   // background-color: #B1D4E0;
-  border-radius: 25px;
+  // border-radius: 25px;
   // padding-left: 200px;
   // margin-right: 500px;
 }
@@ -178,8 +173,9 @@ wave {
 .audioCardFeed audio::-webkit-media-controls-enclosure {
     position: absolute;
     height: 40px;
-    width: 100%;
-    margin-left: auto;
+    // width: 150%;
+    // margin-left: 45%;
+    border-radius: 0%;
     border-bottom-left-radius: 0.6rem;
     border-bottom-right-radius: 0.6rem;
 }

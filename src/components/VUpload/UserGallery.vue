@@ -1,30 +1,60 @@
 <template>
   <div v-if="this.stateLoaded">
-    <div class="container" v-if="!postedItems[0]">no posts yet.</div>
 
-    <div class="wrapper">
+    <div class="container" v-if="!postedItems[0] && account == this.$route.params.name">
+      <div class="bg"></div>
+      <button class="modalButton" id="show-modal" @click="showModal = true">
+        +
+      </button>
+      <Teleport to="body">
+        <UploadModal :show="showModal" @close="showModal = false">
+          <template #header>
+            <h3>custom header</h3>
+          </template>
+        </UploadModal>
+      </Teleport>
+    </div>
+
+    <div class="container" v-if="!postedItems[0] && account != this.$route.params.name">no posts yet.</div>
+
+    <div class="wrapperGallery">
       <div
         class="gallery-panel"
         v-for="(item, index) in postedItems"
         :key="index"
       >
-        <div class="media-wrap">
+        <div class="media-wrap-gallery">
           <MDBCard class="card-style hover-overlay">
             <router-link :to="`/post/${item.id}`" active-class="active" exact>
-              <figure>
+              <figure class="figureClass">
+                <video v-if="item.mediaType == 'video'" class="card-img-style-gallery" controls controlsList="nodownload">
+                  <source :src="getCloudinaryUrlVideo(item.mediaHash)">
+                </video>
+                <div class="audioCardGallery" v-if="item.mediaType == 'audio'">
+                  <wavesurfer :src="getCloudinaryUrlVideo(item.mediaHash)" :options="waveformOptions"></wavesurfer>
+                </div>
                 <MDBCardImg
-                  :src="getImgUrl(item.mediaHash)"
+                  v-if="item.mediaType == 'image'"
+                  :src="getCloudinaryUrlImage(item.mediaHash)"
                   top
                   hover
                   alt="..."
-                  class="card-img-style"
+                  class="card-img-style-gallery"
                 />
               </figure>
             </router-link>
             <MDBCardBody class="card-body">
-              <MDBCardText>Name: {{ item.name }} </MDBCardText>
+              <MDBCardText class="cardName"> {{ item.name }} </MDBCardText>
               <MDBCardText>
-                Likes: {{ item.likes }}
+                <a class="likesHover" @click="showLikersModal = true, idToCheck = item.id">
+                  {{ item.likes }} likes
+                </a>
+
+                <Teleport v-if="showLikersModal && idToCheck == item.id" to="body">
+                  <LikersModal :show="showLikersModal" :postId="item.id" @close="showLikersModal = false">
+                  </LikersModal>
+                </Teleport>
+
                 <div v-if="!likedArray[index]" id="favoriting">
                   <ToggleFavorite :id="item.id" @like-event="updateparent" />
                 </div>
@@ -45,16 +75,10 @@
 </template>
 
 <script>
-import { ref, computed, inject } from "vue";
+import { ref, inject } from "vue";
 
-import { useStore } from "@src/store";
 import {
-  fileSize,
-  copyToClipboard,
-  generateLink,
-  generateShortLink,
-  getImgUrl,
-  isVideo,
+  isVideo
 } from "@src/services/helpers";
 
 import {
@@ -66,6 +90,9 @@ import {
 import { useRebelStore } from "@src/store/index";
 import { storeToRefs } from "pinia";
 import ToggleFavorite from "@src/components/VUpload/ToggleFavorite.vue";
+import UploadModal from "@src/components/VUpload/Modal.vue";
+import LikersModal from "@src/components/VUpload/LikersModal.vue";
+import { getCloudinaryUrlImage, getCloudinaryUrlVideo } from "@src/services/helpers";
 
 export default {
   name: "UserGallery",
@@ -75,13 +102,27 @@ export default {
     MDBCardBody,
     MDBCardText,
     MDBCardImg,
-    ToggleFavorite
+    ToggleFavorite,
+    LikersModal,
+    UploadModal
   },
   data() {
     return {
       componentKey: 0,
       showModal: false,
+      showLikersModal: false,
       stateLoaded: false,
+      idToCheck: null,
+      waveformOptions: {
+        backend: "MediaElement",
+        mediaControls: true,
+        interact: false,
+        barWidth: 2,
+        responsive: true,
+        height: 145,
+        hideScrollbar: true,
+        cursorWidth: 0
+      },
     };
   },
   mounted() {
@@ -91,19 +132,17 @@ export default {
   },
   methods: {
     async checkIsLiked() {
-      const { isLiked, getPostsByUserName } = useRebelStore();
+      const { isLiked, getPostsByOwner } = useRebelStore();
       const rebelStore = useRebelStore();
       const { postsArray } = storeToRefs(rebelStore);
-      await getPostsByUserName(this.$route.params.name);
-      await isLiked(postsArray._rawValue);
+      if (this.$route.params.name) {
+        await getPostsByOwner(this.$route.params.name);
+        await isLiked(postsArray._rawValue);
+      }
       this.stateLoaded = true;
     },
     async updateparent() {
-      const { isLiked, getPostsByUserName } = useRebelStore();
-      const rebelStore = useRebelStore();
-      const { postsArray } = storeToRefs(rebelStore);
-      await getPostsByUserName(this.$route.params.name);
-      await isLiked(postsArray._rawValue);
+      this.checkIsLiked()
       this.componentKey += 1;
       this.$emit("like-event", true);
     },
@@ -117,79 +156,100 @@ export default {
   },
   setup() {
     const notyf = inject("notyf");
-    const store = useStore();
 
-    const search = ref("");
     const rebelStore = useRebelStore();
-    const { postedItems, likedArray } = storeToRefs(rebelStore);
-
-    const shortenLink = async (item) => {
-      const url = generateLink(item);
-
-      const loadingIndicator = notyf.open({
-        type: "loading",
-        message: "Please wait, we generate shorten link for you.",
-      });
-
-      const [error, data] = await generateShortLink(url);
-
-      notyf.dismiss(loadingIndicator);
-
-      if (error) {
-        notyf.error(error.message);
-      } else {
-        const shortenLink = `https://s.id/${data.short}`;
-        store.updateShortenLink(item.metaCid, shortenLink);
-
-        notyf.success(`Shorten Link has successfully generated.`);
-      }
-    };
-    const copyFileLink = (item) => {
-      const url = generateLink(item);
-      copyToClipboard(url);
-
-      notyf.success("Copied to clipboard!");
-    };
-    const onSearchChanged = ($event) => {
-      search.value = $event.target.value;
-    };
-
-    const files = computed(() =>
-      store.results
-        .slice()
-        .reverse()
-        .filter((item) => !!item.metaCid)
-        .filter((item) => {
-          if (search.value === "") return true;
-
-          return item.file.name.indexOf(search.value) >= 0;
-        })
-    );
+    const { postedItems, likedArray, account } = storeToRefs(rebelStore);
 
     return {
-      search,
-      files,
-      fileSize,
-      shortenLink,
-      copyFileLink,
-      generateLink,
-      onSearchChanged,
-      getImgUrl,
       isVideo,
       postedItems,
       likedArray,
+      account,
+      getCloudinaryUrlImage,
+      getCloudinaryUrlVideo
     };
   },
 };
 </script>
 
 <style lang="scss">
+
+wave {
+  z-index: 0;
+  display: flex;
+  cursor: pointer !important;
+}
+
+.audioCardGallery audio::-webkit-media-controls-panel {
+  background-color: lightgrey;
+}
+
+.audioCardGallery audio::-webkit-media-controls-current-time-display {
+  font-size: 10px;
+}
+
+.audioCardGallery audio::-webkit-media-controls-time-remaining-display {
+  font-size: 10px;
+}
+
+.audioCardGallery audio::-webkit-media-controls-play-button {
+  color: var(--icon-color-opposite);
+  border-radius: 50%;
+}
+
+.audioCardGallery audio::-webkit-media-controls-volume-slider {
+  // background-color: #B1D4E0;
+  // border-radius: 25px;
+  // padding-left: 200px;
+  // margin-right: 500px;
+}
+
+.audioCardGallery audio::-webkit-media-controls-timeline {
+  // width: 80px;
+}
+
+.audioCardGallery audio::-webkit-media-controls-enclosure {
+    position: absolute;
+    height: 40px;
+    border-radius: 0%;
+    border-bottom-left-radius: 0.6rem;
+    border-bottom-right-radius: 0.6rem;
+}
+
+
+.likesHover {
+  cursor: pointer;
+  font-size: 11px;
+  text-decoration: underline;
+}
+
 .card-style figure img {
   opacity: 1;
   -webkit-transition: 0.3s ease-in-out;
   transition: 0.3s ease-in-out;
 }
 .card-style figure:hover img {
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.card-style figure video {
+  opacity: 1;
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
+.card-style figure:hover video {
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.card-style figure {
+  opacity: 1;
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+  cursor: pointer;
+}
+.card-style figure:hover {
   opacity: 0.5;
   cursor: pointer;
 }
@@ -244,16 +304,23 @@ export default {
 .card-style {
   background-image: var(--liniear-gradient-color-2);
   border-radius: 0.8rem;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
 }
 
 .card-body {
   padding-right: 10px;
-  padding-left: 10px;
+  padding-left: 20px;
   padding-bottom: 10px;
   font-size: 13px;
+  margin-left: 7px;
+  height: 60px;
+  margin-top: -2px;
 }
 
-.wrapper {
+.wrapperGallery {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-auto-rows: repeat(3, 1fr);
@@ -262,22 +329,34 @@ export default {
   max-width: 80rem;
 }
 
-.media-wrap {
+.card-img-style-gallery {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.figureClass {
+  width: 100%;
+  height: 100%;
+  align-content: center;
+  margin-left: auto;
+  object-fit: cover;
+}
+
+.media-wrap-gallery {
   overflow: hidden;
   position: relative;
   max-width: 80rem;
 }
 
-.gallery {
-  display: grid;
-  grid-template-columns: 200px 200px 200px;
-  grid-gap: 1rem;
-  max-width: 80rem;
-  margin: 5rem auto;
-  padding: 0.8rem;
+.gallery-panel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.75rem;
 }
 
-.gallery-panel img {
+.gallery-panel video {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -298,6 +377,11 @@ export default {
   width: 100%;
   object-fit: cover;
   border-radius: 0.8rem;
+}
+
+.cardName {
+  font-size: 13px;
+  font-weight: 900;
 }
 
 #favoriting {

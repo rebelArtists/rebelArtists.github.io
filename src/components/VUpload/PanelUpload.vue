@@ -1,11 +1,12 @@
 <template>
   <section id="panel-upload">
-    <MetaName :name="name" @on-changed="onNameChanged" />
+    <MetaName :name="name" :valid="nameValid" @on-changed="onNameChanged" />
     <MetaDescription
       :description="description"
+      :valid="descValid"
       @on-changed="onDescriptionChanged"
     />
-    <MetaAttributes :attributes="attributes" @on-changed="onAttributesChanged" />
+    <MetaAttributes :attributes="attributes" :valid="attrValid" @on-changed="onAttributesChanged" />
     <div class="content panel-upload--content">
       <div
         class="panel-upload--dropzone"
@@ -19,7 +20,7 @@
         <div class="dropzone-label" @click="openSelectFile">
           <i-mdi-timer-sand v-if="fileCount > 0" class="icon-color" />
           <i-mdi-upload v-else class="icon-color" />
-          <span>Drop file here or click to select file.</span>
+          <span>Drop file here or click to select</span>
 
           <div class="dropzone-is-loading" :class="{ active: fileCount > 0 }">
             <div class="dropzone-loading--bar"></div>
@@ -57,25 +58,58 @@ export default {
     const isDragged = ref(false);
     const finished = ref(0);
     const isUploading = ref(false);
-    const { postContent, getPostsByUser } = useRebelStore();
+    const { postContent, getPostsByOwner } = useRebelStore();
     const rebelStore = useRebelStore();
     const { account } = storeToRefs(rebelStore);
     const name = ref("");
     const description = ref("");
-    const attributes = ref('[{"trait_type": "Type","value": "Single"},...]');
+    const attributes = ref('[{"trait_type": "CHANGE_ME", "value": "CHANGE_ME"}]');
+    const nameValid = ref(false);
+    const descValid = ref(false);
+    const attrValid = ref(false);
 
     const store = useStore();
 
     const onNameChanged = ($event) => {
       name.value = $event.target.value;
+      if (name.value.match(/^(?=.{3,60}$)[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/)) {
+        nameValid.value = true
+      } else {
+        nameValid.value = false
+      }
     };
 
     const onDescriptionChanged = ($event) => {
       description.value = $event.target.value;
+      if (description.value.match(/^(?=.{3,120}$)[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/)) {
+        descValid.value = true
+      } else {
+        descValid.value = false
+      }
     };
 
     const onAttributesChanged = ($event) => {
       attributes.value = $event.target.value;
+      try {
+        const validJson = JSON.parse(attributes.value);
+        if(Array.isArray(validJson)){
+           validJson.forEach(element => {
+             if(typeof (element) === 'object'){
+                if ("trait_type" in element && "value" in element) {
+                  attrValid.value = true
+                } else {
+                  throw 'missing req object keys'
+                }
+              } else {
+                throw 'element is not an object'
+              }
+           });
+        } else {
+          throw 'not a json array'
+        }
+      } catch {
+        attrValid.value = false
+      }
     };
 
     const onDropHandler = ($event) => {
@@ -110,12 +144,20 @@ export default {
         attributes.value
       );
       const { data } = result;
-      await postContent(name.value, data.fileCid, data.metaCid);
-      getPostsByUser(account.value);
+      const { error } = result;
+
+      // figure out how to handle cancelled tx's by user
+      if (!error) {
+        try {
+          await postContent(name.value, data.fileCid, data.metaCid, data.fileType);
+          getPostsByOwner(account._rawValue);
+        } catch (err) {
+          notyf.error(`tx cancelled by user`);
+        }
+      }
 
       finished.value++;
 
-      const { error } = result;
       if (error && error instanceof Error) notyf.error(error.message);
 
       context.emit("post-event", true);
@@ -124,47 +166,44 @@ export default {
     const onFileChangedHandler = async () => {
       isUploading.value = true;
 
-      store.addFiles(...fileRef.value.files);
+      if (nameValid.value && descValid.value && attrValid.value) {
+        store.addFiles(...fileRef.value.files);
+        const files = store.files.map((file) => uploadFileHandler(file));
 
-      const files = store.files.map((file) => uploadFileHandler(file));
+        try {
+          let results = await Promise.all(files);
+          const unsuccessfully = results.filter(({ error }) => Error);
+          store.resetFiles();
+          fileRef.value.value = null;
 
-      try {
-        let results = await Promise.all(files);
-        const successfully = results.filter(({ error }) => !error);
-
-        store.resetFiles();
-
-        fileRef.value.value = null;
-
-        if (successfully.length > 0) {
-          notyf.success(`NFT successfully created!`);
+          if (unsuccessfully.length == 0) {
+            notyf.success(`NFT successfully created!`);
+          }
+        } catch (error) {
+          finished.value = 0;
+          isUploading.value = false;
+          store.resetFiles();
+        } finally {
+          finished.value = 0;
+          isUploading.value = false;
         }
-      } catch (error) {
-        console.log(error);
-        notyf.error(`Shoot! Something went wrong creating NFT`);
-      } finally {
+      } else {
+        notyf.error(`fix input values and try again`);
         finished.value = 0;
         isUploading.value = false;
+        fileRef.value.value = null;
+        store.resetFiles();
       }
     };
 
     const fileCount = computed(() => {
       return store.files.length;
     });
-    const result = computed(() => {
-      return {
-        count: store.results.length,
-        size: store.results.reduce((sum, result) => {
-          return sum + result.file.size;
-        }, 0),
-      };
-    });
 
     return {
       finished,
       fileRef,
       fileCount,
-      result,
       isDragged,
       fileSize,
       onDragEnter,
@@ -178,6 +217,9 @@ export default {
       onNameChanged,
       onDescriptionChanged,
       onAttributesChanged,
+      nameValid,
+      descValid,
+      attrValid
     };
   },
 };
@@ -190,6 +232,7 @@ section#panel-upload {
   border-bottom-left-radius: 1rem;
   border-top-right-radius: 1rem;
   border-bottom-right-radius: 1rem;
+  align-content: center;
 
   .panel-upload--content,
   .panel-upload--content .panel-upload--dropzone {
@@ -229,7 +272,7 @@ section#panel-upload {
       padding: 0.8rem;
       border-radius: 0.5rem;
       text-align: center;
-      width: 50%;
+      width: 80%;
 
       svg {
         height: 48px;

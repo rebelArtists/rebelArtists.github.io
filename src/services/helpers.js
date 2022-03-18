@@ -1,3 +1,23 @@
+import { ethers } from "ethers";
+import {Cloudinary} from "@cloudinary/url-gen";
+
+// Create and configure your Cloudinary instance.
+const cld = new Cloudinary({
+  cloud: {
+    cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+  }
+});
+
+export const getCloudinaryUrlVideo = (ifpsHash) => {
+  const myVideo = cld.video(`ipfs_signed/${ifpsHash}`, {quality: 50});
+  return myVideo.toURL();
+};
+
+export const getCloudinaryUrlImage = (ifpsHash) => {
+  const myImage = cld.image(`ipfs_signed/${ifpsHash}`);
+  return myImage.toURL();
+};
+
 /**
  * File size human readble
  * @param {Number} bytes
@@ -55,6 +75,13 @@ export const isVideo = (type) => {
 export const getImgUrl = (hash) => {
   return `https://ipfs.io/ipfs/${hash}`;
 };
+
+export const isAddress = (address) => {
+    try {
+        ethers.utils.getAddress(address);
+    } catch (e) { return false; }
+    return true;
+}
 
 export const fetchIpfsMeta = async (item) => {
   const response = await fetch(`https://ipfs.io/ipfs/${item}`);

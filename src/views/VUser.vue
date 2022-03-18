@@ -2,12 +2,34 @@
   <section id="content">
     <div class="main animated">
       <div class="main-content">
-        <div v-if="this.stateLoaded && !routedUser.profPicHash">
+        <div v-if="!isAddress(this.$route.params.name)">
           <ErrorPage />
         </div>
-        <div v-if="this.stateLoaded && routedUser.profPicHash">
+        <div v-if="this.stateLoaded && user && isAddress(this.$route.params.name)">
           <UserProfileHeader />
-          <UserGallery @like-event="updateparent" />
+          <div class="toggleWrapper">
+            <a @click="toggleShowLikedItems">
+              <div v-if="showLikedPosts" class="createdInactive">
+                created
+              </div>
+            </a>
+              <div v-if="!showLikedPosts"  class="createdActive">
+                created
+              </div>
+            <div class="divider">
+              |
+            </div>
+            <a @click="toggleShowLikedItems">
+              <div v-if="!showLikedPosts"  class="likedInactive">
+                liked
+              </div>
+            </a>
+            <div v-if="showLikedPosts" class="likedActive">
+              liked
+            </div>
+          </div>
+          <UserGallery v-if="!showLikedPosts" @like-event="updateparent" />
+          <UserLikedGallery v-if="showLikedPosts" @like-event="updateparent" />
         </div>
       </div>
     </div>
@@ -18,18 +40,21 @@
 import { provide } from "vue";
 import { Notyf } from "notyf";
 
-import UserGallery from "@src/components/VUpload/UserGallery.vue";
-import UserProfileHeader from "@src/components/VUpload/UserProfileHeader.vue";
 import ErrorPage from "@src/components/VUpload/404.vue";
+import UserGallery from "@src/components/VUpload/UserGallery.vue";
+import UserLikedGallery from "@src/components/VUpload/UserLikedGallery.vue";
+import UserProfileHeader from "@src/components/VUpload/UserProfileHeader.vue";
 import { storeToRefs } from "pinia";
 import { useRebelStore } from "@src/store/index";
+import { isAddress } from "@src/services/helpers";
 
 export default {
   name: "VUser",
   components: {
-    UserGallery,
-    UserProfileHeader,
     ErrorPage,
+    UserGallery,
+    UserLikedGallery,
+    UserProfileHeader
   },
   props: {
     'ready': {
@@ -42,6 +67,7 @@ export default {
       componentKey: 0,
       postReady: false,
       stateLoaded: false,
+      showLikedPosts: false
     };
   },
   mounted() {
@@ -51,12 +77,9 @@ export default {
   },
   methods: {
     async getUserContent() {
-      const { isFollowing, getUserByName } = useRebelStore();
-      const rebelStore = useRebelStore();
-      const { user } = storeToRefs(rebelStore);
-      if (this.$route.params.name) {
-        await getUserByName(this.$route.params.name);
-        await isFollowing(user.value.id);
+      const { getUserByOwner } = useRebelStore();
+      if (this.$route.params.name && isAddress(this.$route.params.name)) {
+        await getUserByOwner(this.$route.params.name);
       }
       this.stateLoaded = true;
     },
@@ -64,14 +87,17 @@ export default {
       await this.getUserContent();
       this.componentKey += 1;
     },
-  },
-  watch: {
-    $route(to, from) {
-      if (to !== from) {
-        this.getUserContent();
-      }
+    toggleShowLikedItems() {
+      this.showLikedPosts = !this.showLikedPosts;
     },
   },
+  // watch: {
+  //   $route(to, from) {
+  //     if (to !== from) {
+  //       this.getUserContent();
+  //     }
+  //   },
+  // },
   setup() {
     const NotfyProvider = new Notyf({
       duration: 2000,
@@ -94,13 +120,14 @@ export default {
     });
 
     const rebelStore = useRebelStore();
-    const { account, routedUser } = storeToRefs(rebelStore);
+    const { account, user } = storeToRefs(rebelStore);
 
     provide("notyf", NotfyProvider);
 
     return {
       account,
-      routedUser,
+      user,
+      isAddress
     };
   },
 };
@@ -109,6 +136,52 @@ export default {
 <style lang="scss">
 [v-cloak] {
   display: none;
+}
+
+.toggleWrapper {
+  display: flex;
+  text-align: center;
+  // background-color: grey;
+  align-content: center;
+  justify-content: center;
+  margin: auto;
+  margin-bottom: 35px;
+  // margin-left: 50%;
+  // margin-right: 50%;
+}
+.divider {
+  position: absolute;
+  color: grey;
+  font-weight: 900;
+  margin-top: -2px;
+}
+.createdInactive {
+  position: absolute;
+  font-size: 11px;
+  cursor: pointer;
+  padding-top: 1px;
+  margin-left: -75px
+}
+.createdActive {
+  position: absolute;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+  margin-left: -100px
+}
+.likedInactive {
+  position: absolute;
+  font-size: 11px;
+  cursor: pointer;
+  padding-top: 1px;
+  margin-left: 25px;
+}
+.likedActive {
+  position: absolute;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+  margin-left: 85px;
 }
 
 section#content {

@@ -1,14 +1,20 @@
 <template>
   <div class="meta-attributes">
     <div class="attributes-span">
-      <span>Attributes:</span>
+      <span>Attributes</span>
+      <span v-if="!this.valid" class="warningText">
+        (given object keys req for each element)
+      </span>
+      <span v-if="this.valid" class="successfulText">
+        ✓
+      </span>
     </div>
     <input
       type="text"
       id="attributes"
       class="attributes-input"
       :value="attributes"
-      placeholder='[{"trait_type": "Type","value": "Single"},...]'
+      placeholder='[{"trait_type": "Type","value": "Single"}]'
       @input="$emit('on-changed', $event)"
     />
   </div>
@@ -21,7 +27,11 @@ export default {
   props: {
     attributes: {
       type: String,
-      default: '[{"trait_type": "Type","value": "Single"},...]',
+      default: '[{"trait_type": "Type","value": "Single"}]',
+    },
+    valid: {
+      type: Boolean,
+      default: false,
     },
   },
 };
@@ -36,6 +46,18 @@ export default {
 .attributes-span {
   padding-bottom: 10px;
   font-size: 13px;
+  font-weight: 900;
+}
+
+.warningText {
+  font-size: 9px;
+  color: red;
+  font-style: italic;
+}
+
+.successfulText {
+  font-size: 12px;
+  color: green;
 }
 
 .attributes-input {

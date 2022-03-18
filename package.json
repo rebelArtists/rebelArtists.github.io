@@ -4,26 +4,41 @@
   "description": "NFT Share File",
   "scripts": {
     "build": "vite build",
+    "compile": "npx hardhat compile",
+    "deploy-poly-dev": "npx hardhat run scripts/deploy-rebel.js --network mumbai",
     "dev": "vite",
     "format": "prettier .  --write",
     "lint-save": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
     "lint-check": "eslint --ext .js,.vue --ignore-path .gitignore --fix-dry-run src",
-    "serve": "vite preview"
+    "preview": "vite preview --port 8080",
+    "serve": "vite preview",
+    "test": "export NODE_OPTIONS=--openssl-legacy-provider; npx hardhat test"
   },
   "homepage": "https://share.nyan.my.id",
   "dependencies": {
+    "@cloudinary/url-gen": "^1.6.0",
+    "@dicebear/avatars": "^4.10.2",
+    "@dicebear/avatars-bottts-sprites": "^4.10.2",
     "@nomiclabs/hardhat-ethers": "^2.0.5",
     "@nomiclabs/hardhat-waffle": "^2.0.2",
+    "@openzeppelin/contracts": "^4.5.0",
     "dotenv": "^16.0.0",
     "ethereum-waffle": "^3.4.0",
     "ethers": "^5.5.4",
     "hardhat": "^2.8.4",
+    "js-data": "^3.0.11",
+    "js-sha256": "^0.9.0",
     "mdb-vue-ui-kit": "^1.9.0",
     "mdbvue": "^6.7.3",
     "notyf": "^3.10.0",
     "pinia": "^2.0.0-rc.6",
     "vue": "^3.2.4",
-    "vue-router": "^4.0.10"
+    "vue-audio-visual": "^2.4.1",
+    "vue-router": "^4.0.10",
+    "vue-social-sharing": "^4.0.0-alpha4",
+    "vue-socialmedia-share": "^1.0.1",
+    "wavesurfer.js": "^6.0.4",
+    "wavesurfer.js-vue": "^1.0.0"
   },
   "devDependencies": {
     "@iconify/json": "^1.1.390",

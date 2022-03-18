@@ -1,17 +1,27 @@
 <template>
   <div v-if="this.stateLoaded">
+
+    <div class="container" v-if="!likedPostItems[0]">no liked posts yet.</div>
+
     <div class="wrapper">
       <div
         class="gallery-panel"
-        v-for="(item, index) in followingPosts"
+        v-for="(item, index) in likedPostItems"
         :key="index"
       >
         <div class="media-wrap">
           <MDBCard class="card-style hover-overlay">
             <router-link :to="`/post/${item.id}`" active-class="active" exact>
-              <figure>
+              <figure class="figureClassLiked">
+                <video v-if="item.mediaType == 'video'" class="card-img-style" controls controlsList="nodownload">
+                  <source :src="getCloudinaryUrlVideo(item.mediaHash)">
+                </video>
+                <div class="audioCardLiked" v-if="item.mediaType == 'audio'">
+                  <wavesurfer :src="getCloudinaryUrlVideo(item.mediaHash)" :options="waveformOptions"></wavesurfer>
+                </div>
                 <MDBCardImg
-                  :src="getImgUrl(item.mediaHash)"
+                  v-if="item.mediaType == 'image'"
+                  :src="getCloudinaryUrlImage(item.mediaHash)"
                   top
                   hover
                   alt="..."
@@ -20,9 +30,18 @@
               </figure>
             </router-link>
             <MDBCardBody class="card-body">
-              <MDBCardText>Name: {{ item.name }} </MDBCardText>
+              <MDBCardText class="cardName"> {{ item.name }} </MDBCardText>
               <MDBCardText>
-                Likes: {{ item.likes }}
+
+                <a class="likesHover" @click="showLikersModal = true, idToCheck = item.id">
+                  {{ item.likes }} likes
+                </a>
+
+                <Teleport v-if="showLikersModal && idToCheck == item.id" to="body">
+                  <LikersModal :show="showLikersModal" :postId="item.id" @close="showLikersModal = false">
+                  </LikersModal>
+                </Teleport>
+
                 <div v-if="!likedArray[index]" id="favoriting">
                   <ToggleFavorite :id="item.id" @like-event="updateparent" />
                 </div>
@@ -43,17 +62,7 @@
 </template>
 
 <script>
-import { ref, computed, inject } from "vue";
-
-import { useStore } from "@src/store";
-import {
-  fileSize,
-  copyToClipboard,
-  generateLink,
-  generateShortLink,
-  getImgUrl,
-  isVideo,
-} from "@src/services/helpers";
+import { ref, inject } from "vue";
 
 import {
   MDBCard,
@@ -64,9 +73,11 @@ import {
 import { useRebelStore } from "@src/store/index";
 import { storeToRefs } from "pinia";
 import ToggleFavorite from "@src/components/VUpload/ToggleFavorite.vue";
+import UploadModal from "@src/components/VUpload/Modal.vue";
+import { getCloudinaryUrlImage, getCloudinaryUrlVideo } from "@src/services/helpers";
 
 export default {
-  name: "FollowFeed",
+  name: "UserLikedGallery",
   emits: ["like-event"],
   components: {
     MDBCard,
@@ -74,18 +85,48 @@ export default {
     MDBCardText,
     MDBCardImg,
     ToggleFavorite,
+    UploadModal
   },
   data() {
     return {
       componentKey: 0,
       showModal: false,
+      showLikersModal: false,
       stateLoaded: false,
+      idToCheck: null,
+      waveformOptions: {
+        backend: "MediaElement",
+        mediaControls: true,
+        interact: false,
+        barWidth: 2,
+        responsive: true,
+        height: 145,
+        hideScrollbar: true,
+        cursorWidth: 0
+      },
     };
   },
   mounted() {
     this.$nextTick(() => {
       this.checkIsLiked();
     });
+  },
+  methods: {
+    async checkIsLiked() {
+      const { isLiked, getLikedPostsByOwner } = useRebelStore();
+      const rebelStore = useRebelStore();
+      const { likedPostArray } = storeToRefs(rebelStore);
+      if (this.$route.params.name) {
+        await getLikedPostsByOwner(this.$route.params.name);
+        await isLiked(likedPostArray._rawValue);
+      }
+      this.stateLoaded = true;
+    },
+    async updateparent() {
+      this.checkIsLiked()
+      this.componentKey += 1;
+      this.$emit("like-event", true);
+    },
   },
   watch: {
     $route(to, from) {
@@ -94,94 +135,92 @@ export default {
       }
     },
   },
-  methods: {
-    async checkIsLiked() {
-      const { isLiked, getPostsFollowing } = useRebelStore();
-      const rebelStore = useRebelStore();
-      const { followingPostsArray } = storeToRefs(rebelStore);
-      await getPostsFollowing();
-      await isLiked(followingPostsArray._rawValue);
-      this.stateLoaded = true;
-    },
-    async updateparent() {
-      const { isLiked, getPostsFollowing } = useRebelStore();
-      const rebelStore = useRebelStore();
-      const { followingPostsArray } = storeToRefs(rebelStore);
-      await getPostsFollowing();
-      await isLiked(followingPostsArray._rawValue);
-      this.componentKey += 1;
-      this.$emit("like-event", true);
-    },
-  },
   setup() {
     const notyf = inject("notyf");
-    const store = useStore();
 
-    const search = ref("");
     const rebelStore = useRebelStore();
-    const { followingPosts, likedArray } = storeToRefs(rebelStore);
-
-    const shortenLink = async (item) => {
-      const url = generateLink(item);
-
-      const loadingIndicator = notyf.open({
-        type: "loading",
-        message: "Please wait, we generate shorten link for you.",
-      });
-
-      const [error, data] = await generateShortLink(url);
-
-      notyf.dismiss(loadingIndicator);
-
-      if (error) {
-        notyf.error(error.message);
-      } else {
-        const shortenLink = `https://s.id/${data.short}`;
-        store.updateShortenLink(item.metaCid, shortenLink);
-
-        notyf.success(`Shorten Link has successfully generated.`);
-      }
-    };
-    const copyFileLink = (item) => {
-      const url = generateLink(item);
-      copyToClipboard(url);
-
-      notyf.success("Copied to clipboard!");
-    };
-    const onSearchChanged = ($event) => {
-      search.value = $event.target.value;
-    };
-
-    const files = computed(() =>
-      store.results
-        .slice()
-        .reverse()
-        .filter((item) => !!item.metaCid)
-        .filter((item) => {
-          if (search.value === "") return true;
-
-          return item.file.name.indexOf(search.value) >= 0;
-        })
-    );
+    const { likedPostItems, likedArray, account } = storeToRefs(rebelStore);
 
     return {
-      search,
-      files,
-      fileSize,
-      shortenLink,
-      copyFileLink,
-      generateLink,
-      onSearchChanged,
-      getImgUrl,
-      isVideo,
-      followingPosts,
+      likedPostItems,
       likedArray,
+      account,
+      getCloudinaryUrlImage,
+      getCloudinaryUrlVideo
     };
   },
 };
 </script>
 
 <style lang="scss">
+
+wave {
+  z-index: 0;
+  display: flex;
+  cursor: pointer !important;
+}
+
+.audioCardLiked audio::-webkit-media-controls-panel {
+  background-color: lightgrey;
+}
+
+.audioCardLiked audio::-webkit-media-controls-current-time-display {
+  font-size: 10px;
+}
+
+.audioCardLiked audio::-webkit-media-controls-time-remaining-display {
+  font-size: 10px;
+}
+
+.audioCardLiked audio::-webkit-media-controls-play-button {
+  color: var(--icon-color-opposite);
+  border-radius: 50%;
+}
+
+.audioCardLiked audio::-webkit-media-controls-volume-slider {
+  // background-color: #B1D4E0;
+  // border-radius: 25px;
+  // padding-left: 200px;
+  // margin-right: 500px;
+}
+
+.audioCardLiked audio::-webkit-media-controls-timeline {
+  // width: 80px;
+}
+
+.audioCardLiked audio::-webkit-media-controls-enclosure {
+    position: absolute;
+    height: 40px;
+    border-radius: 0%;
+    border-bottom-left-radius: 0.6rem;
+    border-bottom-right-radius: 0.6rem;
+}
+
+.card-style figure {
+  opacity: 1;
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+  cursor: pointer;
+}
+.card-style figure:hover {
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.figureClassLiked {
+  width: 100%;
+  height: 100%;
+  align-content: center;
+  margin-left: auto;
+  object-fit: cover;
+}
+
+.likesHover {
+  cursor: pointer;
+  font-size: 11px;
+  text-decoration: underline;
+}
+
 .card-style figure img {
   opacity: 1;
   -webkit-transition: 0.3s ease-in-out;
@@ -242,22 +281,38 @@ export default {
 .card-style {
   background-image: var(--liniear-gradient-color-2);
   border-radius: 0.8rem;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
 }
 
 .card-body {
   padding-right: 10px;
-  padding-left: 10px;
+  padding-left: 20px;
   padding-bottom: 10px;
   font-size: 13px;
+  margin-left: 7px;
+  height: 60px;
+  margin-top: -2px;
 }
 
 .wrapper {
   display: grid;
-  grid-template-columns: repeat(1, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   grid-auto-rows: repeat(3, 1fr);
   width: 100%;
   grid-gap: 1rem;
-  max-width: 80rem;
+  // max-width: 80rem;
+}
+
+.card-img-style {
+  // position: absolute;
+  // top: 0;
+  // left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .media-wrap {
@@ -306,6 +361,11 @@ export default {
   color: #2c3e50;
   margin-top: -15px;
   margin-left: 85%;
+}
+
+.cardName {
+  font-size: 13px;
+  font-weight: 900;
 }
 
 button {

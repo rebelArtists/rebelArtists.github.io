@@ -2,46 +2,35 @@
   <section id="content">
     <div v-if="account" class="main animated">
       <div class="main-content">
-        <span class="feedToggle">
-          <a
-            @click="toggleFeedOn"
-            v-if="followFeedToggle"
-            class="activeDiscover"
-          >
-            discover
-          </a>
-          <a
-            @click="toggleFeedOn"
-            v-if="!followFeedToggle"
-            class="inactiveDiscover"
-          >
-            discover
-          </a>
-          <div class="dividerLine">|</div>
-          <a
-            @click="toggleFeedOff"
-            v-if="!followFeedToggle"
-            class="activeFollowing"
-          >
-            following
-          </a>
-          <a
-            @click="toggleFeedOff"
-            v-if="followFeedToggle"
-            class="inactiveFollowing"
-          >
-            following
-          </a>
-        </span>
+        <div class="feedHeader">
+          <div class="toggleWrapper">
+            <a @click="toggleShowRandomItems">
+              <div v-if="showRandomPosts" class="latestInactive">
+                latest
+              </div>
+            </a>
+              <div v-if="!showRandomPosts"  class="latestActive">
+                latest
+              </div>
+            <div class="divider">
+              |
+            </div>
+            <a @click="toggleShowRandomItems">
+              <div v-if="!showRandomPosts"  class="randomInactive">
+                random
+              </div>
+            </a>
+            <div v-if="showRandomPosts" class="randomActive">
+              random
+            </div>
+          </div>
+        </div>
         <div class="feedGrid">
-          <div v-if="followFeedToggle" class="feedBox">
+          <div v-if="!showRandomPosts" class="feedBox">
             <DiscoverFeed />
           </div>
-          <div v-if="!followFeedToggle" class="feedBox">
-            <FollowFeed />
-          </div>
-          <div class="usersToFollowBox">
-            <UserToFollow />
+          <div v-if="showRandomPosts" class="feedBox">
+            <RandomFeed />
           </div>
         </div>
       </div>
@@ -54,29 +43,24 @@ import { provide } from "vue";
 import { Notyf } from "notyf";
 
 import DiscoverFeed from "@src/components/VUpload/Feed.vue";
-import FollowFeed from "@src/components/VUpload/FollowFeed.vue";
-import UserToFollow from "@src/components/VUpload/UserToFollow.vue";
+import RandomFeed from "@src/components/VUpload/RandomFeed.vue";
 import { storeToRefs } from "pinia";
 import { useRebelStore } from "@src/store/index";
 
 export default {
   name: "VFeed",
   components: {
-    UserToFollow,
     DiscoverFeed,
-    FollowFeed,
+    RandomFeed
   },
   data() {
     return {
-      followFeedToggle: false,
+      showRandomPosts: false
     };
   },
   methods: {
-    toggleFeedOn() {
-      this.followFeedToggle = true;
-    },
-    toggleFeedOff() {
-      this.followFeedToggle = false;
+    toggleShowRandomItems() {
+      this.showRandomPosts = !this.showRandomPosts;
     },
   },
   setup() {
@@ -117,6 +101,68 @@ section#content {
   position: relative;
   height: 100%;
 
+  .toggleWrapper {
+    display: flex;
+    text-align: center;
+    align-content: center;
+    justify-content: center;
+    margin: auto;
+    margin-bottom: 35px;
+    // margin-left: 50%;
+    // margin-right: 50%;
+  }
+
+  .divider {
+    position: absolute;
+    color: grey;
+    font-weight: 900;
+    margin-top: -2px;
+  }
+  .latestInactive {
+    position: absolute;
+    font-size: 11px;
+    cursor: pointer;
+    padding-top: 1px;
+    margin-left: -75px
+  }
+  .latestActive {
+    position: absolute;
+    font-size: 13px;
+    font-weight: 900;
+    cursor: pointer;
+    margin-left: -100px
+  }
+  .randomInactive {
+    position: absolute;
+    font-size: 11px;
+    cursor: pointer;
+    padding-top: 1px;
+    margin-left: 35px;
+  }
+  .randomActive {
+    position: absolute; //
+    font-size: 13px;
+    font-weight: 900;
+    cursor: pointer;
+    margin-left: 105px;
+  }
+
+.feedHeader{
+  display: flex;
+  margin-top: 5px;
+  font-size: 14px;
+  font-weight: 999;
+}
+
+@media only screen and (max-width: 815px) {
+  .feedHeader{
+    display: flex;
+    margin-top: 50px;
+    font-size: 14px;
+    font-weight: 999;
+  }
+}
+
   .feedToggle {
     cursor: pointer;
     display: flex;
@@ -147,7 +193,7 @@ section#content {
     height: 20%;
     display: grid;
     grid-gap: 75px;
-    grid-template-columns: 75% 25%;
+    grid-template-columns: 100%;
     justify-content: center;
     align-content: end;
   }

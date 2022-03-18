@@ -64,6 +64,7 @@ export default {
 
       this.$emit("like-event", true);
       this.loading = false;
+      this.animating = false;
       // this.favorited = !this.favorited;
     },
     onIconAnimationEnds() {
@@ -125,6 +126,8 @@ $icon-border-color: var(--svg-color);
 .toggle-favorite {
   font-size: 20px;
   position: relative;
+  margin-left: -13px;
+  margin-top: -5px;
 
   &__icon {
     height: 1em;

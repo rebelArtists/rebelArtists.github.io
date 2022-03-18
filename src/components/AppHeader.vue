@@ -8,18 +8,18 @@
       <nav class="header-navbar">
         <router-link
           v-if="account && user"
-          :to="`/user/${user.name}`"
+          :to="`/user/${account}`"
           active-class="active"
-          title="Home"
+          title="Profile"
           exact
         >
-          <img :src="getImgUrl(user.profPicHash)" class="round-image-header" />
+          <img :src="url" class="round-image-header" />
         </router-link>
         <router-link
           v-if="account && user"
           :to="{ name: 'feed' }"
           active-class="active"
-          title="Home"
+          title="Discover Feed"
           exact
         >
           <svg
@@ -40,6 +40,7 @@
         <!-- <router-link :to="{ name: 'about' }" active-class="active" exact>About</router-link> -->
         <div>
           <button
+            class="mintButton"
             v-if="account && user"
             id="show-modal"
             @click="showModal = true"
@@ -90,6 +91,8 @@ import UploadModal from "@src/components/VUpload/Modal.vue";
 import { storeToRefs } from "pinia";
 import { useRebelStore } from "@src/store/index";
 import { getImgUrl } from "@src/services/helpers";
+import { createAvatar } from '@dicebear/avatars';
+import * as style from '@dicebear/avatars-bottts-sprites';
 
 export default {
   name: "AppHeader",
@@ -105,26 +108,24 @@ export default {
     const rebelStore = useRebelStore();
     const { account, user } = storeToRefs(rebelStore);
 
-    const isDarkClassAvailable = document.body.classList.contains("dark-theme");
+    const isDarkClassAvailable = document.body.classList.contains(".dark-theme");
 
     const isDark = ref(isDarkClassAvailable);
     const toggleTheme = () => {
       document.body.classList.toggle("dark-theme");
 
-      requestAnimationFrame(toggleAnimation);
-
       isDark.value = !isDark.value;
     };
-    const toggleAnimation = () => {
-      const element = document.querySelector("section#content .main");
-      try {
-        element.classList.remove("animated");
-        void element.offsetWidth;
-        element.classList.add("animated");
-      } catch (error) {
-        console.log(error)
-      }
-    };
+
+    let svgAvatar = createAvatar(style, {
+      seed: account.value,
+      // background: "#303030",
+      scale: 80,
+      translateY: -3
+    });
+
+    let blob = new Blob([svgAvatar], {type: 'image/svg+xml'});
+    let url = URL.createObjectURL(blob);
 
     return {
       isDark,
@@ -132,6 +133,7 @@ export default {
       user,
       account,
       getImgUrl,
+      url
     };
   },
 };
@@ -147,6 +149,11 @@ export default {
 .mintContent {
   padding-top: 7px;
   margin-right: 15px;
+}
+
+.mintButton {
+  background: transparent;
+  border: 0px;
 }
 
 #header {
@@ -237,8 +244,9 @@ body.dark-theme {
   object-fit: cover;
   width: 35px;
   height: 35px;
-  padding-top: 3px;
-  padding-right: 5px;
+  margin-top: 3px;
+  margin-right: 5px;
   border-radius: 50%;
+  background: var(--icon-color);
 }
 </style>
