@@ -92,7 +92,9 @@ export const useRebelStore = defineStore("rebel", () => {
         console.log("Mined -- ", posted.hash);
       }
     } catch (e) {
-      console.log("e", e);
+      if (!e.message=="MetaMask Tx Signature: User denied transaction signature.") {
+        console.log("e", e);
+      }
     }
   }
 
@@ -126,7 +128,9 @@ export const useRebelStore = defineStore("rebel", () => {
         }
       }
     } catch (e) {
-      console.log("e", e);
+      if (!e.message=="MetaMask Tx Signature: User denied transaction signature.") {
+        console.log("e", e);
+      }
     }
   }
 
@@ -161,7 +165,9 @@ export const useRebelStore = defineStore("rebel", () => {
         }
       }
     } catch (e) {
-      console.log("e", e);
+      if (!e.message=="MetaMask Tx Signature: User denied transaction signature.") {
+        console.log("e", e);
+      }
     }
   }
 
@@ -197,7 +203,9 @@ export const useRebelStore = defineStore("rebel", () => {
         }
       }
     } catch (e) {
-      console.log("e", e);
+      if (!e.message=="MetaMask Tx Signature: User denied transaction signature.") {
+        console.log("e", e);
+      }
     }
   }
 
@@ -229,7 +237,9 @@ export const useRebelStore = defineStore("rebel", () => {
         }
       }
     } catch (e) {
-      console.log("e", e);
+      if (!e.message=="MetaMask Tx Signature: User denied transaction signature.") {
+        console.log("e", e);
+      }
     }
   }
 
@@ -262,11 +272,13 @@ export const useRebelStore = defineStore("rebel", () => {
 
           await getUserByOwner(individualPost.value.address);
         } else {
-          individualPost.value = null;     
+          individualPost.value = null;
         }
       }
     } catch (e) {
-      console.log("e", e);
+      if (!e.message=="MetaMask Tx Signature: User denied transaction signature.") {
+        console.log("e", e);
+      }
     }
   }
 
@@ -289,7 +301,9 @@ export const useRebelStore = defineStore("rebel", () => {
         user.value = userObj;
       }
     } catch (e) {
-      console.log("e", e);
+      if (!e.message=="MetaMask Tx Signature: User denied transaction signature.") {
+        console.log("e", e);
+      }
     }
   }
 
@@ -312,9 +326,11 @@ export const useRebelStore = defineStore("rebel", () => {
         console.log("Liked post successfully", like.hash);
       }
     } catch (e) {
-      console.log("e", e);
-    }
+      if (!e.message=="MetaMask Tx Signature: User denied transaction signature.") {
+        console.log("e", e);
+      }
   }
+}
 
   async function unlikePost(postId) {
     try {
@@ -333,7 +349,9 @@ export const useRebelStore = defineStore("rebel", () => {
         console.log("Unliked post successfully", unlike.hash);
       }
     } catch (e) {
-      console.log("e", e);
+      if (!e.message=="MetaMask Tx Signature: User denied transaction signature.") {
+        console.log("e", e);
+      }
     }
   }
 
@@ -352,7 +370,9 @@ export const useRebelStore = defineStore("rebel", () => {
         likedAddressesArray.value = likedAddresses;
       }
     } catch (e) {
-      console.log("e", e);
+      if (!e.message=="MetaMask Tx Signature: User denied transaction signature.") {
+        console.log("e", e);
+      }
     }
   }
 
@@ -371,7 +391,9 @@ export const useRebelStore = defineStore("rebel", () => {
         likedArray.value = liked;
       }
     } catch (e) {
-      console.log("e", e);
+      if (!e.message=="MetaMask Tx Signature: User denied transaction signature.") {
+        console.log("e", e);
+      }
     }
   }
 
@@ -392,8 +414,10 @@ export const useRebelStore = defineStore("rebel", () => {
       if (user.value) {
         await getPostsByOwner(account.value);
       }
-    } catch (error) {
-      console.log(error);
+    } catch (e) {
+      if (!e.message=="MetaMask Tx Signature: User denied transaction signature.") {
+        console.log("e", e);
+      }
     }
   }
 

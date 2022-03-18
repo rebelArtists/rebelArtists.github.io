@@ -64,6 +64,7 @@ export default {
 
       this.$emit("like-event", true);
       this.loading = false;
+      this.animating = false;
       // this.favorited = !this.favorited;
     },
     onIconAnimationEnds() {
