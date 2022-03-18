@@ -199,20 +199,11 @@ export default {
     const fileCount = computed(() => {
       return store.files.length;
     });
-    const result = computed(() => {
-      return {
-        count: store.results.length,
-        size: store.results.reduce((sum, result) => {
-          return sum + result.file.size;
-        }, 0),
-      };
-    });
 
     return {
       finished,
       fileRef,
       fileCount,
-      result,
       isDragged,
       fileSize,
       onDragEnter,

@@ -9,14 +9,13 @@ const db = new Storage("app");
 const contractAddressRebel = "0xf310669e3A88412E6b27394b70EC7F60557B9984";
 
 db.read();
-db.data || { version: "0.0.1", results: [] };
+db.data || { version: "0.0.1" };
 
 export const useStore = defineStore({
   id: "store",
   state() {
     return {
-      files: [],
-      results: db.data.results,
+      files: []
     };
   },
   actions: {
@@ -25,31 +24,6 @@ export const useStore = defineStore({
     },
     addFiles(...files) {
       this.files.push(...files);
-    },
-    addResults(...files) {
-      this.results.push(...files);
-      this.results = this.results.filter(({ metaCid }) => !!metaCid);
-
-      db.data.results = [...this.results];
-      db.write();
-    },
-    /**
-     * Update Shorten Link for File
-     * @param {String} metaCid
-     * @param {String} fileCid
-     * @param {String} link
-     */
-    updateShortenLink(metaCid, link) {
-      this.results = this.results.map((result) => {
-        if (result.metaCid === metaCid) {
-          return { ...result, shorten: link };
-        }
-
-        return result;
-      });
-
-      db.data.results = [...this.results];
-      db.write();
     },
   },
 });

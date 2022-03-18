@@ -14,6 +14,9 @@ export default defineConfig({
       "@src": resolve(__dirname, "src"),
     },
   },
+  build: {
+    chunkSizeWarningLimit: 1000,
+  },
   plugins: [
     Vue(),
     Components({
