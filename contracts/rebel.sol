@@ -5,16 +5,31 @@ pragma solidity ^0.8.0;
 import "./postfactory.sol";
 import "./safemaths.sol";
 
+interface RebelTokenInterface {
+  function balanceOf(address account) external view returns (uint);
+  function transfer(address to, uint amount) external returns (bool);
+}
+
 contract Rebel is PostFactory {
 
   using SafeMath for uint256;
   using SafeMath32 for uint32;
 
+  mapping (address => uint) userIncentives;
+  address private _rebelTokenAddress;
   uint txFee = 0.02 ether;
 
-  modifier aboveLikes(uint32 _likes) {
-    require(usersMap[msg.sender].totalLikes >= _likes);
-    _;
+  constructor(address rebelTokenAddress_) {
+      _rebelTokenAddress = rebelTokenAddress_;
+  }
+
+  function aboveLikes(address _user) internal {
+    uint currentUserIncentives = userIncentives[_user];
+    uint incentiveLevelOne = 1000000;
+    if (usersMap[_user].totalLikes >= 3 && currentUserIncentives < incentiveLevelOne) {
+      RebelTokenInterface(_rebelTokenAddress).transfer(_user, incentiveLevelOne);
+      userIncentives[_user] = userIncentives[_user].add(incentiveLevelOne);
+    }
   }
 
   modifier canOnlyLikeOnce(uint32 _postId) {
@@ -49,6 +64,8 @@ contract Rebel is PostFactory {
     payable(postOwner).transfer(fundsForOwner);
     usersMap[postOwner].amtEarned = usersMap[postOwner].amtEarned.add(fundsForOwner);
     usersMap[postOwner].totalLikes = usersMap[postOwner].totalLikes.add(1);
+    // check whether to release incentive
+    aboveLikes(postOwner);
   }
 
   function unlikePost(uint32 _postId) external requiresUserExists() {

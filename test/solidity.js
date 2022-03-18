@@ -14,9 +14,14 @@ describe("Rebel Contract", function () {
   const postMediaType = "image";
 
   beforeEach(async function () {
-    Rebel = await ethers.getContractFactory("Rebel");
+    const TOTAL_SUPPLY = 1000000000;
+    RebelToken = await ethers.getContractFactory("RebelArtists");
     [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
-    rebel = await Rebel.deploy();
+    rebelToken = await RebelToken.deploy(TOTAL_SUPPLY);
+    await rebelToken.deployed();
+
+    Rebel = await ethers.getContractFactory("Rebel");
+    rebel = await Rebel.deploy(rebelToken.address);
     await rebel.deployed();
   });
 
@@ -306,9 +311,62 @@ describe("Rebel Contract", function () {
       await newPost2.wait();
 
       const getAllRandomPosts = await rebel.connect(addr1).getRandomPosts();
-      console.log(getAllRandomPosts);
 
       expect(getAllRandomPosts.namesArray.length).to.equal(20);
+    });
+    it("Deploy Rebel Artist token and give owner initial supply", async function () {
+      const TOTAL_SUPPLY = 1000000000;
+      const NAME = "Rebel Artists";
+      const SYMBOL = "REBEL";
+
+      // check initial token stats and ownership are correct
+      const totalSupply = await rebelToken.totalSupply()
+      const ownerBalance = await rebelToken.balanceOf(owner.address)
+      expect(totalSupply.toNumber()).to.equal(TOTAL_SUPPLY);
+      expect(await rebelToken.name()).to.be.equal(NAME);
+      expect(await rebelToken.symbol()).to.be.equal(SYMBOL);
+      expect(ownerBalance.toNumber()).to.equal(TOTAL_SUPPLY);
+
+      // check token transfers routing correctly
+      await rebelToken.connect(owner).transfer(addr1.address, 300000000);
+      const recipientBalance = await rebelToken.balanceOf(addr1.address);
+      const updatedOwnerBalance = await rebelToken.balanceOf(owner.address);
+      expect(recipientBalance.toNumber()).to.equal(300000000);
+      expect(updatedOwnerBalance.toNumber()).to.equal(TOTAL_SUPPLY - 300000000);
+    });
+    it("Should interface with RebelToken contract from main logic", async function () {
+      // send main rebel contract Rebel Tokens to transfer to users
+      await rebelToken.connect(owner).transfer(rebel.address, 300000000);
+      const recipientBalance = await rebelToken.balanceOf(rebel.address);
+      expect(recipientBalance.toNumber()).to.equal(300000000);
+
+      // should release reward to user who gets more than 3 likes
+      const newPost1 = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash, postMediaType);
+      await newPost1.wait();
+
+      const likePost1 = await rebel.connect(addr1).likePost(
+        0,
+        {value: ethers.utils.parseEther(".02")}
+      );
+      await likePost1.wait();
+
+      const likePost2 = await rebel.connect(addr2).likePost(
+        0,
+        {value: ethers.utils.parseEther(".02")}
+      );
+      await likePost2.wait();
+
+      // after like event 2% tx fee kept in Rebel contract address
+      const likePost3 = await rebel.connect(owner).likePost(
+        0,
+        {value: ethers.utils.parseEther(".02")}
+      );
+      await likePost3.wait();
+
+      const userResp = await rebel.getUserByOwner(addr1.address);
+
+      const creatorRebelTokenBalance = await rebelToken.balanceOf(addr1.address);
+      expect(creatorRebelTokenBalance.toNumber()).to.equal(1000000);
     });
   });
 });
