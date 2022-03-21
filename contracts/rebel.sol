@@ -6,7 +6,6 @@ import "./postfactory.sol";
 import "./safemaths.sol";
 
 interface RebelTokenInterface {
-  function balanceOf(address account) external view returns (uint);
   function transfer(address to, uint amount) external returns (bool);
 }
 
@@ -18,6 +17,11 @@ contract Rebel is PostFactory {
   mapping (address => uint) userIncentives;
   address private _rebelTokenAddress;
   uint txFee = 0.02 ether;
+  uint incentiveLevelOne = 100;
+  uint incentiveLevelTwo = 1000;
+  uint incentiveLevelThree = 10000;
+  uint incentiveLevelFour = 100000;
+  uint incentiveLevelFive = 1000000;
 
   constructor(address rebelTokenAddress_) {
       _rebelTokenAddress = rebelTokenAddress_;
@@ -25,10 +29,30 @@ contract Rebel is PostFactory {
 
   function aboveLikes(address _user) internal {
     uint currentUserIncentives = userIncentives[_user];
-    uint incentiveLevelOne = 1000000;
-    if (usersMap[_user].totalLikes >= 3 && currentUserIncentives < incentiveLevelOne) {
-      RebelTokenInterface(_rebelTokenAddress).transfer(_user, incentiveLevelOne);
+    // LEVEL 1 REWARD
+    if (usersMap[_user].totalLikes >= uint32(incentiveLevelOne) && currentUserIncentives < incentiveLevelOne) {
+      RebelTokenInterface(_rebelTokenAddress).transfer(_user, incentiveLevelOne*10**18);
       userIncentives[_user] = userIncentives[_user].add(incentiveLevelOne);
+    }
+    // LEVEL 2 REWARD
+    if (usersMap[_user].totalLikes >= uint32(incentiveLevelTwo) && currentUserIncentives < (incentiveLevelOne+incentiveLevelTwo)) {
+      RebelTokenInterface(_rebelTokenAddress).transfer(_user, incentiveLevelTwo*10**18);
+      userIncentives[_user] = userIncentives[_user].add(incentiveLevelTwo);
+    }
+    // LEVEL 3 REWARD
+    if (usersMap[_user].totalLikes >= uint32(incentiveLevelThree) && currentUserIncentives < (incentiveLevelOne+incentiveLevelTwo+incentiveLevelThree)) {
+      RebelTokenInterface(_rebelTokenAddress).transfer(_user, incentiveLevelThree*10**18);
+      userIncentives[_user] = userIncentives[_user].add(incentiveLevelThree);
+    }
+    // LEVEL 4 REWARD
+    if (usersMap[_user].totalLikes >= uint32(incentiveLevelFour) && currentUserIncentives < (incentiveLevelOne+incentiveLevelTwo+incentiveLevelThree+incentiveLevelFour)) {
+      RebelTokenInterface(_rebelTokenAddress).transfer(_user, incentiveLevelFour*10**18);
+      userIncentives[_user] = userIncentives[_user].add(incentiveLevelFour);
+    }
+    // LEVEL 5 REWARD
+    if (usersMap[_user].totalLikes >= uint32(incentiveLevelFive) && currentUserIncentives < (incentiveLevelOne+incentiveLevelTwo+incentiveLevelThree+incentiveLevelFour+incentiveLevelFive)) {
+      RebelTokenInterface(_rebelTokenAddress).transfer(_user, incentiveLevelFive*10**18);
+      userIncentives[_user] = userIncentives[_user].add(incentiveLevelFive);
     }
   }
 

@@ -14,10 +14,9 @@ describe("Rebel Contract", function () {
   const postMediaType = "image";
 
   beforeEach(async function () {
-    const TOTAL_SUPPLY = 1000000000;
     RebelToken = await ethers.getContractFactory("RebelArtists");
     [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
-    rebelToken = await RebelToken.deploy(TOTAL_SUPPLY);
+    rebelToken = await RebelToken.deploy();
     await rebelToken.deployed();
 
     Rebel = await ethers.getContractFactory("Rebel");
@@ -315,58 +314,95 @@ describe("Rebel Contract", function () {
       expect(getAllRandomPosts.namesArray.length).to.equal(20);
     });
     it("Deploy Rebel Artist token and give owner initial supply", async function () {
-      const TOTAL_SUPPLY = 1000000000;
+      const TOTAL_SUPPLY = "1000000000.0";
       const NAME = "Rebel Artists";
       const SYMBOL = "REBEL";
 
       // check initial token stats and ownership are correct
       const totalSupply = await rebelToken.totalSupply()
       const ownerBalance = await rebelToken.balanceOf(owner.address)
-      expect(totalSupply.toNumber()).to.equal(TOTAL_SUPPLY);
+      expect(ethers.utils.formatEther(totalSupply)).to.equal(TOTAL_SUPPLY);
       expect(await rebelToken.name()).to.be.equal(NAME);
       expect(await rebelToken.symbol()).to.be.equal(SYMBOL);
-      expect(ownerBalance.toNumber()).to.equal(TOTAL_SUPPLY);
+      expect(ethers.utils.formatEther(ownerBalance)).to.equal(TOTAL_SUPPLY);
 
       // check token transfers routing correctly
-      await rebelToken.connect(owner).transfer(addr1.address, 300000000);
+      const AMT_TO_TRANSFER = "300000000.0";
+      const AMT_LEFTOVER = "700000000.0";
+      await rebelToken.connect(owner).transfer(addr1.address, ethers.utils.parseEther(AMT_TO_TRANSFER));
       const recipientBalance = await rebelToken.balanceOf(addr1.address);
       const updatedOwnerBalance = await rebelToken.balanceOf(owner.address);
-      expect(recipientBalance.toNumber()).to.equal(300000000);
-      expect(updatedOwnerBalance.toNumber()).to.equal(TOTAL_SUPPLY - 300000000);
+      expect(ethers.utils.formatEther(recipientBalance)).to.equal(AMT_TO_TRANSFER);
+      expect(ethers.utils.formatEther(updatedOwnerBalance)).to.equal(AMT_LEFTOVER);
     });
-    it("Should interface with RebelToken contract from main logic", async function () {
+    it("Should properly disperse Level 1 reward", async function () {
       // send main rebel contract Rebel Tokens to transfer to users
-      await rebelToken.connect(owner).transfer(rebel.address, 300000000);
+      const AMT_TO_TRANSFER = "300000000.0";
+      await rebelToken.connect(owner).transfer(rebel.address, ethers.utils.parseEther(AMT_TO_TRANSFER));
       const recipientBalance = await rebelToken.balanceOf(rebel.address);
-      expect(recipientBalance.toNumber()).to.equal(300000000);
+      expect(ethers.utils.formatEther(recipientBalance)).to.equal(AMT_TO_TRANSFER);
 
-      // should release reward to user who gets more than 3 likes
-      const newPost1 = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash, postMediaType);
-      await newPost1.wait();
+      // create like loop to increment users total like count
+      for (i = 0; i < 100; i++) {
+        const newPost1 = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash, postMediaType);
+        await newPost1.wait();
 
-      const likePost1 = await rebel.connect(addr1).likePost(
-        0,
-        {value: ethers.utils.parseEther(".02")}
-      );
-      await likePost1.wait();
+        const likePost = await rebel.connect(addr2).likePost(
+          i,
+          {value: ethers.utils.parseEther(".02")}
+        );
+        await likePost.wait();
+      }
 
-      const likePost2 = await rebel.connect(addr2).likePost(
-        0,
-        {value: ethers.utils.parseEther(".02")}
-      );
-      await likePost2.wait();
-
-      // after like event 2% tx fee kept in Rebel contract address
-      const likePost3 = await rebel.connect(owner).likePost(
-        0,
-        {value: ethers.utils.parseEther(".02")}
-      );
-      await likePost3.wait();
-
-      const userResp = await rebel.getUserByOwner(addr1.address);
-
+      const EXPECTED_LEVEL_ONE_REWARD = "100.0";
       const creatorRebelTokenBalance = await rebelToken.balanceOf(addr1.address);
-      expect(creatorRebelTokenBalance.toNumber()).to.equal(1000000);
+      expect(ethers.utils.formatEther(creatorRebelTokenBalance)).to.equal(EXPECTED_LEVEL_ONE_REWARD);
+    });
+    it("Should properly disperse Level 2 reward", async function () {
+      // send main rebel contract Rebel Tokens to transfer to users
+      const AMT_TO_TRANSFER = "300000000.0";
+      await rebelToken.connect(owner).transfer(rebel.address, ethers.utils.parseEther(AMT_TO_TRANSFER));
+      const recipientBalance = await rebelToken.balanceOf(rebel.address);
+      expect(ethers.utils.formatEther(recipientBalance)).to.equal(AMT_TO_TRANSFER);
+
+      // create like loop to increment users total like count
+      for (i = 0; i < 1000; i++) {
+        const newPost1 = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash, postMediaType);
+        await newPost1.wait();
+
+        const likePost = await rebel.connect(addr2).likePost(
+          i,
+          {value: ethers.utils.parseEther(".02")}
+        );
+        await likePost.wait();
+      }
+
+      const EXPECTED_LEVEL_TWO_CUMULATIVE_REWARD = "1100.0";
+      const creatorRebelTokenBalance = await rebelToken.balanceOf(addr1.address);
+      expect(ethers.utils.formatEther(creatorRebelTokenBalance)).to.equal(EXPECTED_LEVEL_TWO_CUMULATIVE_REWARD);
+    });
+    it("Should properly disperse Level 3 reward", async function () {
+      // send main rebel contract Rebel Tokens to transfer to users
+      const AMT_TO_TRANSFER = "300000000.0";
+      await rebelToken.connect(owner).transfer(rebel.address, ethers.utils.parseEther(AMT_TO_TRANSFER));
+      const recipientBalance = await rebelToken.balanceOf(rebel.address);
+      expect(ethers.utils.formatEther(recipientBalance)).to.equal(AMT_TO_TRANSFER);
+
+      // create like loop to increment users total like count
+      for (i = 0; i < 10000; i++) {
+        const newPost1 = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash, postMediaType);
+        await newPost1.wait();
+
+        const likePost = await rebel.connect(addr2).likePost(
+          i,
+          {value: ethers.utils.parseEther(".02")}
+        );
+        await likePost.wait();
+      }
+
+      const EXPECTED_LEVEL_THREE_CUMULATIVE_REWARD = "11100.0";
+      const creatorRebelTokenBalance = await rebelToken.balanceOf(addr1.address);
+      expect(ethers.utils.formatEther(creatorRebelTokenBalance)).to.equal(EXPECTED_LEVEL_THREE_CUMULATIVE_REWARD);
     });
   });
 });

@@ -2,15 +2,14 @@ const hre = require("hardhat");
 
 async function main() {
   const [deployer] = await hre.ethers.getSigners();
-  const rebelTokenAddress = "";
 
   console.log("Deploying contracts with the account:", deployer.address);
-  const RebelDapp = await hre.ethers.getContractFactory("Rebel");
-  const rebel = await RebelDapp.deploy(rebelTokenAddress);
+  const RebelArtists = await hre.ethers.getContractFactory("RebelArtists");
+  const rebelToken = await RebelArtists.deploy();
 
-  await rebel.deployed();
+  await rebelToken.deployed();
 
-  console.log("Rebel deployed to:", rebel.address);
+  console.log("Rebel Token deployed to:", rebelToken.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
