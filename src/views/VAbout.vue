@@ -1,43 +1,43 @@
 <template>
   <section id="content">
     <div class="main">
-      <section id="about">
-        <h1>InstaShare<span class="emoji">⚡</span></h1>
+      <section id="about" class="aboutDescription">
         <p>
-          an Instant File Sharing powered by IPFS Protocol. Build with
-          <a href="https://v3.vuejs.org/" target="_blank" rel="noopener"
-            >Vue 3</a
-          >
-          and
-          <a href="https://vitejs.dev/" target="_blank" rel="noopener">ViteJS</a
-          >.
+          Rebel offers dead-simple "minting" of videos, photos, and music,
+          seamlessly turning each upload into an NFT on the Polygon blockchain.
+          The concept is simple, every time users like your content, you get paid
+          immediately via crypto.
         </p>
         <p>
-          InstaShare (Instant Share) is a simple web-based application that
-          simply upload your files to Interplanetary File System (IPFS) Network
-          using
-          <a
-            href="https://infura.io/product/ipfs"
-            target="_blank"
-            rel="noopener"
-            >Infura API</a
-          >. File uploads cannot be deleted, hacked, edited, never saved to any
-          server (decentralized) + are only accessable by using a hash / cid
-          (content identifier).
+          No more waiting months for companies to shell out your earnings.
+          Gone are social media giants making billions and leaving you with fractions.
+          Creators on Rebel take 98% of all earnings and are paid within seconds!
         </p>
         <p>
-          InstaShare build with Latest Web Technology that makes hopefully can
-          access this app even in offline mode (cache-first). And the other cool
-          thing is PWA (Progressive Web App) makes this app installable on
-          Android devices, allow us to use this app to run native-like on an
-          Android.
+          Your art can never be deleted, hacked, or edited as Rebel is fully
+          decentralized and uploads all media to IPFS. Moreover, being built
+          on Polygon, artists can mint content for pennies, unlike the prohibitive
+          gas costs on Ethereum.
+        </p>
+        <p>
+          Finally, unlock monetary incentives as your like count grows:
+          <br>
+          100 Total Likes: 100 REBEL Tokens
+          <br>
+          1,000 Total Likes: 1,000 REBEL Tokens
+          <br>
+          10,000 Total Likes: 10,000 REBEL Tokens
+          <br>
+          100,000 Total Likes: 100,000 REBEL Tokens
+          <br>
+          1,000,000 Total Likes: 1,000,000 REBEL Tokens
+        </p>
+        <p>
+          Come join the rebellion!!
         </p>
 
         <p>
-          Build with <i-ri-heart-2-fill class="icon-love" /> by
-          <a href="https://github.com/nyancodeid" rel="noopener" class="author"
-            >NyanCodeID</a
-          >
+          Built by Coinbase alums with <i-ri-heart-2-fill class="icon-love" />
         </p>
       </section>
     </div>
@@ -51,6 +51,15 @@ export default {
 </script>
 
 <style lang="scss">
+
+.aboutDescription {
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+  font-size: 12px;
+}
+
 section#content .main {
   section#about {
     width: 70vw;

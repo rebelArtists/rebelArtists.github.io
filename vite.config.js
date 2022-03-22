@@ -14,7 +14,7 @@ export default defineConfig({
       "@src": resolve(__dirname, "src"),
     },
   },
-  base: '/rebelVue/',
+  // base: '/rebelVue/',
   build: {
     chunkSizeWarningLimit: 1000,
   },
