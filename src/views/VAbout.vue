@@ -2,71 +2,100 @@
   <section id="content">
     <div class="main">
       <section id="about" class="aboutDescription">
+        <div class="aboutHeader">
+          About
+        </div>
         <div class="team">
           <ul class="auto-grid" role="list">
-            <li>
+            <li class="lineItem">
               <a href="https://swop.link/cool" target="_blank" class="profile">
                 <h2 class="profile__name">
-                  Simple Minting</h2>
-                <p class="mintingAbout">Dead-simple minting of videos, photos, and music,
-                          seamlessly turning each upload into an NFT on Polygon (scaling solution for Ethereum).
-                          Gas fees are near zero, transactions lightning fast, and storage on IPFS.</p>
+                  Dead-Simple Minting</h2>
+                <p class="mintingAbout">
+                  Minting videos, photos, and music is
+                  seamless; Simply upload your content and an NFT
+                  will be auto-created on Polygon (Ethereum L2).
+                  Gas fees are near zero, transactions are lightning fast.</p>
                 <img src="../components/NFT_SQUARE.png" />
               </a>
             </li>
             <li>
               <a href="https://swop.link/cool" target="_blank" class="profile">
-                <h2 class="profile__name">Paid Per Like</h2>
-                <p> No more waiting months for companies to shell out your earnings, or social media giants making billions and leaving you with fractions.
-                          Creators on Rebel take 98% of all earnings and are paid within seconds to their crypto wallet!</p>
+                <h2 class="profile__name">Get Paid Per Like</h2>
+                <p> No more waiting months for social media
+                  giants to shell out your earnings, or them taking the lion's share.
+                  Rebel Artists take 98% of profits and are paid
+                  within seconds to their crypto wallet.</p>
                 <img src="../components/LIKES_SQUARE.png" />
               </a>
             </li>
             <li>
               <a href="https://swop.link/cool" target="_blank" class="profile">
-                <h2 class="profile__name">Instant Payments</h2>
-                <p>For every like you receive on your posts you earn 0.0196 MATIC (98% of the "Like" value), sent direct
-                    to your crypto wallet (MetaMask). A 2% fee is taken by Rebel meant entirely to keep our systems alive and thriving.
+                <h2 class="profile__name">Instant Payouts</h2>
+                <p>For every like receiced, you
+                  earn 0.0196 MATIC (98% of transaction value),
+                  sent direct to your crypto wallet in seconds.
+                  A 2% fee is taken by Rebel, meant entirely to
+                  keep our systems alive and thriving.
                 </p>
                 <img src="../components/FAST_PAYMENT.png" />
               </a>
             </li>
             <li>
               <a href="https://swop.link/cool" target="_blank" class="profile">
-                <h2 class="profile__name">Unlock Rewards</h2>
-                <p> Receive ERC20 token incentives as your like count grows:
+                <h2 class="profile__name">Top Creator Rewards</h2>
+                <p> Unlock ERC20 REBEL tokens as your cumulative like count grows:
                           <br>
                           100 Likes -> 100 REBEL
                           <br>
-                          1,000 Likes -> 1,000 REBEL
+                          1K Likes -> 1K REBEL
                           <br>
-                          10,000 Likes -> 10,000 REBEL
+                          10K Likes -> 10K REBEL
                           <br>
-                          100,000 Likes -> 100,000 REBEL
+                          100K Likes -> 100K REBEL
                           <br>
-                          1,000,000 Likes -> 1,000,000 REBEL</p>
+                          1MM Likes -> 1MM REBEL</p>
                 <img src="../components/REWARDS_SQUARE.png" />
               </a>
             </li>
             <li>
               <a href="https://swop.link/cool" target="_blank" class="profile">
-                <h2 class="profile__name">Coinbase Alums</h2>
-                <p> Built for maximum user friendliness and scale by industry experts. Your art can never be deleted, or hacked as Rebel is fully
-                          decentralized and uploads all media to IPFS. Moreover, being built
-                          on Polygon, artists can mint for pennies, unlike with the prohibitive
-                          gas costs on Ethereum.</p>
+                <h2 class="profile__name">Built by COIN Alums</h2>
+                <p> Designed for the masses by industry experts,
+                    all the blockchain complexities have been stripped away.
+                    While Rebel is fully decentralized, artists will find
+                    its as easy to use as Instagram or TikTok</p>
                 <img alt="Profile shot for Marc Dixon" src="../components/ALUM_SQUARE.png" />
               </a>
             </li>
             <li>
               <a href="https://swop.link/cool" target="_blank" class="profile">
-                <h2 class="profile__name">Join the Rebellion!</h2>
-                <p>Enough of big business profiting off your hard work. Take control of your content. Own what's yours and be a Rebel Artist</p>
+                <h2 class="profile__name">Join the Rebellion</h2>
+                <p>Enough of big business profiting off of your hard work.
+                  Gone are the days of them taking billions and you're left with fractions.
+                  Take control of your content. Own what's yours as a Rebel Artist!</p>
                 <img alt="Profile shot for Chad" src="../components/REBELLION_SQUARE.png" />
               </a>
             </li>
           </ul>
         </div>
+          <div class="howToHeader">
+            How To (Beta)
+          </div>
+        <div class="howToSection">
+          <div class="numberedList">
+            <span class="bulletNumber">1</span>
+            Install <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en">Metamask plugin</a> for Chrome and create a wallet
+          </div>
+          <div class="numberedList">
+            <span class="bulletNumber">2</span>
+            Get some test MATIC (use the <a href="https://faucet.polygon.technology/">Polygon faucet</a>)
+          </div>
+          <div class="numberedList">
+            <span class="bulletNumber">3</span>
+            Connect your wallet to Rebel and get posting!
+          </div>
+      </div>
       </section>
     </div>
   </section>
@@ -80,6 +109,46 @@ export default {
 
 <style lang="scss">
 
+ul{
+     list-style:none;
+}
+
+.howToSection {
+  margin-bottom: 70px;
+  justify-content: center;
+  margin-left: 2%;
+}
+
+.numberedList {
+  margin-bottom:10px;
+  color: var(--icon-color);
+  margin-bottom: 20px;
+}
+.bulletNumber {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:25px;
+  height:25px;
+  border-radius:50%;
+  background-color: var(--icon-color);
+  color: var(--icon-color-opposite);
+}
+
+.aboutHeader {
+  font-size: 14px;
+  font-weight: 900;
+  color: var(--icon-color)
+}
+
+.howToHeader {
+  font-size: 14px;
+  font-weight: 900;
+  margin-top: 100px;
+  margin-bottom: 20px;
+  color: var(--icon-color)
+}
+
 .aboutDescription {
   margin-top: 30px;
   margin-left: auto;
@@ -90,8 +159,11 @@ export default {
 
 section#content .main {
   section#about {
-    width: 70vw;
+    width: 60vw;
     height: auto;
+    margin-top: 40px;
+    margin-bottom: 100px;
+    color: white;
 
     h1 {
       img {
@@ -231,11 +303,12 @@ body.dark-theme {
 
 .profile h2,
 .profile p {
-  transform: translateY(2ex);
+  transform: translateY(10ex);
+  color: white;
 }
 
 .profile h2 {
-  font-size: 20px;
+  font-size: 15px;
   line-height: 1.2;
   font-weight: 900;
   letter-spacing: 0.03ch;

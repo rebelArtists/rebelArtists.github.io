@@ -307,6 +307,7 @@ wave {
   width: 100%;
   grid-gap: 1rem;
   max-width: 80rem;
+  margin-bottom: 100px;
 }
 
 .media-wrap {

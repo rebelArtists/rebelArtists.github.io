@@ -5,11 +5,11 @@
       <span v-if="account && user">Own What's Yours</span>
       <div v-else class="rw-sentence rw-words rw-words-1">
            <span>Own What's Yours</span>
-           <span>Art to NFTs Made Easy</span>
+           <span>Dead-Simple Minting</span>
            <span>Near-Zero Gas Fees</span>
            <span>Get Paid Per Like</span>
            <span>Instant Payouts</span>
-           <span>Unlock Rewards</span>
+           <span>Top Creator Rewards</span>
        </div>
     </div>
     <div class="header-menu">
@@ -78,6 +78,17 @@
             </UploadModal>
           </Teleport>
         </div>
+        <router-link
+          v-if="account && user"
+          :to="{ name: 'about' }"
+          active-class="active"
+          title="About"
+          exact
+        >
+        <svg class="aboutIcon" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+        width="38" height="38"
+        viewBox="0 0 30 30">    <path d="M 15 3 C 7.82 3 2 7.925 2 14 C 2 16.676142 3.1322222 19.126093 5.0097656 21.033203 C 5.0476793 21.127522 6.0110131 23.606674 3.1582031 26.134766 A 0.5 0.5 0 0 0 3 26.5 A 0.5 0.5 0 0 0 3.5 27 A 0.5 0.5 0 0 0 3.6074219 26.988281 C 6.4832831 26.817905 8.9434573 25.390739 10.445312 24.291016 C 11.864706 24.741137 13.394827 25 15 25 C 22.18 25 28 20.075 28 14 C 28 7.925 22.18 3 15 3 z M 15 7.5 C 15.828 7.5 16.5 8.172 16.5 9 C 16.5 9.828 15.828 10.5 15 10.5 C 14.172 10.5 13.5 9.828 13.5 9 C 13.5 8.172 14.172 7.5 15 7.5 z M 14 13 L 16 13 L 16 20 L 14 20 L 14 13 z"></path></svg>
+        </router-link>
 
         <!-- <router-link :to="{ name: 'gallery' }" active-class="active" exact>Gallery</router-link> -->
         <i :title="`Switch to ${isDark ? 'Light' : 'Dark'} Theme`">
@@ -265,6 +276,10 @@ export default {
 .mintContent {
   padding-top: 7px;
   margin-right: 15px;
+}
+
+.aboutIcon {
+  fill: var(--icon-color);
 }
 
 .mintButton {
