@@ -2,7 +2,13 @@
   <header id="header">
     <div class="header-title">
       <h1 class="rebelLogo">Rebel</h1>
-      <span>Own What's Yours</span>
+      <span v-if="account && user">Own What's Yours</span>
+      <div v-else class="rw-sentence rw-words rw-words-1">
+           <span>Own What's Yours</span>
+           <span>Mint Art Easily</span>
+           <span>Get Paid Immediately</span>
+           <span>Unlock Rewards</span>
+       </div>
     </div>
     <div class="header-menu">
       <nav class="header-navbar">
@@ -140,6 +146,100 @@ export default {
 </script>
 
 <style lang="scss">
+
+
+.rw-words-1 span{
+  display: inline-block;
+	position: absolute;
+	opacity: 0;
+	margin-left: 0px;
+  margin-top: 10px;
+  overflow: hidden;
+	-webkit-animation: rotateWord 12s linear 0s infinite;
+	-moz-animation: rotateWord 12s linear 0s infinite;
+	-o-animation: rotateWord 12s linear 0s infinite;
+	-ms-animation: rotateWord 12s linear 0s infinite;
+	animation: rotateWord 12s linear 0s infinite;
+  // color: #CCC;
+}
+
+.rw-words-1 span:nth-child(1) {
+  -webkit-animation-delay: 0s;
+	-moz-animation-delay: 0s;
+	-o-animation-delay: 0s;
+	-ms-animation-delay: 0s;
+	animation-delay: 0s;
+}
+
+.rw-words-1 span:nth-child(2) {
+    -webkit-animation-delay: 3s;
+	-moz-animation-delay: 3s;
+	-o-animation-delay: 3s;
+	-ms-animation-delay: 3s;
+	animation-delay: 3s;
+}
+.rw-words-1 span:nth-child(3) {
+    -webkit-animation-delay: 6s;
+	-moz-animation-delay: 6s;
+	-o-animation-delay: 6s;
+	-ms-animation-delay: 6s;
+	animation-delay: 6s;
+}
+.rw-words-1 span:nth-child(4) {
+    -webkit-animation-delay: 9s;
+	-moz-animation-delay: 9s;
+	-o-animation-delay: 9s;
+	-ms-animation-delay: 9s;
+	animation-delay: 9s;
+}
+
+@-webkit-keyframes rotateWord {
+    0% { opacity: 0; }
+    2% { opacity: 0; -webkit-transform: translateY(-30px); }
+	5% { opacity: 1; -webkit-transform: translateY(0px);}
+    17% { opacity: 1; -webkit-transform: translateY(0px); }
+	20% { opacity: 0; -webkit-transform: translateY(30px); }
+	80% { opacity: 0; }
+    100% { opacity: 0; }
+}
+@-moz-keyframes rotateWord {
+    0% { opacity: 0; }
+    2% { opacity: 0; -moz-transform: translateY(-30px); }
+	5% { opacity: 1; -moz-transform: translateY(0px);}
+    17% { opacity: 1; -moz-transform: translateY(0px); }
+	20% { opacity: 0; -moz-transform: translateY(30px); }
+	80% { opacity: 0; }
+    100% { opacity: 0; }
+}
+@-o-keyframes rotateWord {
+    0% { opacity: 0; }
+    2% { opacity: 0; -o-transform: translateY(-30px); }
+	5% { opacity: 1; -o-transform: translateY(0px);}
+    17% { opacity: 1; -o-transform: translateY(0px); }
+	20% { opacity: 0; -o-transform: translateY(30px); }
+	80% { opacity: 0; }
+    100% { opacity: 0; }
+}
+@-ms-keyframes rotateWord {
+    0% { opacity: 0; }
+    2% { opacity: 0; -ms-transform: translateY(-30px); }
+	5% { opacity: 1; -ms-transform: translateY(0px);}
+    17% { opacity: 1; -ms-transform: translateY(0px); }
+	20% { opacity: 0; -ms-transform: translateY(30px); }
+	80% { opacity: 0; }
+    100% { opacity: 0; }
+}
+@keyframes rotateWord {
+    0% { opacity: 0; }
+    2% { opacity: 0; transform: translateY(-30px); }
+	5% { opacity: 1; transform: translateY(0px);}
+    17% { opacity: 1; transform: translateY(0px); }
+	20% { opacity: 0; transform: translateY(30px); }
+	80% { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+
 .rebelLogo {
   font-family: "Rebel";
   font-size: 45px;
