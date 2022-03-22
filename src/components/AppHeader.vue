@@ -5,8 +5,10 @@
       <span v-if="account && user">Own What's Yours</span>
       <div v-else class="rw-sentence rw-words rw-words-1">
            <span>Own What's Yours</span>
-           <span>Mint Art Easily</span>
-           <span>Get Paid Immediately</span>
+           <span>Art to NFTs Made Easy</span>
+           <span>Near-Zero Gas Fees</span>
+           <span>Get Paid Per Like</span>
+           <span>Instant Payouts</span>
            <span>Unlock Rewards</span>
        </div>
     </div>
@@ -155,11 +157,11 @@ export default {
 	margin-left: 0px;
   margin-top: 10px;
   overflow: hidden;
-	-webkit-animation: rotateWord 12s linear 0s infinite;
-	-moz-animation: rotateWord 12s linear 0s infinite;
-	-o-animation: rotateWord 12s linear 0s infinite;
-	-ms-animation: rotateWord 12s linear 0s infinite;
-	animation: rotateWord 12s linear 0s infinite;
+	-webkit-animation: rotateWord 18s linear 0s infinite;
+	-moz-animation: rotateWord 18s linear 0s infinite;
+	-o-animation: rotateWord 18s linear 0s infinite;
+	-ms-animation: rotateWord 18s linear 0s infinite;
+	animation: rotateWord 18s linear 0s infinite;
   // color: #CCC;
 }
 
@@ -191,6 +193,20 @@ export default {
 	-o-animation-delay: 9s;
 	-ms-animation-delay: 9s;
 	animation-delay: 9s;
+}
+.rw-words-1 span:nth-child(5) {
+    -webkit-animation-delay: 12s;
+	-moz-animation-delay: 12s;
+	-o-animation-delay: 12s;
+	-ms-animation-delay: 12s;
+	animation-delay: 12s;
+}
+.rw-words-1 span:nth-child(6) {
+    -webkit-animation-delay: 15s;
+	-moz-animation-delay: 15s;
+	-o-animation-delay: 15s;
+	-ms-animation-delay: 15s;
+	animation-delay: 15s;
 }
 
 @-webkit-keyframes rotateWord {
