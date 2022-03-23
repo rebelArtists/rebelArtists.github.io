@@ -19,8 +19,15 @@ describe("Rebel Contract", function () {
     rebelToken = await RebelToken.deploy();
     await rebelToken.deployed();
 
+    const crowdsaleProceedsWallet = owner.address;
+    const tokenAddress = rebelToken.address,
+
+    RebelTokenCrowdsale = await ethers.getContractFactory("RebelTokenCrowdsale");
+    rebelTokenCrowdsale = await RebelTokenCrowdsale.deploy(tokenAddress);
+    await rebelTokenCrowdsale.deployed();
+
     Rebel = await ethers.getContractFactory("Rebel");
-    rebel = await Rebel.deploy(rebelToken.address);
+    rebel = await Rebel.deploy(rebelToken.address, rebelTokenCrowdsale.address);
     await rebel.deployed();
   });
 
@@ -335,7 +342,7 @@ describe("Rebel Contract", function () {
       expect(ethers.utils.formatEther(recipientBalance)).to.equal(AMT_TO_TRANSFER);
       expect(ethers.utils.formatEther(updatedOwnerBalance)).to.equal(AMT_LEFTOVER);
     });
-    it("Should properly disperse Level 1 reward", async function () {
+    it("Should properly disperse incentive reward at threshold", async function () {
       // send main rebel contract Rebel Tokens to transfer to users
       const AMT_TO_TRANSFER = "300000000.0";
       await rebelToken.connect(owner).transfer(rebel.address, ethers.utils.parseEther(AMT_TO_TRANSFER));
@@ -358,51 +365,81 @@ describe("Rebel Contract", function () {
       const creatorRebelTokenBalance = await rebelToken.balanceOf(addr1.address);
       expect(ethers.utils.formatEther(creatorRebelTokenBalance)).to.equal(EXPECTED_LEVEL_ONE_REWARD);
     });
-    it("Should properly disperse Level 2 reward", async function () {
+    it("Crowdsale should release REBEL tokens and keep MATIC profits", async function () {
       // send main rebel contract Rebel Tokens to transfer to users
-      const AMT_TO_TRANSFER = "300000000.0";
-      await rebelToken.connect(owner).transfer(rebel.address, ethers.utils.parseEther(AMT_TO_TRANSFER));
-      const recipientBalance = await rebelToken.balanceOf(rebel.address);
+      const AMT_TO_TRANSFER = "500000000.0";
+      const AMT_OF_TOKENS_TO_BUY = "5000.0";
+      await rebelToken.connect(owner).transfer(rebelTokenCrowdsale.address, ethers.utils.parseEther(AMT_TO_TRANSFER));
+      const recipientBalance = await rebelToken.balanceOf(rebelTokenCrowdsale.address);
       expect(ethers.utils.formatEther(recipientBalance)).to.equal(AMT_TO_TRANSFER);
 
-      // create like loop to increment users total like count
-      for (i = 0; i < 1000; i++) {
-        const newPost1 = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash, postMediaType);
-        await newPost1.wait();
+      // send funds to Crowdsale
+      const buyTokens = await rebelTokenCrowdsale.connect(addr1).sendTokens(
+        {value: ethers.utils.parseEther(AMT_OF_TOKENS_TO_BUY)}
+      );
+      await buyTokens.wait();
 
-        const likePost = await rebel.connect(addr2).likePost(
-          i,
-          {value: ethers.utils.parseEther(".02")}
-        );
-        await likePost.wait();
-      }
+      // Crowdsale should have properly mapped user contribution
+      const buyerCrowdsaleBalance = await rebelTokenCrowdsale.getUserContribution(addr1.address);
+      expect(ethers.utils.formatEther(buyerCrowdsaleBalance)).to.equal(AMT_OF_TOKENS_TO_BUY);
 
-      const EXPECTED_LEVEL_TWO_CUMULATIVE_REWARD = "1100.0";
-      const creatorRebelTokenBalance = await rebelToken.balanceOf(addr1.address);
-      expect(ethers.utils.formatEther(creatorRebelTokenBalance)).to.equal(EXPECTED_LEVEL_TWO_CUMULATIVE_REWARD);
+      // REBEL balance should increment properly after purchase
+      const buyerBalance = await rebelToken.balanceOf(addr1.address);
+      expect(ethers.utils.formatEther(buyerBalance)).to.equal(AMT_OF_TOKENS_TO_BUY);
+
+      // rebelCrowdsale should store MATIC funds it receives
+      const contractBalance = await ethers.provider.getBalance(rebelTokenCrowdsale.address);
+      expect(ethers.utils.formatEther(contractBalance)).to.equal(AMT_OF_TOKENS_TO_BUY);
     });
-    it("Should properly disperse Level 3 reward", async function () {
+    it("Crowdsale should error if msg.value less than min buying amount", async function () {
       // send main rebel contract Rebel Tokens to transfer to users
-      const AMT_TO_TRANSFER = "300000000.0";
-      await rebelToken.connect(owner).transfer(rebel.address, ethers.utils.parseEther(AMT_TO_TRANSFER));
-      const recipientBalance = await rebelToken.balanceOf(rebel.address);
+      const AMT_TO_TRANSFER = "500000000.0";
+      const AMT_OF_TOKENS_TO_BUY = "0.001";
+      await rebelToken.connect(owner).transfer(rebelTokenCrowdsale.address, ethers.utils.parseEther(AMT_TO_TRANSFER));
+      const recipientBalance = await rebelToken.balanceOf(rebelTokenCrowdsale.address);
       expect(ethers.utils.formatEther(recipientBalance)).to.equal(AMT_TO_TRANSFER);
 
-      // create like loop to increment users total like count
-      for (i = 0; i < 10000; i++) {
-        const newPost1 = await rebel.connect(addr1).createPost(postName, postMediaHash, postMetaHash, postMediaType);
-        await newPost1.wait();
 
-        const likePost = await rebel.connect(addr2).likePost(
-          i,
-          {value: ethers.utils.parseEther(".02")}
-        );
-        await likePost.wait();
-      }
+      const insufficientTokenPurchase = async function () {
+        let err = null;
+        try {
+          // send funds to Crowdsale
+          const buyTokens = await rebelTokenCrowdsale.connect(addr1).sendTokens(
+            {value: ethers.utils.parseEther(AMT_OF_TOKENS_TO_BUY)}
+          );
+          await buyTokens.wait();
+        } catch (error) {
+          err = error
+        }
+          expect(err).to.be.an('error');
+      };
 
-      const EXPECTED_LEVEL_THREE_CUMULATIVE_REWARD = "11100.0";
-      const creatorRebelTokenBalance = await rebelToken.balanceOf(addr1.address);
-      expect(ethers.utils.formatEther(creatorRebelTokenBalance)).to.equal(EXPECTED_LEVEL_THREE_CUMULATIVE_REWARD);
+      await insufficientTokenPurchase()
+    });
+    it("Crowdsale should error if msg.value larger than max buying amount", async function () {
+      // send main rebel contract Rebel Tokens to transfer to users
+      const AMT_TO_TRANSFER = "500000000.0";
+      const AMT_OF_TOKENS_TO_BUY = "2000000.0";
+      await rebelToken.connect(owner).transfer(rebelTokenCrowdsale.address, ethers.utils.parseEther(AMT_TO_TRANSFER));
+      const recipientBalance = await rebelToken.balanceOf(rebelTokenCrowdsale.address);
+      expect(ethers.utils.formatEther(recipientBalance)).to.equal(AMT_TO_TRANSFER);
+
+
+      const insufficientTokenPurchase = async function () {
+        let err = null;
+        try {
+          // send funds to Crowdsale
+          const buyTokens = await rebelTokenCrowdsale.connect(addr1).sendTokens(
+            {value: ethers.utils.parseEther(AMT_OF_TOKENS_TO_BUY)}
+          );
+          await buyTokens.wait();
+        } catch (error) {
+          err = error
+        }
+          expect(err).to.be.an('error');
+      };
+
+      await insufficientTokenPurchase()
     });
   });
 });

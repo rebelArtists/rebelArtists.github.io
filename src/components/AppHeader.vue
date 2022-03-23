@@ -1,8 +1,15 @@
 <template>
   <header id="header">
     <div class="header-title">
-      <h1 class="rebelLogo">Rebel</h1>
-      <span v-if="account && user">Own What's Yours</span>
+        <h1>
+          <router-link
+            class="rebelLogo"
+            :to="{ name: 'home' }"
+            active-class="active"
+            title="Home"
+            exact
+          >Rebel </router-link></h1>
+      <span v-if="account && user || $route.name == 'about'">Own What's Yours</span>
       <div v-else class="rw-sentence rw-words rw-words-1">
            <span>Own What's Yours</span>
            <span>Dead-Simple Minting</span>
@@ -79,7 +86,6 @@
           </Teleport>
         </div>
         <router-link
-          v-if="account && user"
           :to="{ name: 'about' }"
           active-class="active"
           title="About"
@@ -267,16 +273,18 @@ export default {
 }
 
 
-.rebelLogo {
-  font-family: "Rebel";
-  font-size: 45px;
-  font-weight: 1;
-}
-
 .mintContent {
   padding-top: 7px;
   margin-right: 15px;
 }
+
+.rebelLogo{
+     text-decoration: none;
+     font-family: "Rebel";
+     font-size: 60px;
+     font-weight: 1;
+     color: var(--icon-color);
+ }
 
 .aboutIcon {
   fill: var(--icon-color);
