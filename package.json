@@ -5,6 +5,7 @@
   "scripts": {
     "build": "vite build",
     "compile-solidity": "npx hardhat compile",
+    "deploy-crowdsale-dev": "npx hardhat run scripts/deploy-crowdsale.js --network mumbai",
     "deploy-rebel-dev": "npx hardhat run scripts/deploy-rebel.js --network mumbai",
     "deploy-rebel-mainnet": "npx hardhat run scripts/deploy-rebel.js --network mainnet",
     "deploy-service-prod": "vite build; source deploy.sh",

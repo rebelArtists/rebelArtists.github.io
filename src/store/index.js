@@ -4,9 +4,12 @@ import Storage from "@src/services/storage";
 import { fetchIpfsMeta } from "@src/services/helpers";
 import { ethers } from "ethers";
 import contractABIrebel from "../artifacts/contracts/rebel.sol/Rebel.json";
+import contractABIcrowdsale from "../artifacts/contracts/crowdsale.sol/RebelTokenCrowdsale.json";
 
 const db = new Storage("app");
-const contractAddressRebel = "0xf310669e3A88412E6b27394b70EC7F60557B9984";
+const contractAddressRebel = "0x5ac4c4986A0a8ca1F46D47F0Ec7F870A988dC620";
+const contractAddressCrowdsale = "0x16147Ee52Bfc7900218Bab496F3558A801B50BB0";
+const contractAddressToken = "0x0F9B8516064949457054fc90aECA487697430aE9";
 
 db.read();
 db.data || { version: "0.0.1" };
@@ -43,6 +46,8 @@ export const useRebelStore = defineStore("rebel", () => {
   const likedAddressesArray = ref([]);
   const randomPosts = ref([]);
   const randomPostsArray = ref([]);
+  const amtRaised = ref(0);
+  const userContribution = ref(0);
 
   async function postContent(name, mediaHash, metaHash, mediaType) {
     try {
@@ -306,6 +311,88 @@ export const useRebelStore = defineStore("rebel", () => {
   }
 }
 
+async function sendCrowdsaleTokens(amount) {
+  try {
+    const { ethereum } = window;
+    if (ethereum) {
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const signer = provider.getSigner();
+      const crowdsaleContract = new ethers.Contract(
+        contractAddressCrowdsale,
+        contractABIcrowdsale.abi,
+        signer
+      );
+      const sendTokens = await crowdsaleContract.sendTokens({
+        value: ethers.utils.parseEther(amount),
+      });
+      console.log("Sending tokens...", sendTokens.hash);
+      await sendTokens.wait();
+      console.log("Sent tokens successfully", sendTokens.hash);
+    }
+  } catch (e) {
+    if (!e.message=="MetaMask Tx Signature: User denied transaction signature.") {
+      console.log("e", e);
+    }
+}
+}
+
+async function getAmtRaised() {
+  try {
+    const { ethereum } = window;
+    if (ethereum) {
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const signer = provider.getSigner();
+      const crowdsaleContract = new ethers.Contract(
+        contractAddressCrowdsale,
+        contractABIcrowdsale.abi,
+        signer
+      );
+      const contributions = await crowdsaleContract.getTotalContributions();
+      amtRaised.value = ethers.utils.formatEther(contributions);
+    }
+  } catch (e) {
+      console.log("e", e);
+}
+}
+
+async function getUserAmtDonated() {
+  try {
+    const { ethereum } = window;
+    if (ethereum) {
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const signer = provider.getSigner();
+      const crowdsaleContract = new ethers.Contract(
+        contractAddressCrowdsale,
+        contractABIcrowdsale.abi,
+        signer
+      );
+      const contributions = await crowdsaleContract.getUserContribution(account.value);
+      userContribution.value = ethers.utils.formatEther(contributions);
+    }
+  } catch (e) {
+      console.log("e", e);
+}
+}
+
+async function withdrawCrowdsaleFunds() {
+  try {
+    const { ethereum } = window;
+    if (ethereum) {
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const signer = provider.getSigner();
+      const crowdsaleContract = new ethers.Contract(
+        contractAddressCrowdsale,
+        contractABIcrowdsale.abi,
+        signer
+      );
+      const withdrawal = await crowdsaleContract.withdraw();
+      await withdrawal.wait();
+    }
+  } catch (e) {
+      console.log("e", e);
+}
+}
+
   async function unlikePost(postId) {
     try {
       const { ethereum } = window;
@@ -421,6 +508,12 @@ export const useRebelStore = defineStore("rebel", () => {
     likedAddressesArray,
     randomPosts,
     randomPostsArray,
-    getRandomPosts
+    getRandomPosts,
+    sendCrowdsaleTokens,
+    amtRaised,
+    userContribution,
+    getAmtRaised,
+    getUserAmtDonated,
+    withdrawCrowdsaleFunds
   };
 });

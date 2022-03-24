@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 import "./ownable.sol";
@@ -16,7 +17,7 @@ contract RebelTokenCrowdsale is Ownable {
   uint public investorHardCap = 1000000000000000000000000; // 1MM MATIC
   uint public rate = 1000000000000000000; // 1 MATIC
   mapping(address => uint) public contributions;
-  uint public totalContributionsWei;
+  uint public totalContributionsWei = 0;
   address private _rebelTokenAddress;
 
   constructor(address rebelTokenAddress_) {
@@ -43,7 +44,7 @@ contract RebelTokenCrowdsale is Ownable {
   function sendTokens() external payable {
     _preValidatePurchase(msg.sender, msg.value);
     RebelTokenInterface(_rebelTokenAddress).transfer(msg.sender, msg.value);
-    totalContributionsWei.add(msg.value);
+    totalContributionsWei = totalContributionsWei.add(msg.value);
   }
 
   function _preValidatePurchase(
