@@ -12,14 +12,14 @@
       <button
         v-if="!loading"
         class="buttonConnectProfile"
-        @click="fireDonate(this.$route.params.name.toLowerCase())"
+        @click="showDonationModal = true"
       >
         Donate
       </button>
-      <button v-if="loading" class="loading animated fadeIn">
-        Donating
-        <div class="bgFollow"></div>
-      </button>
+      <Teleport v-if="showDonationModal" to="body">
+        <DonationModal :show="showDonationModal" :userAddress="this.$route.params.name.toLowerCase()" @close="updateParent">
+        </DonationModal>
+      </Teleport>
     </div>
     <div class="box likeCount">{{ user.totalLikes }} likes</div>
     <div class="box postCount">{{ user.postCount }} posts</div>
@@ -44,7 +44,7 @@ export default {
       componentKey: 0,
       loading: false,
       stateLoaded: false,
-      url: "https://github.com/mbj36"
+      showDonationModal: false
     };
   },
   mounted() {
@@ -66,6 +66,13 @@ export default {
         await getUserByOwner(this.$route.params.name.toLowerCase());
       }
       this.stateLoaded = true;
+    },
+    async updateParent() {
+      const { getUserByOwner } = useRebelStore();
+      if (this.$route.params.name) {
+        await getUserByOwner(this.$route.params.name.toLowerCase());
+      }
+      this.showDonationModal = false;
     },
     async fireDonate(userId) {
       this.loading = true;
@@ -133,60 +140,6 @@ export default {
 .buttonConnectProfile:hover {
   background-color: #4caf50; /* Green */
   color: white;
-}
-
-@-webkit-keyframes MOVE-BG {
-  from {
-    -webkit-transform: translateX(0);
-  }
-  to {
-    -webkit-transform: translateX(46px);
-  }
-}
-@keyframes MOVE-BG {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(46px);
-  }
-}
-.loading {
-  height: auto;
-  text-align: center;
-  color: black;
-  position: relative;
-  overflow: hidden;
-  border-radius: 8px;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 5px;
-  padding-left: 20px;
-  padding-right: 20px;
-}
-.bgFollow {
-  position: absolute;
-  left: -46px;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  z-index: -1;
-  background: repeating-linear-gradient(
-    -55deg,
-    var(--loader-color-secondary) 1px,
-    var(--loader-color-primary) 12px,
-    var(--loader-color-primary) 20px
-  );
-  -webkit-animation-name: MOVE-BG;
-  -webkit-animation-duration: 0.6s;
-  -webkit-animation-timing-function: linear;
-  -webkit-animation-iteration-count: infinite;
-  animation-name: MOVE-BG;
-  animation-duration: 0.6s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
 }
 
 .wrapper2 {
