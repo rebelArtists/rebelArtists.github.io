@@ -27,7 +27,7 @@ describe("Rebel Contract", function () {
     await rebelTokenCrowdsale.deployed();
 
     Rebel = await ethers.getContractFactory("Rebel");
-    rebel = await Rebel.deploy(rebelToken.address, rebelTokenCrowdsale.address);
+    rebel = await Rebel.deploy(rebelToken.address);
     await rebel.deployed();
   });
 
@@ -440,6 +440,32 @@ describe("Rebel Contract", function () {
       };
 
       await insufficientTokenPurchase()
+    });
+    it("Should properly donate funds to artist", async function () {
+
+      // get initial balances so we can compare money changes later
+      const creatorInitialBalance = await ethers.provider.getBalance(addr1.address);
+      const ownerInitialBalance = await ethers.provider.getBalance(owner.address);
+
+      // after donation event 2% tx fee kept in Rebel contract address
+      const donation = await rebel.connect(addr2).donateToUser(
+        addr1.address,
+        {value: ethers.utils.parseEther("100")} // donate 100 MATIC
+      );
+      await donation.wait();
+
+      await rebel.connect(owner).withdraw();
+      const creatorFinalBalance = await ethers.provider.getBalance(addr1.address);
+      const ownerFinalBalance = await ethers.provider.getBalance(owner.address);
+      const creatorDiff = ethers.utils.formatEther(creatorFinalBalance) - ethers.utils.formatEther(creatorInitialBalance);
+      const ownerDiff = ethers.utils.formatEther(ownerFinalBalance) - ethers.utils.formatEther(ownerInitialBalance);
+      // .at.least to account for small gas fees earlier
+      expect(creatorDiff).to.equal(98);
+      expect(ownerDiff).to.be.at.least(1.98);
+
+      const userResp = await rebel.getUserByOwner(addr1.address);
+      expect(ethers.utils.formatEther(userResp.amtEarned)).to.equal('98.0');
+
     });
   });
 });

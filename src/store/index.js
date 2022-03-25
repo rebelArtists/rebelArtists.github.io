@@ -7,9 +7,9 @@ import contractABIrebel from "../artifacts/contracts/rebel.sol/Rebel.json";
 import contractABIcrowdsale from "../artifacts/contracts/crowdsale.sol/RebelTokenCrowdsale.json";
 
 const db = new Storage("app");
-const contractAddressRebel = "0x5ac4c4986A0a8ca1F46D47F0Ec7F870A988dC620";
-const contractAddressCrowdsale = "0x16147Ee52Bfc7900218Bab496F3558A801B50BB0";
-const contractAddressToken = "0x0F9B8516064949457054fc90aECA487697430aE9";
+const contractAddressRebel = "0xe42a4Ec5f9ae77888c74EA06BbFCBcb8caEdE709";
+const contractAddressCrowdsale = "0x7b1Ee4F6a5b2dBA7c381f7e6eC830F8707794D1D";
+const contractAddressToken = "0xbD63Daf369fA2D84FE0f14cE5ABbF67cDB4d2cA7";
 
 db.read();
 db.data || { version: "0.0.1" };
@@ -286,6 +286,31 @@ export const useRebelStore = defineStore("rebel", () => {
     }
   }
 
+  async function donationToUser(userId, amount) {
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const rebelContract = new ethers.Contract(
+          contractAddressRebel,
+          contractABIrebel.abi,
+          signer
+        );
+        const donation = await rebelContract.donateToUser(userId, {
+          value: ethers.utils.parseEther(amount.toString()),
+        });
+        console.log("Donating to user...", donation.hash);
+        await donation.wait();
+        console.log("Donation successfull", donation.hash);
+      }
+    } catch (e) {
+      if (!e.message=="MetaMask Tx Signature: User denied transaction signature.") {
+        console.log("e", e);
+      }
+  }
+  }
+
   async function likePost(postId) {
     try {
       const { ethereum } = window;
@@ -534,6 +559,7 @@ async function withdrawDappFunds() {
     getAmtRaised,
     getUserAmtDonated,
     withdrawCrowdsaleFunds,
-    withdrawDappFunds
+    withdrawDappFunds,
+    donationToUser
   };
 });

@@ -14,7 +14,7 @@ async function main() {
   console.log("Crowdsale deployed to:", rebelCrowdsale.address);
 
   const RebelDapp = await hre.ethers.getContractFactory("Rebel");
-  const rebel = await RebelDapp.deploy(rebelToken.address, rebelCrowdsale.address);
+  const rebel = await RebelDapp.deploy(rebelToken.address);
   await rebel.deployed();
   console.log("Rebel DAPP deployed to:", rebel.address);
 

@@ -5,7 +5,6 @@ import {createHead} from '@vueuse/head'
 
 import App from "@src/App.vue";
 import router from "@src/router";
-import VueSocialSharing from 'vue-social-sharing'
 import Debug from "wavesurfer.js";
 import WaveSurferVue from "wavesurfer.js-vue";
 
@@ -15,7 +14,7 @@ import "notyf/notyf.min.css";
 const app = createApp(App);
 const pinia = createPinia();
 
-app.use(pinia).use(router).use(VueSocialSharing).use(WaveSurferVue).use(createHead());
+app.use(pinia).use(router).use(WaveSurferVue).use(createHead());
 
 if (isRunningOnPWA()) window.resizeTo(985, 677);
 
