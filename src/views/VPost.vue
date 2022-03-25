@@ -1,4 +1,10 @@
 <template>
+  <div v-if="!this.postReady" class="loaderWrapper">
+    <div class="lds-dual-ring"></div>
+    <div class="loaderText">
+      loading IPFS metadata...
+    </div>
+  </div>
   <div v-if="this.postReady">
     <div v-if="!individualPost">
       <ErrorPage />
@@ -177,14 +183,10 @@ export default {
   methods: {
     async getContent() {
       this.postReady = false;
-      console.log("madeit1")
       const { getPostById, isLiked } = useRebelStore();
       if (this.$route.params.id) {
-        console.log("madeit2")
         await getPostById(this.$route.params.id);
-        console.log("madeit3")
         await isLiked([this.$route.params.id]);
-        console.log("madeit4")
       }
       this.postReady = true;
     },
@@ -256,6 +258,45 @@ export default {
 </script>
 
 <style lang="scss">
+
+.loaderText{
+  font-size: 10px;
+  margin-top: 30px;
+  margin-left: 15px;
+}
+
+.loaderWrapper{
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+  text-align: center;
+  margin-top: 150px;
+}
+
+.lds-dual-ring {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
 .valueStyle {
   color: grey;

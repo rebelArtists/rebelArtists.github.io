@@ -11,8 +11,8 @@
     <div class="box shareButton" v-if="!loading">
       <ShareNetwork
           network="twitter"
-          url="https://news.vuejs.org/issues/180"
-          title="Say hi to Vite! A brand new, extremely fast development setup for Vue."
+          :url="createUserLink(this.$route.params.name.toLowerCase())"
+          title="Check out this creator profile on REBEL!"
         >
         <svg class="twitter" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
         width="30" height="30"
@@ -21,8 +21,8 @@
 
       <ShareNetwork
           network="reddit"
-          url="https://news.vuejs.org/issues/180"
-          title="Say hi to Vite! A brand new, extremely fast development setup for Vue."
+          :url="createUserLink(this.$route.params.name.toLowerCase())"
+          title="Check out this creator profile on REBEL!"
         >
         <svg class="reddit" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
         width="30" height="30"
@@ -32,8 +32,8 @@
 
       <ShareNetwork
           network="facebook"
-          url="https://news.vuejs.org/issues/180"
-          title="Say hi to Vite! A brand new, extremely fast development setup for Vue."
+          :url="createUserLink(this.$route.params.name.toLowerCase())"
+          title="Check out this creator profile on REBEL!"
         >
         <svg class="facebook" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
         width="30" height="30"
@@ -42,8 +42,8 @@
 
         <ShareNetwork
             network="linkedin"
-            url="https://news.vuejs.org/issues/180"
-            title="Say hi to Vite! A brand new, extremely fast development setup for Vue."
+          :url="createUserLink(this.$route.params.name.toLowerCase())"
+          title="Check out this creator profile on REBEL!"
           >
         <svg class="linkedin" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
         width="30" height="30"
@@ -120,12 +120,18 @@ export default {
       return url
     };
 
+    const createUserLink = (address) => {
+      let baseUrl = "https://rebelartists.github.io/user/";
+      return baseUrl.concat(address);
+    }
+
     return {
       account,
       postedItems,
       user,
       getImgUrl,
-      getAvatar
+      getAvatar,
+      createUserLink
     };
   },
 };
