@@ -4,6 +4,9 @@ import { createRouter, createWebHistory } from "vue-router";
 const VAbout = () => import("@src/views/VAbout.vue");
 
 // Async Component
+const VCrowdsale = () => import("@src/components/VUpload/Crowdsale.vue");
+
+// Async Component
 const VPost = () => import("@src/views/VPost.vue");
 
 // Async Component
@@ -17,6 +20,11 @@ const routes = [
     path: "/about",
     name: "about",
     component: VAbout,
+  },
+  {
+    path: "/crowdsale",
+    name: "crowdsale",
+    component: VCrowdsale,
   },
   {
     path: "/",

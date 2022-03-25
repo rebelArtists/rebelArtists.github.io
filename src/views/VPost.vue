@@ -177,10 +177,14 @@ export default {
   methods: {
     async getContent() {
       this.postReady = false;
+      console.log("madeit1")
       const { getPostById, isLiked } = useRebelStore();
       if (this.$route.params.id) {
+        console.log("madeit2")
         await getPostById(this.$route.params.id);
+        console.log("madeit3")
         await isLiked([this.$route.params.id]);
+        console.log("madeit4")
       }
       this.postReady = true;
     },

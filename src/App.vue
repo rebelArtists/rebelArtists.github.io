@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!account" class="testing">
+  <div v-if="!account && $route.name != 'about'" class="testing">
     <AppHeader />
     <div class="divConnect">
       <a v-if="!account" class="testButton" @click="fireConnectWallet">
@@ -11,13 +11,24 @@
       </a>
     </div>
   </div>
-  <div v-if="account && this.ready">
+  <div v-if="$route.name == 'about' && !this.ready">
     <AppHeader />
     <div>
     </div>
     <router-view v-slot="{ Component }">
       <keep-alive>
         <component :is="Component" :key="$route.name" :ready="true" />
+      </keep-alive>
+    </router-view>
+    <ReloadPrompt />
+  </div>
+  <div v-if="account && this.ready">
+    <AppHeader />
+    <div>
+    </div>
+    <router-view v-slot="{ Component }">
+      <keep-alive>
+        <component :is="Component" :key="$route.name"/>
       </keep-alive>
     </router-view>
     <ReloadPrompt />

@@ -5,6 +5,7 @@ import { isRunningOnPWA } from "@src/services/helpers";
 import App from "@src/App.vue";
 import router from "@src/router";
 import VueSocialSharing from 'vue-social-sharing'
+import Debug from "wavesurfer.js";
 import WaveSurferVue from "wavesurfer.js-vue";
 
 import "@src/styles/styles.scss";

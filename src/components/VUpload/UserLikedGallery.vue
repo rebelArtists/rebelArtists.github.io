@@ -303,6 +303,7 @@ wave {
   grid-auto-rows: repeat(3, 1fr);
   width: 100%;
   grid-gap: 1rem;
+  margin-bottom: 100px;
   // max-width: 80rem;
 }
 
