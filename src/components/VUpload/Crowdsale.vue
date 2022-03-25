@@ -1,7 +1,17 @@
 <template>
-  <a class="withdrawHover" @click="withdrawFunds">
-    Withdraw
-  </a>
+  <div class="adminWrapper">
+    ADMIN
+    <div class="crowdsaleWrapper">
+      <a class="withdrawHover" @click="withdrawCrowdsaleFundsAdmin">
+        Withdraw Crowdsale
+      </a>
+    </div>
+    <div class="dappWrapper">
+      <a class="withdrawHoverDapp" @click="withdrawDappFundsAdmin">
+        Withdraw DAPP
+      </a>
+    </div>
+  </div>
   <div class="login-box">
   <h2>Crowdsale</h2>
   <span class="crowdsaleStats">
@@ -11,11 +21,18 @@
   </span>
   <form>
     <div class="user-box">
-      <input type="text" name="" required="">
-      <label># Tokens to Buy</label>
+      <input type="number" step=".00000000001" @input="validateTokenCount($event)">
+      <label># Tokens to Buy
+        <span v-if="!this.tokenCountValid" class="warningText">
+          (must be between 1-1MM)
+        </span>
+        <span v-if="this.tokenCountValid" class="successfulText">
+          ✓
+        </span>
+      </label>
     </div>
     <div class="purchaseButton">
-      <a class="purchaseHover" @click="sendTokens('1')">
+      <a class="purchaseHover" @click="sendTokens()">
         <span></span>
         <span></span>
         <span></span>
@@ -41,6 +58,8 @@ export default {
     return {
       componentKey: 0,
       animating: false,
+      tokenCount: 0,
+      tokenCountValid: false,
     };
   },
   mounted() {
@@ -49,12 +68,16 @@ export default {
     });
   },
   methods: {
-    async sendTokens(amount) {
-      this.animating = true;
-      const { sendCrowdsaleTokens } = useRebelStore();
-      await sendCrowdsaleTokens(amount);
-      this.getCrowdsaleDetails();
-      this.animating = false;
+    async sendTokens() {
+      if (this.tokenCountValid) {
+        this.animating = true;
+        const { sendCrowdsaleTokens } = useRebelStore();
+        await sendCrowdsaleTokens(this.tokenCount.toString());
+        this.getCrowdsaleDetails();
+        this.animating = false;
+      } else {
+        console.log("fix input values and try again")
+      }
     },
     async getCrowdsaleDetails() {
       const { getAmtRaised, getUserAmtDonated } = useRebelStore();
@@ -62,11 +85,24 @@ export default {
       await getUserAmtDonated();
       this.componentKey += 1;
     },
-    async withdrawFunds() {
+    async withdrawCrowdsaleFundsAdmin() {
       const { withdrawCrowdsaleFunds } = useRebelStore();
       await withdrawCrowdsaleFunds();
       this.componentKey += 1;
     },
+    async withdrawDappFundsAdmin() {
+      const { withdrawDappFunds } = useRebelStore();
+      await withdrawDappFunds();
+      this.componentKey += 1;
+    },
+    validateTokenCount($event) {
+      this.tokenCount = $event.target.value;
+      if (this.tokenCount >= 1 && this.tokenCount <= 1000000) {
+        this.tokenCountValid = true
+      } else {
+        this.tokenCountValid = false
+      }
+    }
   },
   watch: {
   },
@@ -88,20 +124,88 @@ export default {
 
 .crowdsaleStats {
   display: grid;
-  grid-template-columns: repeat(3, 130px);
+  grid-template-columns: repeat(3, 150px);
   font-size: 10px;
 }
 
+.adminWrapper {
+  border-style: solid;
+  // background-color: white;
+  position: absolute;
+  margin-top: 20px;
+  width: 225px;
+  height: 140px;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 900;
+  border-color: white;
+  border-width: 1.5px;
+  padding-top: 15px;
+  // padding-left: 30px;
+  // padding-right: 30px;
+  margin-left: 10%;
+  margin-bottom: 100px;
+  border-radius: 10px;
+}
+
+@media only screen and (max-width: 1215px) {
+  .adminWrapper {
+    border-style: solid;
+    // background-color: white;
+    position: absolute;
+    margin-top: 450px;
+    width: 225px;
+    height: 140px;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 900;
+    border-color: white;
+    border-width: 1.5px;
+    padding-top: 15px;
+    // padding-left: 30px;
+    // padding-right: 30px;
+    margin-left: 100px;
+    margin-bottom: 100px;
+    border-radius: 10px;
+  }
+}
+
+.crowdsaleWrapper {
+  margin-top: 30px;
+  margin-bottom: 40px;
+}
+
 .withdrawHover {
+  // position: absolute;
+  // margin-top: 40px;
+  // margin-bottom: 40px;
+  width: 125px;
+  text-align: center;
   cursor: pointer;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 900;
   background: var(--crowdsale-color);
   padding: 10px;
   padding-left: 30px;
   padding-right: 30px;
-  margin-left: 20%;
+  // margin-left: 17%;
   border-radius: 10px;
+}
+
+.withdrawHoverDapp {
+  // position: absolute;
+  text-align: center;
+  width: 125px;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 900;
+  background: var(--crowdsale-color);
+  padding: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  // margin-left: 17%;
+  border-radius: 10px;
+  margin-top: 90px;
 }
 
 .purchaseHover {
@@ -111,6 +215,7 @@ export default {
 .purchaseButton {
   margin-left: auto;
   margin-right: auto;
+  margin-top: -15px;
   justify-content: center;
   text-align: center;
 }
@@ -119,7 +224,7 @@ export default {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 400px;
+  width: 450px;
   padding: 40px;
   transform: translate(-50%, -50%);
   color: var(--icon-color);
@@ -137,7 +242,7 @@ export default {
 
 .login-box .user-box {
   position: relative;
-  margin-top: 20px;
+  margin-top: 35px;
 }
 
 .login-box .user-box input {

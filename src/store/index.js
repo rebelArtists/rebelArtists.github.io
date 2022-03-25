@@ -393,6 +393,25 @@ async function withdrawCrowdsaleFunds() {
 }
 }
 
+async function withdrawDappFunds() {
+  try {
+    const { ethereum } = window;
+    if (ethereum) {
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const signer = provider.getSigner();
+      const rebelContract = new ethers.Contract(
+        contractAddressRebel,
+        contractABIrebel.abi,
+        signer
+      );
+      const withdrawal = await rebelContract.withdraw();
+      await withdrawal.wait();
+    }
+  } catch (e) {
+      console.log("e", e);
+}
+}
+
   async function unlikePost(postId) {
     try {
       const { ethereum } = window;
@@ -514,6 +533,7 @@ async function withdrawCrowdsaleFunds() {
     userContribution,
     getAmtRaised,
     getUserAmtDonated,
-    withdrawCrowdsaleFunds
+    withdrawCrowdsaleFunds,
+    withdrawDappFunds
   };
 });

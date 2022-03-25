@@ -96,6 +96,11 @@
             Connect your wallet to Rebel and get posting!
           </div>
       </div>
+      <div class="whitepaperHeader">
+        Whitepaper
+      </div>
+      <iframe src="/src/views/rebel_whitepaper.pdf" width="100%" height="600px">
+      </iframe>
       </section>
     </div>
   </section>
@@ -142,6 +147,14 @@ ul{
 }
 
 .howToHeader {
+  font-size: 14px;
+  font-weight: 900;
+  margin-top: 100px;
+  margin-bottom: 20px;
+  color: var(--icon-color)
+}
+
+.whitepaperHeader {
   font-size: 14px;
   font-weight: 900;
   margin-top: 100px;
