@@ -37,8 +37,11 @@
 </template>
 
 <script>
-import { provide } from "vue";
+import { provide, computed, reactive, ref } from "vue";
 import { Notyf } from "notyf";
+import { useHead } from '@vueuse/head'
+import { createAvatar } from '@dicebear/avatars';
+import * as style from '@dicebear/avatars-bottts-sprites';
 
 import ErrorPage from "@src/components/VUpload/404.vue";
 import UserGallery from "@src/components/VUpload/UserGallery.vue";
@@ -67,7 +70,8 @@ export default {
       componentKey: 0,
       postReady: false,
       stateLoaded: false,
-      showLikedPosts: false
+      showLikedPosts: false,
+      title: "SLAPPTASTIC"
     };
   },
   mounted() {
@@ -80,6 +84,8 @@ export default {
       const { getUserByOwner } = useRebelStore();
       if (this.$route.params.name && isAddress(this.$route.params.name)) {
         await getUserByOwner(this.$route.params.name);
+        this.dynamicPageLink = this.createUserLink(this.$route.params.name);
+        console.log(this.dynamicPageLink)
       }
       this.stateLoaded = true;
     },
@@ -119,6 +125,52 @@ export default {
       ],
     });
 
+    const dynamicPageLink = ref("");
+
+    useHead({
+      // Can be static or computed
+      title: `REBEL`,
+      meta: [
+        {
+          name: `og:title`,
+          content: `REBEL`,
+        },
+        // {
+        //   name: `type`,
+        //   content: `website`,
+        // },
+        {
+          name: `og:description`,
+          content: `testing this shizz`,
+        },
+        {
+          name: `og:url`,
+          content: computed(() => dynamicPageLink.value),
+        },
+        {
+          name: "og:image",
+          content: "https://cloudfront-us-east-1.images.arcpublishing.com/coindesk/FGHMFCBDIVHB3N6PSB7GNB53NM.png",
+        },
+      ],
+    })
+
+    const getAvatar = (address) => {
+      let svgAvatar = createAvatar(style, {
+        seed: address,
+        scale: 80,
+        translateY: -3
+      });
+
+      let blob = new Blob([svgAvatar], {type: 'image/svg+xml'});
+      let url = URL.createObjectURL(blob);
+      return url
+    };
+
+    const createUserLink = (address) => {
+      let baseUrl = "https://rebelartists.github.io/user/";
+      return baseUrl.concat(address).concat("/");
+    }
+
     const rebelStore = useRebelStore();
     const { account, user } = storeToRefs(rebelStore);
 
@@ -127,7 +179,10 @@ export default {
     return {
       account,
       user,
-      isAddress
+      isAddress,
+      dynamicPageLink,
+      getAvatar,
+      createUserLink
     };
   },
 };

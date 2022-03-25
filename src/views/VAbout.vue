@@ -8,7 +8,7 @@
         <div class="team">
           <ul class="auto-grid" role="list">
             <li class="lineItem">
-              <a href="https://swop.link/cool" target="_blank" class="profile">
+              <a target="_blank" class="profile">
                 <h2 class="profile__name">
                   Dead-Simple Minting</h2>
                 <p class="mintingAbout">
@@ -20,7 +20,7 @@
               </a>
             </li>
             <li>
-              <a href="https://swop.link/cool" target="_blank" class="profile">
+              <a target="_blank" class="profile">
                 <h2 class="profile__name">Get Paid Per Like</h2>
                 <p> No more waiting months for social media
                   giants to shell out your earnings, or them taking the lion's share.
@@ -30,7 +30,7 @@
               </a>
             </li>
             <li>
-              <a href="https://swop.link/cool" target="_blank" class="profile">
+              <a target="_blank" class="profile">
                 <h2 class="profile__name">Instant Payouts</h2>
                 <p>For every like receiced, you
                   earn 0.0196 MATIC (98% of transaction value),
@@ -42,7 +42,7 @@
               </a>
             </li>
             <li>
-              <a href="https://swop.link/cool" target="_blank" class="profile">
+              <a target="_blank" class="profile">
                 <h2 class="profile__name">Top Creator Rewards</h2>
                 <p> Unlock ERC20 REBEL tokens as your cumulative like count grows:
                           <br>
@@ -59,7 +59,7 @@
               </a>
             </li>
             <li>
-              <a href="https://swop.link/cool" target="_blank" class="profile">
+              <a target="_blank" class="profile">
                 <h2 class="profile__name">Built by COIN Alums</h2>
                 <p> Designed for the masses by industry experts,
                     all the blockchain complexities have been stripped away.
@@ -69,7 +69,7 @@
               </a>
             </li>
             <li>
-              <a href="https://swop.link/cool" target="_blank" class="profile">
+              <a target="_blank" class="profile">
                 <h2 class="profile__name">Join the Rebellion</h2>
                 <p>Enough of big business profiting off of your hard work.
                   Gone are the days of them taking billions and you're left with fractions.
@@ -96,11 +96,12 @@
             Connect your wallet to Rebel and get posting!
           </div>
       </div>
-      <div class="whitepaperHeader">
-        Whitepaper
+      <div class="pdfWrapper">
+        <div class="whitepaperHeader">
+          Whitepaper
+        </div>
+        <embed src="rebel_whitepaper.pdf" type="application/pdf" width="100%" height="600px" />
       </div>
-      <iframe src="/src/views/rebel_whitepaper.pdf" width="100%" height="600px">
-      </iframe>
       </section>
     </div>
   </section>
@@ -116,6 +117,10 @@ export default {
 
 ul{
      list-style:none;
+}
+
+.pdfWrapper {
+  margin-bottom: 100px;
 }
 
 .howToSection {
