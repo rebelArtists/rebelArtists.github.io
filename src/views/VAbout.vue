@@ -2,41 +2,41 @@
   <section id="content">
     <div class="main">
       <section id="about" class="aboutDescription">
-        <div class="aboutHeader">
-          About
-        </div>
+        <div class="aboutHeader">About</div>
         <div class="team">
           <ul class="auto-grid" role="list">
             <li class="lineItem">
               <a target="_blank" class="profile">
-                <h2 class="profile__name">
-                  Dead-Simple Minting</h2>
+                <h2 class="profile__name">Dead-Simple Minting</h2>
                 <p class="mintingAbout">
-                  Minting videos, photos, and music is
-                  seamless; Simply upload your content and an NFT
-                  will be auto-created on Polygon (Ethereum L2).
-                  Gas fees are near zero, transactions are lightning fast.</p>
+                  Minting videos, photos, and music is seamless; Simply upload
+                  your content and an NFT will be auto-created on Polygon
+                  (Ethereum L2). Gas fees are near zero, transactions are
+                  lightning fast.
+                </p>
                 <img src="../components/NFT_SQUARE.png" />
               </a>
             </li>
             <li>
               <a target="_blank" class="profile">
                 <h2 class="profile__name">Get Paid Per Like</h2>
-                <p> No more waiting months for social media
-                  giants to shell out your earnings, or them taking the lion's share.
-                  Rebel Artists take 98% of profits and are paid
-                  within seconds to their crypto wallet.</p>
+                <p>
+                  No more waiting months for social media giants to shell out
+                  your earnings, or them taking the lion's share. Rebel Artists
+                  take 98% of profits and are paid within seconds to their
+                  crypto wallet.
+                </p>
                 <img src="../components/LIKES_SQUARE.png" />
               </a>
             </li>
             <li>
               <a target="_blank" class="profile">
                 <h2 class="profile__name">Instant Payouts</h2>
-                <p>For every like receiced, you
-                  earn 0.0196 MATIC (98% of transaction value),
-                  sent direct to your crypto wallet in seconds.
-                  A 2% fee is taken by Rebel, meant entirely to
-                  keep our systems alive and thriving.
+                <p>
+                  For every like receiced, you earn 0.0196 MATIC (98% of
+                  transaction value), sent direct to your crypto wallet in
+                  seconds. A 2% fee is taken by Rebel, meant entirely to keep
+                  our systems alive and thriving.
                 </p>
                 <img src="../components/FAST_PAYMENT.png" />
               </a>
@@ -44,64 +44,84 @@
             <li>
               <a target="_blank" class="profile">
                 <h2 class="profile__name">Top Creator Rewards</h2>
-                <p> Unlock ERC20 REBEL tokens as your cumulative like count grows:
-                          <br>
-                          100 Likes -> 100 REBEL
-                          <br>
-                          1K Likes -> 1K REBEL
-                          <br>
-                          10K Likes -> 10K REBEL
-                          <br>
-                          100K Likes -> 100K REBEL
-                          <br>
-                          1MM Likes -> 1MM REBEL</p>
+                <p>
+                  Unlock ERC20 REBEL tokens as your cumulative like count grows:
+                  <br />
+                  100 Likes -> 100 REBEL
+                  <br />
+                  1K Likes -> 1K REBEL
+                  <br />
+                  10K Likes -> 10K REBEL
+                  <br />
+                  100K Likes -> 100K REBEL
+                  <br />
+                  1MM Likes -> 1MM REBEL
+                </p>
                 <img src="../components/REWARDS_SQUARE.png" />
               </a>
             </li>
             <li>
               <a target="_blank" class="profile">
                 <h2 class="profile__name">Built by COIN Alums</h2>
-                <p> Designed for the masses by industry experts,
-                    all the blockchain complexities have been stripped away.
-                    While Rebel is fully decentralized, artists will find
-                    its as easy to use as Instagram or TikTok</p>
-                <img alt="Profile shot for Marc Dixon" src="../components/ALUM_SQUARE.png" />
+                <p>
+                  Designed for the masses by industry experts, all the
+                  blockchain complexities have been stripped away. While Rebel
+                  is fully decentralized, artists will find its as easy to use
+                  as Instagram or TikTok
+                </p>
+                <img
+                  alt="Profile shot for Marc Dixon"
+                  src="../components/ALUM_SQUARE.png"
+                />
               </a>
             </li>
             <li>
               <a target="_blank" class="profile">
                 <h2 class="profile__name">Join the Rebellion</h2>
-                <p>Enough of big business profiting off of your hard work.
-                  Gone are the days of them taking billions and you're left with fractions.
-                  Take control of your content. Own what's yours as a Rebel Artist!</p>
-                <img alt="Profile shot for Chad" src="../components/REBELLION_SQUARE.png" />
+                <p>
+                  Enough of big business profiting off of your hard work. Gone
+                  are the days of them taking billions and you're left with
+                  fractions. Take control of your content. Own what's yours as a
+                  Rebel Artist!
+                </p>
+                <img
+                  alt="Profile shot for Chad"
+                  src="../components/REBELLION_SQUARE.png"
+                />
               </a>
             </li>
           </ul>
         </div>
-          <div class="howToHeader">
-            How To (Beta)
-          </div>
+        <div class="howToHeader">How To (Beta)</div>
         <div class="howToSection">
           <div class="numberedList">
             <span class="bulletNumber">1</span>
-            Install <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en">Metamask plugin</a> for Chrome and create a wallet
+            Install
+            <a
+              href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en"
+              >Metamask plugin</a
+            >
+            for Chrome and create a wallet
           </div>
           <div class="numberedList">
             <span class="bulletNumber">2</span>
-            Get some test MATIC (use the <a href="https://faucet.polygon.technology/">Polygon faucet</a>)
+            Get some test MATIC (use the
+            <a href="https://faucet.polygon.technology/">Polygon faucet</a>)
           </div>
           <div class="numberedList">
             <span class="bulletNumber">3</span>
             Connect your wallet to Rebel and get posting!
           </div>
-      </div>
-      <div class="pdfWrapper">
-        <div class="whitepaperHeader">
-          Whitepaper
         </div>
-        <embed src="rebel_whitepaper.pdf" type="application/pdf" width="100%" height="600px" />
-      </div>
+        <div class="pdfWrapper">
+          <div class="whitepaperHeader">Whitepaper</div>
+          <embed
+            src="rebel_whitepaper.pdf"
+            type="application/pdf"
+            width="100%"
+            height="600px"
+          />
+        </div>
       </section>
     </div>
   </section>
@@ -114,9 +134,8 @@ export default {
 </script>
 
 <style lang="scss">
-
-ul{
-     list-style:none;
+ul {
+  list-style: none;
 }
 
 .pdfWrapper {
@@ -130,17 +149,17 @@ ul{
 }
 
 .numberedList {
-  margin-bottom:10px;
+  margin-bottom: 10px;
   color: var(--icon-color);
   margin-bottom: 20px;
 }
 .bulletNumber {
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  width:25px;
-  height:25px;
-  border-radius:50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
   background-color: var(--icon-color);
   color: var(--icon-color-opposite);
 }
@@ -148,7 +167,7 @@ ul{
 .aboutHeader {
   font-size: 14px;
   font-weight: 900;
-  color: var(--icon-color)
+  color: var(--icon-color);
 }
 
 .howToHeader {
@@ -156,7 +175,7 @@ ul{
   font-weight: 900;
   margin-top: 100px;
   margin-bottom: 20px;
-  color: var(--icon-color)
+  color: var(--icon-color);
 }
 
 .whitepaperHeader {
@@ -164,7 +183,7 @@ ul{
   font-weight: 900;
   margin-top: 100px;
   margin-bottom: 20px;
-  color: var(--icon-color)
+  color: var(--icon-color);
 }
 
 .aboutDescription {
@@ -264,7 +283,6 @@ body.dark-theme {
   width: 100%;
   height: 100%;
   position: absolute;
-  /*inset: 0;*/
   top: 0;
   left: 0;
 }

@@ -1,24 +1,76 @@
+<template>
+  <Transition name="modal">
+    <div v-if="show" class="modal-likers-mask">
+      <div class="modal-likers-wrapper">
+        <div class="modal-likers-container">
+          <span class="closeOut">
+            <div class="noLikesDiv" v-if="!likedAddressesArray[0]">
+              no likes yet.
+            </div>
+            <div
+              class="likers-list"
+              v-for="(item, index) in likedAddressesArray"
+              :key="index"
+            >
+              <span class="singleLine">
+                <router-link
+                  :to="`/user/${item}`"
+                  @click="$emit('close')"
+                  exact
+                >
+                  <div>
+                    <img
+                      :src="getAvatar(item.toLowerCase())"
+                      class="round-image-likers"
+                    />
+                  </div>
+                </router-link>
+                <div class="likerItem">
+                  {{ item.substring(0, 4) }}...{{ item.slice(-4) }}
+                </div>
+              </span>
+            </div>
+            <div class="modal-likers-footer">
+              <button
+                class="modal-likers-default-button"
+                @click="$emit('close')"
+              >
+                x
+              </button>
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+  </Transition>
+</template>
+
 <script>
 import { provide } from "vue";
 import { Notyf } from "notyf";
 import { useRebelStore } from "@src/store/index";
 import { storeToRefs } from "pinia";
-import { createAvatar } from '@dicebear/avatars';
-import * as style from '@dicebear/avatars-bottts-sprites';
+import { createAvatar } from "@dicebear/avatars";
+import * as style from "@dicebear/avatars-bottts-sprites";
 
 export default {
   name: "LikersModal",
   emits: ["close"],
   props: {
-    show: Boolean,
-    postId: Number
+    show: {
+      type: Boolean,
+      default: false,
+    },
+    postId: {
+      type: Number,
+      default: 0,
+    },
   },
-  components: {
-  },
+  components: {},
   data() {
     return {
       componentKey: 0,
-      stateLoaded: false
+      stateLoaded: false,
     };
   },
   mounted() {
@@ -31,7 +83,7 @@ export default {
       const { likersOfPost } = useRebelStore();
       await likersOfPost(this.postId);
       this.stateLoaded = true;
-    }
+    },
   },
   setup() {
     const NotfyProvider = new Notyf({
@@ -61,63 +113,25 @@ export default {
       let svgAvatar = createAvatar(style, {
         seed: address,
         scale: 80,
-        translateY: -3
+        translateY: -3,
       });
 
-      let blob = new Blob([svgAvatar], {type: 'image/svg+xml'});
+      let blob = new Blob([svgAvatar], { type: "image/svg+xml" });
       let url = URL.createObjectURL(blob);
-      return url
+      return url;
     };
 
     provide("notyf", NotfyProvider);
 
     return {
       likedAddressesArray,
-      getAvatar
+      getAvatar,
     };
   },
 };
 </script>
 
-<template>
-  <Transition name="modal">
-    <div v-if="show" class="modal-likers-mask">
-      <div class="modal-likers-wrapper">
-        <div class="modal-likers-container">
-          <span class="closeOut">
-          <div class="noLikesDiv" v-if="!likedAddressesArray[0]">
-            no likes yet.
-          </div>
-          <div
-            class="likers-list"
-            v-for="(item, index) in likedAddressesArray"
-            :key="index"
-          >
-            <span class="singleLine">
-              <router-link :to="`/user/${item}`" @click="$emit('close')" exact>
-                <div>
-                  <img :src="getAvatar(item.toLowerCase())" class="round-image-likers" />
-                </div>
-              </router-link>
-              <div class="likerItem">
-                {{ item.substring(0, 4) }}...{{ item.slice(-4) }}
-              </div>
-            </span>
-          </div>
-          <div class="modal-likers-footer">
-              <button class="modal-likers-default-button" @click="$emit('close')">
-                x
-              </button>
-          </div>
-          </span>
-        </div>
-      </div>
-    </div>
-  </Transition>
-</template>
-
 <style>
-
 .noLikesDiv {
   margin-top: 80%;
   justify-content: center;

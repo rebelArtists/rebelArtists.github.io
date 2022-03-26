@@ -1,9 +1,7 @@
 <template>
   <div v-if="!this.postReady" class="loaderWrapper">
     <div class="lds-dual-ring"></div>
-    <div class="loaderText">
-      loading IPFS metadata...
-    </div>
+    <div class="loaderText">loading IPFS metadata...</div>
   </div>
   <div v-if="this.postReady">
     <div v-if="!individualPost">
@@ -11,31 +9,47 @@
     </div>
     <div v-if="individualPost" class="wrapper3">
       <div class="box2 itemMedia">
-          <MDBCard class="card-style-post hover-overlay">
-            <figure class="figureClassPost">
-              <video v-if="individualPost.mediaType == 'video'" class="card-img-style-post" controls controlsList="nodownload">
-                <source :src="getCloudinaryUrlVideo(individualPost.mediaHash)">
-              </video>
-              <div class="card-img-style-post-audio" v-if="individualPost.mediaType == 'audio'">
-                <wavesurfer :src="getCloudinaryUrlVideo(individualPost.mediaHash)" :options="waveformOptions"></wavesurfer>
-              </div>
-              <MDBCardImg
-                v-if="individualPost.mediaType == 'image'"
-                :src="getCloudinaryUrlImage(individualPost.mediaHash)"
-                top
-                hover
-                alt="..."
-                class="card-img-style-post"
-              />
-            </figure>
-          </MDBCard>
+        <MDBCard class="card-style-post hover-overlay">
+          <figure class="figureClassPost">
+            <video
+              v-if="individualPost.mediaType == 'video'"
+              class="card-img-style-post"
+              controls
+              controlsList="nodownload"
+            >
+              <source :src="getCloudinaryUrlVideo(individualPost.mediaHash)" />
+            </video>
+            <div
+              class="card-img-style-post-audio"
+              v-if="individualPost.mediaType == 'audio'"
+            >
+              <wavesurfer
+                :src="getCloudinaryUrlVideo(individualPost.mediaHash)"
+                :options="waveformOptions"
+              ></wavesurfer>
+            </div>
+            <MDBCardImg
+              v-if="individualPost.mediaType == 'image'"
+              :src="getCloudinaryUrlImage(individualPost.mediaHash)"
+              top
+              hover
+              alt="..."
+              class="card-img-style-post"
+            />
+          </figure>
+        </MDBCard>
       </div>
       <div class="box2 userName">
         <router-link :to="`/user/${individualPost.address}`" exact>
-          <img :src="getAvatar(individualPost.address.toLowerCase())" class="round-image-post" />
+          <img
+            :src="getAvatar(individualPost.address.toLowerCase())"
+            class="round-image-post"
+          />
         </router-link>
         <div class="userName">
-            {{ individualPost.address.substring(0, 4) }}...{{ individualPost.address.slice(-4) }}
+          {{ individualPost.address.substring(0, 4) }}...{{
+            individualPost.address.slice(-4)
+          }}
         </div>
       </div>
       <div class="box2 itemName">
@@ -57,8 +71,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in individualPost.attributes"
-                    :key="index">
+            <tr v-for="(item, index) in individualPost.attributes" :key="index">
               <td>{{ item.trait_type }}</td>
               <td class="valueStyle">{{ item.value }}</td>
             </tr>
@@ -66,18 +79,31 @@
         </table>
       </div>
       <div class="box2 itemLikes">
-
-        <a class="likesHover" @click="showLikersModal = true, idToCheck = individualPost.id">
+        <a
+          class="likesHover"
+          @click="(showLikersModal = true), (idToCheck = individualPost.id)"
+        >
           {{ individualPost.likes }} likes
         </a>
 
-        <Teleport v-if="showLikersModal && idToCheck == individualPost.id" to="body">
-          <LikersModal :show="showLikersModal" :postId="individualPost.id" @close="showLikersModal = false">
+        <Teleport
+          v-if="showLikersModal && idToCheck == individualPost.id"
+          to="body"
+        >
+          <LikersModal
+            :show="showLikersModal"
+            :postId="individualPost.id"
+            @close="showLikersModal = false"
+          >
           </LikersModal>
         </Teleport>
 
         <div v-if="!likedArray[0]" id="favoriting" class="likeHeart">
-          <ToggleFavorite class="faveButton" :id="individualPost.id" @like-event="updateparent" />
+          <ToggleFavorite
+            class="faveButton"
+            :id="individualPost.id"
+            @like-event="updateparent"
+          />
         </div>
         <div v-if="likedArray[0]" id="favoriting" class="likeHeart">
           <ToggleFavorite
@@ -88,8 +114,7 @@
           />
         </div>
       </div>
-      <div class="itemBackground">
-      </div>
+      <div class="itemBackground"></div>
       <div class="box2 itemIpfs">
         <a :href="getImgUrl(individualPost.mediaHash)" title="IPFS Media">
           <svg
@@ -137,17 +162,17 @@ import { Notyf } from "notyf";
 
 import ErrorPage from "@src/components/VUpload/404.vue";
 import { getImgUrl } from "@src/services/helpers";
-import {
-  MDBCard,
-  MDBCardImg
-} from "mdb-vue-ui-kit";
+import { MDBCard, MDBCardImg } from "mdb-vue-ui-kit";
 import { storeToRefs } from "pinia";
 import { useRebelStore } from "@src/store/index";
 import ToggleFavorite from "@src/components/VUpload/ToggleFavorite.vue";
 import LikersModal from "@src/components/VUpload/LikersModal.vue";
-import { createAvatar } from '@dicebear/avatars';
-import * as style from '@dicebear/avatars-bottts-sprites';
-import { getCloudinaryUrlImage, getCloudinaryUrlVideo } from "@src/services/helpers";
+import { createAvatar } from "@dicebear/avatars";
+import * as style from "@dicebear/avatars-bottts-sprites";
+import {
+  getCloudinaryUrlImage,
+  getCloudinaryUrlVideo,
+} from "@src/services/helpers";
 
 export default {
   name: "VPost",
@@ -156,7 +181,7 @@ export default {
     MDBCardImg,
     LikersModal,
     ToggleFavorite,
-    ErrorPage
+    ErrorPage,
   },
   data() {
     return {
@@ -171,7 +196,7 @@ export default {
         responsive: true,
         height: 240,
         hideScrollbar: true,
-        cursorWidth: 1
+        cursorWidth: 1,
       },
     };
   },
@@ -233,12 +258,12 @@ export default {
       let svgAvatar = createAvatar(style, {
         seed: address,
         scale: 80,
-        translateY: -3
+        translateY: -3,
       });
 
-      let blob = new Blob([svgAvatar], {type: 'image/svg+xml'});
+      let blob = new Blob([svgAvatar], { type: "image/svg+xml" });
       let url = URL.createObjectURL(blob);
-      return url
+      return url;
     };
 
     provide("notyf", NotfyProvider);
@@ -251,21 +276,20 @@ export default {
       likedArray,
       getAvatar,
       getCloudinaryUrlImage,
-      getCloudinaryUrlVideo
+      getCloudinaryUrlVideo,
     };
   },
 };
 </script>
 
 <style lang="scss">
-
-.loaderText{
+.loaderText {
   font-size: 10px;
   margin-top: 30px;
   margin-left: 15px;
 }
 
-.loaderWrapper{
+.loaderWrapper {
   margin-left: auto;
   margin-right: auto;
   justify-content: center;
@@ -316,7 +340,8 @@ wave {
   font-size: 10px;
 }
 
-.card-img-style-post-audio audio::-webkit-media-controls-time-remaining-display {
+.card-img-style-post-audio
+  audio::-webkit-media-controls-time-remaining-display {
   font-size: 10px;
 }
 
@@ -330,17 +355,17 @@ wave {
 }
 
 .card-img-style-post-audio audio::-webkit-media-controls-enclosure {
-    position: absolute;
-    height: 40px;
-    margin-top: 150px;
-    border-radius: 0%;
-    overflow: hidden;
-    border-bottom-left-radius: 0.6rem;
-    border-bottom-right-radius: 0.6rem;
+  position: absolute;
+  height: 40px;
+  margin-top: 150px;
+  border-radius: 0%;
+  overflow: hidden;
+  border-bottom-left-radius: 0.6rem;
+  border-bottom-right-radius: 0.6rem;
 }
 
 .card-img-style-post-audio audio {
-    margin-top: 37px;
+  margin-top: 37px;
 }
 
 .card-style figure {
@@ -438,7 +463,6 @@ wave {
 }
 
 .box2 {
-  // background-image: var(--liniear-gradient-color-2);
   border-radius: 10px;
   display: flex;
 }
@@ -506,7 +530,6 @@ wave {
   grid-column: 3 / 3;
   grid-row: 1 / 6;
   z-index: -1;
-  // background-image: var(--linear-gradient-post-panel);
   border-radius: 10px;
 }
 
@@ -522,7 +545,7 @@ wave {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: var(--icon-color)
+  background: var(--icon-color);
 }
 
 #favoriting.likeHeart {

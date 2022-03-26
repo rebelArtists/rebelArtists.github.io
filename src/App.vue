@@ -13,8 +13,7 @@
   </div>
   <div v-if="$route.name == 'about' && !this.ready">
     <AppHeader />
-    <div>
-    </div>
+    <div></div>
     <router-view v-slot="{ Component }">
       <keep-alive>
         <component :is="Component" :key="$route.name" :ready="true" />
@@ -24,11 +23,10 @@
   </div>
   <div v-if="account && this.ready">
     <AppHeader />
-    <div>
-    </div>
+    <div></div>
     <router-view v-slot="{ Component }">
       <keep-alive>
-        <component :is="Component" :key="$route.name"/>
+        <component :is="Component" :key="$route.name" />
       </keep-alive>
     </router-view>
     <ReloadPrompt />
@@ -48,7 +46,7 @@ export default {
   name: "App",
   components: {
     AppHeader,
-    ReloadPrompt
+    ReloadPrompt,
   },
   data() {
     return {
@@ -63,7 +61,7 @@ export default {
       const { account } = storeToRefs(rebelStore);
       await connectWallet();
       if (this.$route.fullPath == "/") {
-        router.push({ path: `/user/${account.value}` })
+        router.push({ path: `/user/${account.value}` });
       }
       this.ready = true;
     },
@@ -98,14 +96,13 @@ export default {
     return {
       connectWallet,
       account,
-      user
+      user,
     };
   },
 };
 </script>
 
 <style lang="scss">
-
 @font-face {
   font-family: "Rebel";
   src: local("RebelNew"), url(./fonts/Rebel/RebelNew.ttf) format("truetype");
@@ -144,7 +141,6 @@ div.testing {
 
 .testButton {
   position: relative;
-  // display: inline-block;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -23,8 +23,8 @@ body {
   );
   --linear-gradient-post-panel: linear-gradient(
     to bottom right,
-    rgba(250, 204, 21, .5),
-    rgba(249, 115, 22, .5)
+    rgba(250, 204, 21, 0.5),
+    rgba(249, 115, 22, 0.5)
   );
   --loader-color-primary: #facc15;
   --loader-color-secondary: #f97316;
@@ -74,8 +74,7 @@ body {
     );
     --linear-gradient-post-panel: linear-gradient(
       to bottom right,
-      rgba(168, 85, 247, .5)
-      rgba(99, 102, 241, .5)
+      rgba(168, 85, 247, 0.5) rgba(99, 102, 241, 0.5)
     );
     --loader-color-primary: #a855f7;
     --loader-color-secondary: #6366f1;
@@ -119,7 +118,6 @@ body,
     padding: 0 0 0.8em 0;
     border-bottom: none;
     padding-left: 3vw;
-    // flex-direction: row;
 
     .header-title {
       width: 100%;
@@ -132,8 +130,8 @@ body,
 
     .header-menu {
       width: 35vw;
-      margin-top: -20px;
-      margin-right: 40px;
+      margin-top: -35px;
+      margin-right: 50px;
 
       nav {
         text-align: left;
@@ -277,9 +275,7 @@ body,
 
 // original max 768px
 @media only screen and (max-width: 815px) {
-
   #app {
-
     .wrapper2 {
       font-size: 10px;
       margin: 15px 0 35px 0;
@@ -448,7 +444,6 @@ body,
       background-image: var(--linear-gradient-post-panel);
       border-radius: 10px;
     }
-
 
     #header {
       padding: 0 0 0.8em 0;

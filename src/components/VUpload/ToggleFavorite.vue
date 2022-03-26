@@ -1,9 +1,6 @@
 <template>
   <button class="toggle-favorite" @click="toggle">
-    <FavoriteIcon
-      class="toggle-favorite__icon"
-      :class="iconClasses"
-    />
+    <FavoriteIcon class="toggle-favorite__icon" :class="iconClasses" />
     <transition name="favorite-particles-transition">
       <div v-if="animating" class="toggle-favorite__particles"></div>
     </transition>
@@ -21,14 +18,14 @@ export default {
     FavoriteIcon,
   },
   props: {
-    'id': {
+    id: {
       type: Number,
-      default: 0
+      default: 0,
     },
-    'intialFavorited': {
+    intialFavorited: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {

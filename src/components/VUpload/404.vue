@@ -1,7 +1,7 @@
 <script>
 export default {
-  name: "ErrorPage"
-}
+  name: "ErrorPage",
+};
 </script>
 
 <template>
@@ -243,9 +243,7 @@ export default {
       </svg>
     </div>
   </div>
-  <div class="errorText">
-    page / post / user does not exist
-  </div>
+  <div class="errorText">page / post / user does not exist</div>
 </template>
 
 <style lang="scss">
@@ -275,7 +273,6 @@ $delayCoeff: 0.04s;
   width: 270px;
   line-height: 250px;
   text-align: center;
-  // background-image: var(--liniear-gradient-color-2);
   border-radius: 40px;
 }
 

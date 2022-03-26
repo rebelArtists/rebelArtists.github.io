@@ -5,9 +5,7 @@
       <span v-if="!this.valid" class="warningText">
         (alphanumeric between 3-60 characters)
       </span>
-      <span v-if="this.valid" class="successfulText">
-        ✓
-      </span>
+      <span v-if="this.valid" class="successfulText"> ✓ </span>
     </div>
     <input
       type="text"

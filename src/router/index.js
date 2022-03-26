@@ -4,7 +4,7 @@ import { createRouter, createWebHistory } from "vue-router";
 const VAbout = () => import("@src/views/VAbout.vue");
 
 // Async Component
-const VCrowdsale = () => import("@src/components/VUpload/Crowdsale.vue");
+const VCrowdsale = () => import("@src/components/VUpload/CrowdsaleComp.vue");
 
 // Async Component
 const VPost = () => import("@src/views/VPost.vue");

@@ -6,7 +6,11 @@
       :valid="descValid"
       @on-changed="onDescriptionChanged"
     />
-    <MetaAttributes :attributes="attributes" :valid="attrValid" @on-changed="onAttributesChanged" />
+    <MetaAttributes
+      :attributes="attributes"
+      :valid="attrValid"
+      @on-changed="onAttributesChanged"
+    />
     <div class="content panel-upload--content">
       <div
         class="panel-upload--dropzone"
@@ -63,7 +67,9 @@ export default {
     const { account } = storeToRefs(rebelStore);
     const name = ref("");
     const description = ref("");
-    const attributes = ref('[{"trait_type": "CHANGE_ME", "value": "CHANGE_ME"}]');
+    const attributes = ref(
+      '[{"trait_type": "CHANGE_ME", "value": "CHANGE_ME"}]'
+    );
     const nameValid = ref(false);
     const descValid = ref(false);
     const attrValid = ref(false);
@@ -72,19 +78,27 @@ export default {
 
     const onNameChanged = ($event) => {
       name.value = $event.target.value;
-      if (name.value.match(/^(?=.{3,60}$)[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/)) {
-        nameValid.value = true
+      if (
+        name.value.match(
+          /^(?=.{3,60}$)[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/
+        )
+      ) {
+        nameValid.value = true;
       } else {
-        nameValid.value = false
+        nameValid.value = false;
       }
     };
 
     const onDescriptionChanged = ($event) => {
       description.value = $event.target.value;
-      if (description.value.match(/^(?=.{3,120}$)[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/)) {
-        descValid.value = true
+      if (
+        description.value.match(
+          /^(?=.{3,120}$)[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/
+        )
+      ) {
+        descValid.value = true;
       } else {
-        descValid.value = false
+        descValid.value = false;
       }
     };
 
@@ -92,23 +106,23 @@ export default {
       attributes.value = $event.target.value;
       try {
         const validJson = JSON.parse(attributes.value);
-        if(Array.isArray(validJson)){
-           validJson.forEach(element => {
-             if(typeof (element) === 'object'){
-                if ("trait_type" in element && "value" in element) {
-                  attrValid.value = true
-                } else {
-                  throw 'missing req object keys'
-                }
+        if (Array.isArray(validJson)) {
+          validJson.forEach((element) => {
+            if (typeof element === "object") {
+              if ("trait_type" in element && "value" in element) {
+                attrValid.value = true;
               } else {
-                throw 'element is not an object'
+                throw "missing req object keys";
               }
-           });
+            } else {
+              throw "element is not an object";
+            }
+          });
         } else {
-          throw 'not a json array'
+          throw "not a json array";
         }
       } catch {
-        attrValid.value = false
+        attrValid.value = false;
       }
     };
 
@@ -149,7 +163,12 @@ export default {
       // figure out how to handle cancelled tx's by user
       if (!error) {
         try {
-          await postContent(name.value, data.fileCid, data.metaCid, data.fileType);
+          await postContent(
+            name.value,
+            data.fileCid,
+            data.metaCid,
+            data.fileType
+          );
           getPostsByOwner(account._rawValue);
         } catch (err) {
           notyf.error(`tx cancelled by user`);
@@ -172,7 +191,7 @@ export default {
 
         try {
           let results = await Promise.all(files);
-          const unsuccessfully = results.filter(({ error }) => Error);
+          const unsuccessfully = results.filter(({ error }) => error.message);
           store.resetFiles();
           fileRef.value.value = null;
 
@@ -219,7 +238,7 @@ export default {
       onAttributesChanged,
       nameValid,
       descValid,
-      attrValid
+      attrValid,
     };
   },
 };

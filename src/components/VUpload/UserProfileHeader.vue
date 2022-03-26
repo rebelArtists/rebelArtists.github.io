@@ -2,11 +2,16 @@
   <div v-if="this.stateLoaded && this.$route.params.name" class="wrapper2">
     <div class="box userAvatar">
       <div>
-        <img :src="getAvatar(this.$route.params.name.toLowerCase())" class="round-image" />
+        <img
+          :src="getAvatar(this.$route.params.name.toLowerCase())"
+          class="round-image"
+        />
       </div>
     </div>
     <div class="box addressHash">
-      {{ this.$route.params.name.substring(0, 4) }}...{{ this.$route.params.name.slice(-4) }}
+      {{ this.$route.params.name.substring(0, 4) }}...{{
+        this.$route.params.name.slice(-4)
+      }}
     </div>
     <div class="box shareButton">
       <button
@@ -17,13 +22,17 @@
         Donate
       </button>
       <Teleport v-if="showDonationModal" to="body">
-        <DonationModal :show="showDonationModal" :userAddress="this.$route.params.name.toLowerCase()" @close="updateParent">
+        <DonationModal
+          :show="showDonationModal"
+          :userAddress="this.$route.params.name.toLowerCase()"
+          @close="updateParent"
+        >
         </DonationModal>
       </Teleport>
     </div>
     <div class="box likeCount">{{ user.totalLikes }} likes</div>
     <div class="box postCount">{{ user.postCount }} posts</div>
-    <div class="box amtEarned">{{ user.amtEarned  }} earned</div>
+    <div class="box amtEarned">{{ user.amtEarned }} earned</div>
   </div>
 </template>
 
@@ -31,20 +40,18 @@
 import { useRebelStore } from "@src/store/index";
 import { storeToRefs } from "pinia";
 import { getImgUrl } from "@src/services/helpers";
-import { createAvatar } from '@dicebear/avatars';
-import * as style from '@dicebear/avatars-bottts-sprites';
-
+import { createAvatar } from "@dicebear/avatars";
+import * as style from "@dicebear/avatars-bottts-sprites";
 
 export default {
   name: "UserProfileHeader",
-  components: {
-  },
+  components: {},
   data() {
     return {
       componentKey: 0,
       loading: false,
       stateLoaded: false,
-      showDonationModal: false
+      showDonationModal: false,
     };
   },
   mounted() {
@@ -83,7 +90,7 @@ export default {
         await donationToUser(userId, 1);
         await this.checkIsFollowing();
       } else {
-        console.log("can't donate to self")
+        console.log("can't donate to self");
       }
       this.componentKey += 1;
       this.loading = false;
@@ -91,25 +98,24 @@ export default {
   },
   setup() {
     const rebelStore = useRebelStore();
-    const { postedItems, user, account } =
-      storeToRefs(rebelStore);
+    const { postedItems, user, account } = storeToRefs(rebelStore);
 
     const getAvatar = (address) => {
       let svgAvatar = createAvatar(style, {
         seed: address,
         scale: 80,
-        translateY: -3
+        translateY: -3,
       });
 
-      let blob = new Blob([svgAvatar], {type: 'image/svg+xml'});
+      let blob = new Blob([svgAvatar], { type: "image/svg+xml" });
       let url = URL.createObjectURL(blob);
-      return url
+      return url;
     };
 
     const createUserLink = (address) => {
       let baseUrl = "https://rebelartists.github.io/user/";
       return baseUrl.concat(address);
-    }
+    };
 
     return {
       account,
@@ -117,14 +123,13 @@ export default {
       user,
       getImgUrl,
       getAvatar,
-      createUserLink
+      createUserLink,
     };
   },
 };
 </script>
 
 <style lang="scss">
-
 .buttonConnectProfile {
   transition-duration: 0.6s;
   border-radius: 8px;
@@ -138,7 +143,7 @@ export default {
   background-image: var(--liniear-gradient-color-2);
 }
 .buttonConnectProfile:hover {
-  background-color: #4caf50; /* Green */
+  background-color: #4caf50;
   color: white;
 }
 
@@ -156,11 +161,11 @@ export default {
 }
 
 .twitter {
-  fill: var(--icon-color)
+  fill: var(--icon-color);
 }
 
 .reddit {
-  fill: var(--icon-color)
+  fill: var(--icon-color);
 }
 
 .facebook {
@@ -192,7 +197,7 @@ export default {
 }
 
 .buttonConnectProfile:hover {
-  background-color: #4caf50; /* Green */
+  background-color: #4caf50;
   color: white;
 }
 

@@ -1,11 +1,11 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { isRunningOnPWA } from "@src/services/helpers";
-import {createHead} from '@vueuse/head'
+import { createHead } from "@vueuse/head";
 
 import App from "@src/App.vue";
 import router from "@src/router";
-import Debug from "wavesurfer.js";
+import "wavesurfer.js";
 import WaveSurferVue from "wavesurfer.js-vue";
 
 import "@src/styles/styles.scss";

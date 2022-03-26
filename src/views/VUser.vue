@@ -5,28 +5,20 @@
         <div v-if="!isAddress(this.$route.params.name)">
           <ErrorPage />
         </div>
-        <div v-if="this.stateLoaded && user && isAddress(this.$route.params.name)">
+        <div
+          v-if="this.stateLoaded && user && isAddress(this.$route.params.name)"
+        >
           <UserProfileHeader />
           <div class="toggleWrapper">
             <a @click="toggleShowLikedItems">
-              <div v-if="showLikedPosts" class="createdInactive">
-                created
-              </div>
+              <div v-if="showLikedPosts" class="createdInactive">created</div>
             </a>
-              <div v-if="!showLikedPosts"  class="createdActive">
-                created
-              </div>
-            <div class="divider">
-              |
-            </div>
+            <div v-if="!showLikedPosts" class="createdActive">created</div>
+            <div class="divider">|</div>
             <a @click="toggleShowLikedItems">
-              <div v-if="!showLikedPosts"  class="likedInactive">
-                liked
-              </div>
+              <div v-if="!showLikedPosts" class="likedInactive">liked</div>
             </a>
-            <div v-if="showLikedPosts" class="likedActive">
-              liked
-            </div>
+            <div v-if="showLikedPosts" class="likedActive">liked</div>
           </div>
           <UserGallery v-if="!showLikedPosts" @like-event="updateparent" />
           <UserLikedGallery v-if="showLikedPosts" @like-event="updateparent" />
@@ -37,11 +29,8 @@
 </template>
 
 <script>
-import { provide, computed, reactive, ref } from "vue";
+import { provide } from "vue";
 import { Notyf } from "notyf";
-import { useHead } from '@vueuse/head'
-import { createAvatar } from '@dicebear/avatars';
-import * as style from '@dicebear/avatars-bottts-sprites';
 
 import ErrorPage from "@src/components/VUpload/404.vue";
 import UserGallery from "@src/components/VUpload/UserGallery.vue";
@@ -57,13 +46,13 @@ export default {
     ErrorPage,
     UserGallery,
     UserLikedGallery,
-    UserProfileHeader
+    UserProfileHeader,
   },
   props: {
-    'ready': {
+    ready: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -71,7 +60,7 @@ export default {
       postReady: false,
       stateLoaded: false,
       showLikedPosts: false,
-      title: "SLAPPTASTIC"
+      title: "SLAPPTASTIC",
     };
   },
   mounted() {
@@ -95,13 +84,6 @@ export default {
       this.showLikedPosts = !this.showLikedPosts;
     },
   },
-  // watch: {
-  //   $route(to, from) {
-  //     if (to !== from) {
-  //       this.getUserContent();
-  //     }
-  //   },
-  // },
   setup() {
     const NotfyProvider = new Notyf({
       duration: 2000,
@@ -145,13 +127,10 @@ export default {
 .toggleWrapper {
   display: flex;
   text-align: center;
-  // background-color: grey;
   align-content: center;
   justify-content: center;
   margin: auto;
   margin-bottom: 35px;
-  // margin-left: 50%;
-  // margin-right: 50%;
 }
 .divider {
   position: absolute;
@@ -164,14 +143,14 @@ export default {
   font-size: 11px;
   cursor: pointer;
   padding-top: 1px;
-  margin-left: -75px
+  margin-left: -75px;
 }
 .createdActive {
   position: absolute;
   font-size: 13px;
   font-weight: 900;
   cursor: pointer;
-  margin-left: -100px
+  margin-left: -100px;
 }
 .likedInactive {
   position: absolute;
@@ -220,7 +199,7 @@ section#content {
   }
 
   .buttonConnect:hover {
-    background-color: #4caf50; /* Green */
+    background-color: #4caf50;
     color: white;
   }
 

@@ -1,7 +1,9 @@
 <template>
   <div v-if="this.stateLoaded">
-
-    <div class="container" v-if="!postedItems[0] && account == this.$route.params.name">
+    <div
+      class="container"
+      v-if="!postedItems[0] && account == this.$route.params.name"
+    >
       <div class="bg"></div>
       <button class="modalButton" id="show-modal" @click="showModal = true">
         +
@@ -15,7 +17,12 @@
       </Teleport>
     </div>
 
-    <div class="container" v-if="!postedItems[0] && account != this.$route.params.name">no posts yet.</div>
+    <div
+      class="container"
+      v-if="!postedItems[0] && account != this.$route.params.name"
+    >
+      no posts yet.
+    </div>
 
     <div class="wrapperGallery">
       <div
@@ -27,11 +34,19 @@
           <MDBCard class="card-style hover-overlay">
             <router-link :to="`/post/${item.id}`" active-class="active" exact>
               <figure class="figureClass">
-                <video v-if="item.mediaType == 'video'" class="card-img-style-gallery" controls controlsList="nodownload">
-                  <source :src="getCloudinaryUrlVideo(item.mediaHash)">
+                <video
+                  v-if="item.mediaType == 'video'"
+                  class="card-img-style-gallery"
+                  controls
+                  controlsList="nodownload"
+                >
+                  <source :src="getCloudinaryUrlVideo(item.mediaHash)" />
                 </video>
                 <div class="audioCardGallery" v-if="item.mediaType == 'audio'">
-                  <wavesurfer :src="getCloudinaryUrlVideo(item.mediaHash)" :options="waveformOptions"></wavesurfer>
+                  <wavesurfer
+                    :src="getCloudinaryUrlVideo(item.mediaHash)"
+                    :options="waveformOptions"
+                  ></wavesurfer>
                 </div>
                 <MDBCardImg
                   v-if="item.mediaType == 'image'"
@@ -46,12 +61,22 @@
             <MDBCardBody class="card-body">
               <MDBCardText class="cardName"> {{ item.name }} </MDBCardText>
               <MDBCardText>
-                <a class="likesHover" @click="showLikersModal = true, idToCheck = item.id">
+                <a
+                  class="likesHover"
+                  @click="(showLikersModal = true), (idToCheck = item.id)"
+                >
                   {{ item.likes }} likes
                 </a>
 
-                <Teleport v-if="showLikersModal && idToCheck == item.id" to="body">
-                  <LikersModal :show="showLikersModal" :postId="item.id" @close="showLikersModal = false">
+                <Teleport
+                  v-if="showLikersModal && idToCheck == item.id"
+                  to="body"
+                >
+                  <LikersModal
+                    :show="showLikersModal"
+                    :postId="item.id"
+                    @close="showLikersModal = false"
+                  >
                   </LikersModal>
                 </Teleport>
 
@@ -75,24 +100,18 @@
 </template>
 
 <script>
-import { ref, inject } from "vue";
+import { isVideo } from "@src/services/helpers";
 
-import {
-  isVideo
-} from "@src/services/helpers";
-
-import {
-  MDBCard,
-  MDBCardBody,
-  MDBCardText,
-  MDBCardImg
-} from "mdb-vue-ui-kit";
+import { MDBCard, MDBCardBody, MDBCardText, MDBCardImg } from "mdb-vue-ui-kit";
 import { useRebelStore } from "@src/store/index";
 import { storeToRefs } from "pinia";
 import ToggleFavorite from "@src/components/VUpload/ToggleFavorite.vue";
 import UploadModal from "@src/components/VUpload/Modal.vue";
 import LikersModal from "@src/components/VUpload/LikersModal.vue";
-import { getCloudinaryUrlImage, getCloudinaryUrlVideo } from "@src/services/helpers";
+import {
+  getCloudinaryUrlImage,
+  getCloudinaryUrlVideo,
+} from "@src/services/helpers";
 
 export default {
   name: "UserGallery",
@@ -104,7 +123,7 @@ export default {
     MDBCardImg,
     ToggleFavorite,
     LikersModal,
-    UploadModal
+    UploadModal,
   },
   data() {
     return {
@@ -121,7 +140,7 @@ export default {
         responsive: true,
         height: 145,
         hideScrollbar: true,
-        cursorWidth: 0
+        cursorWidth: 0,
       },
     };
   },
@@ -142,7 +161,7 @@ export default {
       this.stateLoaded = true;
     },
     async updateparent() {
-      this.checkIsLiked()
+      this.checkIsLiked();
       this.componentKey += 1;
       this.$emit("like-event", true);
     },
@@ -155,8 +174,6 @@ export default {
     },
   },
   setup() {
-    const notyf = inject("notyf");
-
     const rebelStore = useRebelStore();
     const { postedItems, likedArray, account } = storeToRefs(rebelStore);
 
@@ -166,14 +183,13 @@ export default {
       likedArray,
       account,
       getCloudinaryUrlImage,
-      getCloudinaryUrlVideo
+      getCloudinaryUrlVideo,
     };
   },
 };
 </script>
 
 <style lang="scss">
-
 wave {
   z-index: 0;
   display: flex;
@@ -197,25 +213,13 @@ wave {
   border-radius: 50%;
 }
 
-.audioCardGallery audio::-webkit-media-controls-volume-slider {
-  // background-color: #B1D4E0;
-  // border-radius: 25px;
-  // padding-left: 200px;
-  // margin-right: 500px;
-}
-
-.audioCardGallery audio::-webkit-media-controls-timeline {
-  // width: 80px;
-}
-
 .audioCardGallery audio::-webkit-media-controls-enclosure {
-    position: absolute;
-    height: 40px;
-    border-radius: 0%;
-    border-bottom-left-radius: 0.6rem;
-    border-bottom-right-radius: 0.6rem;
+  position: absolute;
+  height: 40px;
+  border-radius: 0%;
+  border-bottom-left-radius: 0.6rem;
+  border-bottom-right-radius: 0.6rem;
 }
-
 
 .likesHover {
   cursor: pointer;

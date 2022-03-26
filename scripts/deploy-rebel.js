@@ -8,7 +8,9 @@ async function main() {
   await rebelToken.deployed();
   console.log("Token deployed to:", rebelToken.address);
 
-  const RebelCrowdsale = await hre.ethers.getContractFactory("RebelTokenCrowdsale");
+  const RebelCrowdsale = await hre.ethers.getContractFactory(
+    "RebelTokenCrowdsale"
+  );
   const rebelCrowdsale = await RebelCrowdsale.deploy(rebelToken.address);
   await rebelCrowdsale.deployed();
   console.log("Crowdsale deployed to:", rebelCrowdsale.address);
@@ -19,11 +21,15 @@ async function main() {
   console.log("Rebel DAPP deployed to:", rebel.address);
 
   const AMT_TO_TRANSFER = "500000000.0"; // half of entire 1B token supply
-  await rebelToken.connect(deployer).transfer(rebel.address, ethers.utils.parseEther(AMT_TO_TRANSFER));
-  console.log("REBEL tokens seeded to main DAPP: √")
+  await rebelToken
+    .connect(deployer)
+    .transfer(rebel.address, ethers.utils.parseEther(AMT_TO_TRANSFER));
+  console.log("REBEL tokens seeded to main DAPP: √");
 
-  await rebelToken.connect(deployer).transfer(rebelCrowdsale.address, ethers.utils.parseEther(AMT_TO_TRANSFER));
-  console.log("REBEL tokens seeded to Crowdsale: √")
+  await rebelToken
+    .connect(deployer)
+    .transfer(rebelCrowdsale.address, ethers.utils.parseEther(AMT_TO_TRANSFER));
+  console.log("REBEL tokens seeded to Crowdsale: √");
 }
 
 // We recommend this pattern to be able to use async/await everywhere
