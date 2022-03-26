@@ -1,3 +1,22 @@
+<template>
+  <Transition name="modal">
+    <div v-if="show" class="modal-mask">
+      <div class="modal-wrapper">
+        <div class="modal-container">
+          <PanelUpload @post-event="updateparent" />
+          <div class="modal-footer">
+            <slot name="footer">
+              <button class="modal-default-button" @click="$emit('close')">
+                x
+              </button>
+            </slot>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Transition>
+</template>
+
 <script>
 import PanelUpload from "@src/components/VUpload/PanelUpload.vue";
 import { provide } from "vue";
@@ -16,17 +35,16 @@ export default {
   },
   data() {
     return {
-      componentKey: 0
+      componentKey: 0,
     };
   },
   methods: {
     async updateparent() {
       const { getUserByOwner } = useRebelStore();
       const rebelStore = useRebelStore();
-      const { account } =
-        storeToRefs(rebelStore);
+      const { account } = storeToRefs(rebelStore);
       await getUserByOwner(account._rawValue);
-      this.$emit('close');
+      this.$emit("close");
       this.componentKey += 1;
     },
   },
@@ -55,25 +73,6 @@ export default {
   },
 };
 </script>
-
-<template>
-  <Transition name="modal">
-    <div v-if="show" class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-container">
-          <PanelUpload @post-event="updateparent" />
-          <div class="modal-footer">
-            <slot name="footer">
-              <button class="modal-default-button" @click="$emit('close')">
-                x
-              </button>
-            </slot>
-          </div>
-        </div>
-      </div>
-    </div>
-  </Transition>
-</template>
 
 <style>
 .modal-mask {

@@ -16,15 +16,20 @@ import IPFSNetwork from "@src/services/IPFSNetwork";
 export const uploadBlob = async (file, name, description, attributes) => {
   const client = new IPFSNetwork();
 
-  let detail = getCidDetail({ metaCid: null, fileCid: null, fileType: null, file });
+  let detail = getCidDetail({
+    metaCid: null,
+    fileCid: null,
+    fileType: null,
+    file,
+  });
 
   let fileType = "";
   if (file.type.includes("image")) {
-    fileType = "image"
+    fileType = "image";
   } else if (file.type.includes("video")) {
-    fileType = "video"
+    fileType = "video";
   } else if (file.type.includes("audio")) {
-    fileType = "audio"
+    fileType = "audio";
   } else {
     return { error: new Error(`Unsupported file type`), data: detail };
   }
@@ -44,7 +49,12 @@ export const uploadBlob = async (file, name, description, attributes) => {
     let metaHash = ipfsHashes.metaHash,
       fileHash = ipfsHashes.fileHash;
     // const cid = await client.storeBlob(file);
-    detail = getCidDetail({ metaCid: metaHash, fileCid: fileHash, fileType: fileType, file });
+    detail = getCidDetail({
+      metaCid: metaHash,
+      fileCid: fileHash,
+      fileType: fileType,
+      file,
+    });
     return { error: false, data: detail };
   } catch (error) {
     console.log(error);
@@ -80,7 +90,8 @@ export const getCidDetail = ({ metaCid, fileCid, fileType, file }) => {
     created_at: Date.now(),
   };
 
-  if (!metaCid) return { metaCid: null, fileCid: null, fileType: null, file: base };
+  if (!metaCid)
+    return { metaCid: null, fileCid: null, fileType: null, file: base };
 
   return {
     metaCid: metaCid,

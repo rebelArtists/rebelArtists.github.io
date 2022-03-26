@@ -5,24 +5,14 @@
         <div class="feedHeader">
           <div class="toggleWrapper">
             <a @click="toggleShowRandomItems">
-              <div v-if="showRandomPosts" class="latestInactive">
-                latest
-              </div>
+              <div v-if="showRandomPosts" class="latestInactive">latest</div>
             </a>
-              <div v-if="!showRandomPosts"  class="latestActive">
-                latest
-              </div>
-            <div class="divider">
-              |
-            </div>
+            <div v-if="!showRandomPosts" class="latestActive">latest</div>
+            <div class="divider">|</div>
             <a @click="toggleShowRandomItems">
-              <div v-if="!showRandomPosts"  class="randomInactive">
-                random
-              </div>
+              <div v-if="!showRandomPosts" class="randomInactive">random</div>
             </a>
-            <div v-if="showRandomPosts" class="randomActive">
-              random
-            </div>
+            <div v-if="showRandomPosts" class="randomActive">random</div>
           </div>
         </div>
         <div class="feedGrid">
@@ -51,11 +41,11 @@ export default {
   name: "VFeed",
   components: {
     DiscoverFeed,
-    RandomFeed
+    RandomFeed,
   },
   data() {
     return {
-      showRandomPosts: false
+      showRandomPosts: false,
     };
   },
   methods: {
@@ -108,8 +98,6 @@ section#content {
     justify-content: center;
     margin: auto;
     margin-bottom: 35px;
-    // margin-left: 50%;
-    // margin-right: 50%;
   }
 
   .divider {
@@ -123,14 +111,14 @@ section#content {
     font-size: 11px;
     cursor: pointer;
     padding-top: 1px;
-    margin-left: -75px
+    margin-left: -75px;
   }
   .latestActive {
     position: absolute;
     font-size: 13px;
     font-weight: 900;
     cursor: pointer;
-    margin-left: -100px
+    margin-left: -100px;
   }
   .randomInactive {
     position: absolute;
@@ -147,21 +135,21 @@ section#content {
     margin-left: 105px;
   }
 
-.feedHeader{
-  display: flex;
-  margin-top: 5px;
-  font-size: 14px;
-  font-weight: 999;
-}
-
-@media only screen and (max-width: 815px) {
-  .feedHeader{
+  .feedHeader {
     display: flex;
-    margin-top: 50px;
+    margin-top: 5px;
     font-size: 14px;
     font-weight: 999;
   }
-}
+
+  @media only screen and (max-width: 815px) {
+    .feedHeader {
+      display: flex;
+      margin-top: 50px;
+      font-size: 14px;
+      font-weight: 999;
+    }
+  }
 
   .feedToggle {
     cursor: pointer;
@@ -226,7 +214,7 @@ section#content {
   }
 
   .buttonConnect:hover {
-    background-color: #4caf50; /* Green */
+    background-color: #4caf50;
     color: white;
   }
 

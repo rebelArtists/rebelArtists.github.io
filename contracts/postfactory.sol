@@ -35,6 +35,13 @@ contract PostFactory is Ownable, UserFactory {
     _;
   }
 
+  modifier requiresDoneeExists(address _user) {
+    if (userExists[_user] != true) {
+      createUser(_user);
+    }
+    _;
+  }
+
   function createPost(string memory _name, string memory _mediaHash, string memory _metaHash, string memory _mediaType) public requiresUserExists() {
 
     Post storage newPost = postsMap[postCounter];

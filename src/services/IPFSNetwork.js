@@ -1,4 +1,4 @@
-import { sha256 } from 'js-sha256';
+import { sha256 } from "js-sha256";
 
 export default class IPFSNetwork {
   constructor() {
@@ -18,16 +18,20 @@ export default class IPFSNetwork {
     if (!request.ok) {
       throw new Error(`Error while upload into IPFS Network`);
     }
-    return [resultResp, formData]
+    return [resultResp, formData];
   }
 
   async uploadCloudinary(ipfsHash, formData) {
     const public_id = ipfsHash;
     const timestamp = new Date().getTime();
     const upload_preset = "ipfs_signed";
-    const signatureStr = `public_id=${public_id}&timestamp=${timestamp}&upload_preset=${upload_preset}${import.meta.env.VITE_CLOUDINARY_SECRET_KEY}`
+    const signatureStr = `public_id=${public_id}&timestamp=${timestamp}&upload_preset=${upload_preset}${
+      import.meta.env.VITE_CLOUDINARY_SECRET_KEY
+    }`;
 
-    const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/auto/upload`;
+    const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${
+      import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+    }/auto/upload`;
     formData.append("upload_preset", upload_preset);
     formData.append("public_id", public_id);
     formData.append("api_key", import.meta.env.VITE_CLOUDINARY_API_KEY);
@@ -35,7 +39,7 @@ export default class IPFSNetwork {
     formData.append("signature", sha256(signatureStr));
     const respCloudinary = await fetch(cloudinaryUrl, {
       method: "POST",
-      body: formData
+      body: formData,
     });
     if (!respCloudinary.ok) {
       throw new Error(`Error while upload to cloudinary`);
@@ -50,14 +54,13 @@ export default class IPFSNetwork {
    * @returns {Promise<String|Error>, Promise<String|Error>}
    */
   async storeBlob(blob, name, description, attributes) {
-
     if (blob.size === 0) {
       throw new Error("Content size is 0, make sure to provide some content");
     }
 
     const [resultFile, formData] = await this.uploadIpfs(blob);
 
-    await this.uploadCloudinary(resultFile.Hash, formData)
+    await this.uploadCloudinary(resultFile.Hash, formData);
 
     // next, add media hash along with all metadata to ipfs
     // conforms to erc721 key/value standards
@@ -75,7 +78,7 @@ export default class IPFSNetwork {
       type: "application/json;charset=utf-8",
     });
 
-    const [resultMeta, formDataMeta] = await this.uploadIpfs(blobMeta);
+    const [resultMeta] = await this.uploadIpfs(blobMeta);
 
     return {
       metaHash: resultMeta.Hash,

@@ -5,9 +5,7 @@
       <span v-if="!this.valid" class="warningText">
         (given object keys req for each element)
       </span>
-      <span v-if="this.valid" class="successfulText">
-        ✓
-      </span>
+      <span v-if="this.valid" class="successfulText"> ✓ </span>
     </div>
     <input
       type="text"

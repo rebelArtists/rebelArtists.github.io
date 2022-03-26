@@ -1,19 +1,29 @@
 <template>
   <div v-if="this.stateLoaded">
-    <div class="noPostsDiv" v-if="!randomPosts[0]">
-      no posts yet.
-    </div>
+    <div class="noPostsDiv" v-if="!randomPosts[0]">no posts yet.</div>
     <div class="wrapperFeed">
-      <div class="gallery-panel" v-for="(item, index) in randomPosts" :key="index">
+      <div
+        class="gallery-panel"
+        v-for="(item, index) in randomPosts"
+        :key="index"
+      >
         <div class="media-wrap">
           <MDBCard class="card-style hover-overlay">
             <router-link :to="`/post/${item.id}`" active-class="active" exact>
               <figure class="figureClassFeed">
-                <video v-if="item.mediaType == 'video'" class="card-img-style" controls controlsList="nodownload">
-                  <source :src="getCloudinaryUrlVideo(item.mediaHash)">
+                <video
+                  v-if="item.mediaType == 'video'"
+                  class="card-img-style"
+                  controls
+                  controlsList="nodownload"
+                >
+                  <source :src="getCloudinaryUrlVideo(item.mediaHash)" />
                 </video>
                 <div class="audioCardFeed" v-if="item.mediaType == 'audio'">
-                  <wavesurfer :src="getCloudinaryUrlVideo(item.mediaHash)" :options="waveformOptions"></wavesurfer>
+                  <wavesurfer
+                    :src="getCloudinaryUrlVideo(item.mediaHash)"
+                    :options="waveformOptions"
+                  ></wavesurfer>
                 </div>
                 <MDBCardImg
                   v-if="item.mediaType == 'image'"
@@ -28,39 +38,54 @@
             <MDBCardBody class="card-body">
               <MDBCardText class="cardName">{{ item.name }} </MDBCardText>
               <MDBCardText>
-
-                <a class="likesHover" @click="showLikersModal = true, idToCheck = item.id">
+                <a
+                  class="likesHover"
+                  @click="(showLikersModal = true), (idToCheck = item.id)"
+                >
                   {{ item.likes }} likes
                 </a>
 
-                <Teleport v-if="showLikersModal && idToCheck == item.id" to="body">
-                  <LikersModal :show="showLikersModal" :postId="item.id" @close="showLikersModal = false">
+                <Teleport
+                  v-if="showLikersModal && idToCheck == item.id"
+                  to="body"
+                >
+                  <LikersModal
+                    :show="showLikersModal"
+                    :postId="item.id"
+                    @close="showLikersModal = false"
+                  >
                   </LikersModal>
                 </Teleport>
 
                 <div v-if="!likedArray[index]" id="favoriting">
-                  <ToggleFavorite  :id="item.id" @like-event="updateparent" />
+                  <ToggleFavorite :id="item.id" @like-event="updateparent" />
                 </div>
                 <div v-if="likedArray[index]" id="favoriting">
-                  <ToggleFavorite  :id="item.id" :intialFavorited="true"  @like-event="updateparent" />
+                  <ToggleFavorite
+                    :id="item.id"
+                    :intialFavorited="true"
+                    @like-event="updateparent"
+                  />
                 </div>
               </MDBCardText>
             </MDBCardBody>
           </MDBCard>
-      </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, inject } from "vue";
 import { MDBCard, MDBCardBody, MDBCardText, MDBCardImg } from "mdb-vue-ui-kit";
-import { useRebelStore } from '@src/store/index';
-import { storeToRefs } from 'pinia';
+import { useRebelStore } from "@src/store/index";
+import { storeToRefs } from "pinia";
 import LikersModal from "@src/components/VUpload/LikersModal.vue";
 import ToggleFavorite from "@src/components/VUpload/ToggleFavorite.vue";
-import { getCloudinaryUrlImage, getCloudinaryUrlVideo } from "@src/services/helpers";
+import {
+  getCloudinaryUrlImage,
+  getCloudinaryUrlVideo,
+} from "@src/services/helpers";
 
 export default {
   name: "RandomFeed",
@@ -88,7 +113,7 @@ export default {
         responsive: true,
         height: 145,
         hideScrollbar: true,
-        cursorWidth: 0
+        cursorWidth: 0,
       },
     };
   },
@@ -99,9 +124,9 @@ export default {
   },
   methods: {
     async checkIsLiked() {
-      const { isLiked, getRandomPosts } = useRebelStore()
-      const rebelStore = useRebelStore()
-      const { randomPostsArray } = storeToRefs(rebelStore)
+      const { isLiked, getRandomPosts } = useRebelStore();
+      const rebelStore = useRebelStore();
+      const { randomPostsArray } = storeToRefs(rebelStore);
       await getRandomPosts();
       await isLiked(randomPostsArray._rawValue);
       this.stateLoaded = true;
@@ -109,26 +134,24 @@ export default {
     async updateparent() {
       this.checkIsLiked();
       this.componentKey += 1;
-      this.$emit('like-event', true);
-    }
+      this.$emit("like-event", true);
+    },
   },
   setup() {
-    const notyf = inject("notyf");
-    const rebelStore = useRebelStore()
-    const { randomPosts, likedArray } = storeToRefs(rebelStore)
+    const rebelStore = useRebelStore();
+    const { randomPosts, likedArray } = storeToRefs(rebelStore);
 
     return {
       randomPosts,
       getCloudinaryUrlImage,
       getCloudinaryUrlVideo,
-      likedArray
-    }
-  }
-}
+      likedArray,
+    };
+  },
+};
 </script>
 
 <style lang="scss">
-
 .noPostsDiv {
   align-content: center;
   text-align: center;
@@ -159,25 +182,12 @@ wave {
   border-radius: 50%;
 }
 
-.audioCardFeed audio::-webkit-media-controls-volume-slider {
-  // background-color: #B1D4E0;
-  // border-radius: 25px;
-  // padding-left: 200px;
-  // margin-right: 500px;
-}
-
-.audioCardFeed audio::-webkit-media-controls-timeline {
-  // width: 80px;
-}
-
 .audioCardFeed audio::-webkit-media-controls-enclosure {
-    position: absolute;
-    height: 40px;
-    // width: 150%;
-    // margin-left: 45%;
-    border-radius: 0%;
-    border-bottom-left-radius: 0.6rem;
-    border-bottom-right-radius: 0.6rem;
+  position: absolute;
+  height: 40px;
+  border-radius: 0%;
+  border-bottom-left-radius: 0.6rem;
+  border-bottom-right-radius: 0.6rem;
 }
 
 .card-style figure {
@@ -190,7 +200,6 @@ wave {
   opacity: 0.5;
   cursor: pointer;
 }
-
 
 .figureClassFeed {
   width: 100%;
@@ -207,12 +216,12 @@ wave {
 }
 
 .card-style figure img {
-	opacity: 1;
-	-webkit-transition: .3s ease-in-out;
-	transition: .3s ease-in-out;
+  opacity: 1;
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
 }
 .card-style figure:hover img {
-	opacity: .5;
+  opacity: 0.5;
   cursor: pointer;
 }
 
@@ -244,9 +253,6 @@ wave {
 }
 
 .card-img-style {
-  // position: absolute;
-  // top: 0;
-  // left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -326,7 +332,6 @@ wave {
   height: 100%;
   object-fit: cover;
   border-radius: 0.75rem;
-
 }
 
 .gallery-panel video {
@@ -336,7 +341,7 @@ wave {
   border-radius: 0.75rem;
 }
 
-.image-fit{
+.image-fit {
   height: 100%;
   width: 100%;
   object-fit: cover;
@@ -345,7 +350,7 @@ wave {
   text-align: center; /*for centering images inside*/
 }
 
-.vid-fit{
+.vid-fit {
   height: 100%;
   width: 100%;
   object-fit: cover;
@@ -375,7 +380,7 @@ body.dark-theme {
     background-color: var(--gradient-900);
 
     .content-file--items .content-file--item {
-      background-color: rgba(255, 255, 255, .05);
+      background-color: rgba(255, 255, 255, 0.05);
 
       .item-detail--subtitle {
         color: rgba(255, 255, 255, 0.5);

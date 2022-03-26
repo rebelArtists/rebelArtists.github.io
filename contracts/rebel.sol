@@ -9,10 +9,6 @@ interface RebelTokenInterface {
   function transfer(address to, uint amount) external returns (bool);
 }
 
-interface RebelTokenCrowdsaleInterface {
-  function getTotalContributions() external returns (uint);
-}
-
 contract Rebel is PostFactory {
 
   using SafeMath for uint256;
@@ -20,7 +16,6 @@ contract Rebel is PostFactory {
 
   mapping (address => uint) userIncentives;
   address private _rebelTokenAddress;
-  address private _rebelTokenCrowdsaleAddress;
   uint txFee = 0.02 ether;
   uint incentiveLevelOne = 100;
   uint incentiveLevelTwo = 1000;
@@ -28,9 +23,8 @@ contract Rebel is PostFactory {
   uint incentiveLevelFour = 100000;
   uint incentiveLevelFive = 1000000;
 
-  constructor(address rebelTokenAddress_, address rebelTokenCrowdsaleAddress_) {
+  constructor(address rebelTokenAddress_) {
       _rebelTokenAddress = rebelTokenAddress_;
-      _rebelTokenCrowdsaleAddress = rebelTokenCrowdsaleAddress_;
   }
 
   function aboveLikes(address _user) internal {
@@ -82,10 +76,14 @@ contract Rebel is PostFactory {
     return (txFee);
   }
 
-  function getAmtRaised() external returns (
-    uint amtRaisedWei
-    ) {
-    return RebelTokenCrowdsaleInterface(_rebelTokenCrowdsaleAddress).getTotalContributions();
+  function donateToUser(address _user) external payable requiresDoneeExists(_user) requiresUserExists() {
+    require(msg.value >= 0);
+    if (userExists[_user] != true) {
+      createUser(_user);
+    }
+    uint fundsForOwner = msg.value.div(100).mul(98); // 2% cut for rebel
+    payable(_user).transfer(fundsForOwner);
+    usersMap[_user].amtEarned = usersMap[_user].amtEarned.add(fundsForOwner);
   }
 
   function likePost(uint32 _postId) external payable requiresUserExists() canOnlyLikeOnce(_postId) {

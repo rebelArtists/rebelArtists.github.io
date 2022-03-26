@@ -7,9 +7,8 @@ import contractABIrebel from "../artifacts/contracts/rebel.sol/Rebel.json";
 import contractABIcrowdsale from "../artifacts/contracts/crowdsale.sol/RebelTokenCrowdsale.json";
 
 const db = new Storage("app");
-const contractAddressRebel = "0x5ac4c4986A0a8ca1F46D47F0Ec7F870A988dC620";
-const contractAddressCrowdsale = "0x16147Ee52Bfc7900218Bab496F3558A801B50BB0";
-const contractAddressToken = "0x0F9B8516064949457054fc90aECA487697430aE9";
+const contractAddressRebel = "0xe42a4Ec5f9ae77888c74EA06BbFCBcb8caEdE709";
+const contractAddressCrowdsale = "0x7b1Ee4F6a5b2dBA7c381f7e6eC830F8707794D1D";
 
 db.read();
 db.data || { version: "0.0.1" };
@@ -18,7 +17,7 @@ export const useStore = defineStore({
   id: "store",
   state() {
     return {
-      files: []
+      files: [],
     };
   },
   actions: {
@@ -71,7 +70,10 @@ export const useRebelStore = defineStore("rebel", () => {
         console.log("Mined -- ", posted.hash);
       }
     } catch (e) {
-      if (!e.message=="MetaMask Tx Signature: User denied transaction signature.") {
+      if (
+        !e.message ==
+        "MetaMask Tx Signature: User denied transaction signature."
+      ) {
         console.log("e", e);
       }
     }
@@ -89,7 +91,10 @@ export const useRebelStore = defineStore("rebel", () => {
           signer
         );
         const userPostCount = await rebelContract.getUserPostCount(address);
-        const userPosts = await rebelContract.getPostsByOwner(address, userPostCount.toNumber());
+        const userPosts = await rebelContract.getPostsByOwner(
+          address,
+          userPostCount.toNumber()
+        );
         postedItems.value = [];
         postsArray.value = [];
         for (let i = 0; i < userPosts.namesArray.length; i++) {
@@ -107,7 +112,10 @@ export const useRebelStore = defineStore("rebel", () => {
         }
       }
     } catch (e) {
-      if (!e.message=="MetaMask Tx Signature: User denied transaction signature.") {
+      if (
+        !e.message ==
+        "MetaMask Tx Signature: User denied transaction signature."
+      ) {
         console.log("e", e);
       }
     }
@@ -124,9 +132,14 @@ export const useRebelStore = defineStore("rebel", () => {
           contractABIrebel.abi,
           signer
         );
-        const likedPostsCount = await rebelContract.getPostsLikedByOwnerList(address)
+        const likedPostsCount = await rebelContract.getPostsLikedByOwnerList(
+          address
+        );
         const totalCount = likedPostsCount.likesCount;
-        const getLikedPostsResp = await rebelContract.getPostsLikedByOwner(address, totalCount)
+        const getLikedPostsResp = await rebelContract.getPostsLikedByOwner(
+          address,
+          totalCount
+        );
         likedPostItems.value = [];
         likedPostArray.value = [];
         for (let i = 0; i < getLikedPostsResp.namesArray.length; i++) {
@@ -144,7 +157,10 @@ export const useRebelStore = defineStore("rebel", () => {
         }
       }
     } catch (e) {
-      if (!e.message=="MetaMask Tx Signature: User denied transaction signature.") {
+      if (
+        !e.message ==
+        "MetaMask Tx Signature: User denied transaction signature."
+      ) {
         console.log("e", e);
       }
     }
@@ -161,7 +177,7 @@ export const useRebelStore = defineStore("rebel", () => {
           contractABIrebel.abi,
           signer
         );
-        const totalPostCount = await rebelContract.getPostCount()
+        const totalPostCount = await rebelContract.getPostCount();
         const latestPostsResp = await rebelContract.getPosts(totalPostCount);
         latestPosts.value = [];
         latestPostsArray.value = [];
@@ -182,7 +198,10 @@ export const useRebelStore = defineStore("rebel", () => {
         }
       }
     } catch (e) {
-      if (!e.message=="MetaMask Tx Signature: User denied transaction signature.") {
+      if (
+        !e.message ==
+        "MetaMask Tx Signature: User denied transaction signature."
+      ) {
         console.log("e", e);
       }
     }
@@ -204,7 +223,10 @@ export const useRebelStore = defineStore("rebel", () => {
         randomPostsArray.value = [];
         for (let i = 0; i < randomPostsResp.namesArray.length; i++) {
           const postObj = new Object();
-          if (randomPostsResp.namesArray[i] && !randomPostsArray.value.includes(randomPostsResp.idArray[i])) {
+          if (
+            randomPostsResp.namesArray[i] &&
+            !randomPostsArray.value.includes(randomPostsResp.idArray[i])
+          ) {
             postObj.name = randomPostsResp.namesArray[i];
             postObj.mediaHash = randomPostsResp.mediaHashesArray[i];
             postObj.mediaType = randomPostsResp.mediaTypeArray[i];
@@ -216,7 +238,10 @@ export const useRebelStore = defineStore("rebel", () => {
         }
       }
     } catch (e) {
-      if (!e.message=="MetaMask Tx Signature: User denied transaction signature.") {
+      if (
+        !e.message ==
+        "MetaMask Tx Signature: User denied transaction signature."
+      ) {
         console.log("e", e);
       }
     }
@@ -255,7 +280,10 @@ export const useRebelStore = defineStore("rebel", () => {
         }
       }
     } catch (e) {
-      if (!e.message=="MetaMask Tx Signature: User denied transaction signature.") {
+      if (
+        !e.message ==
+        "MetaMask Tx Signature: User denied transaction signature."
+      ) {
         console.log("e", e);
       }
     }
@@ -280,7 +308,38 @@ export const useRebelStore = defineStore("rebel", () => {
         user.value = userObj;
       }
     } catch (e) {
-      if (!e.message=="MetaMask Tx Signature: User denied transaction signature.") {
+      if (
+        !e.message ==
+        "MetaMask Tx Signature: User denied transaction signature."
+      ) {
+        console.log("e", e);
+      }
+    }
+  }
+
+  async function donationToUser(userId, amount) {
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const rebelContract = new ethers.Contract(
+          contractAddressRebel,
+          contractABIrebel.abi,
+          signer
+        );
+        const donation = await rebelContract.donateToUser(userId, {
+          value: ethers.utils.parseEther(amount.toString()),
+        });
+        console.log("Donating to user...", donation.hash);
+        await donation.wait();
+        console.log("Donation successfull", donation.hash);
+      }
+    } catch (e) {
+      if (
+        !e.message ==
+        "MetaMask Tx Signature: User denied transaction signature."
+      ) {
         console.log("e", e);
       }
     }
@@ -305,112 +364,120 @@ export const useRebelStore = defineStore("rebel", () => {
         console.log("Liked post successfully", like.hash);
       }
     } catch (e) {
-      if (!e.message=="MetaMask Tx Signature: User denied transaction signature.") {
+      if (
+        !e.message ==
+        "MetaMask Tx Signature: User denied transaction signature."
+      ) {
         console.log("e", e);
       }
+    }
   }
-}
 
-async function sendCrowdsaleTokens(amount) {
-  try {
-    const { ethereum } = window;
-    if (ethereum) {
-      const provider = new ethers.providers.Web3Provider(ethereum);
-      const signer = provider.getSigner();
-      const crowdsaleContract = new ethers.Contract(
-        contractAddressCrowdsale,
-        contractABIcrowdsale.abi,
-        signer
-      );
-      const sendTokens = await crowdsaleContract.sendTokens({
-        value: ethers.utils.parseEther(amount),
-      });
-      console.log("Sending tokens...", sendTokens.hash);
-      await sendTokens.wait();
-      console.log("Sent tokens successfully", sendTokens.hash);
+  async function sendCrowdsaleTokens(amount) {
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const crowdsaleContract = new ethers.Contract(
+          contractAddressCrowdsale,
+          contractABIcrowdsale.abi,
+          signer
+        );
+        const sendTokens = await crowdsaleContract.sendTokens({
+          value: ethers.utils.parseEther(amount),
+        });
+        console.log("Sending tokens...", sendTokens.hash);
+        await sendTokens.wait();
+        console.log("Sent tokens successfully", sendTokens.hash);
+      }
+    } catch (e) {
+      if (
+        !e.message ==
+        "MetaMask Tx Signature: User denied transaction signature."
+      ) {
+        console.log("e", e);
+      }
     }
-  } catch (e) {
-    if (!e.message=="MetaMask Tx Signature: User denied transaction signature.") {
+  }
+
+  async function getAmtRaised() {
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const crowdsaleContract = new ethers.Contract(
+          contractAddressCrowdsale,
+          contractABIcrowdsale.abi,
+          signer
+        );
+        const contributions = await crowdsaleContract.getTotalContributions();
+        amtRaised.value = ethers.utils.formatEther(contributions);
+      }
+    } catch (e) {
       console.log("e", e);
     }
-}
-}
+  }
 
-async function getAmtRaised() {
-  try {
-    const { ethereum } = window;
-    if (ethereum) {
-      const provider = new ethers.providers.Web3Provider(ethereum);
-      const signer = provider.getSigner();
-      const crowdsaleContract = new ethers.Contract(
-        contractAddressCrowdsale,
-        contractABIcrowdsale.abi,
-        signer
-      );
-      const contributions = await crowdsaleContract.getTotalContributions();
-      amtRaised.value = ethers.utils.formatEther(contributions);
-    }
-  } catch (e) {
+  async function getUserAmtDonated() {
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const crowdsaleContract = new ethers.Contract(
+          contractAddressCrowdsale,
+          contractABIcrowdsale.abi,
+          signer
+        );
+        const contributions = await crowdsaleContract.getUserContribution(
+          account.value
+        );
+        userContribution.value = ethers.utils.formatEther(contributions);
+      }
+    } catch (e) {
       console.log("e", e);
-}
-}
+    }
+  }
 
-async function getUserAmtDonated() {
-  try {
-    const { ethereum } = window;
-    if (ethereum) {
-      const provider = new ethers.providers.Web3Provider(ethereum);
-      const signer = provider.getSigner();
-      const crowdsaleContract = new ethers.Contract(
-        contractAddressCrowdsale,
-        contractABIcrowdsale.abi,
-        signer
-      );
-      const contributions = await crowdsaleContract.getUserContribution(account.value);
-      userContribution.value = ethers.utils.formatEther(contributions);
-    }
-  } catch (e) {
+  async function withdrawCrowdsaleFunds() {
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const crowdsaleContract = new ethers.Contract(
+          contractAddressCrowdsale,
+          contractABIcrowdsale.abi,
+          signer
+        );
+        const withdrawal = await crowdsaleContract.withdraw();
+        await withdrawal.wait();
+      }
+    } catch (e) {
       console.log("e", e);
-}
-}
+    }
+  }
 
-async function withdrawCrowdsaleFunds() {
-  try {
-    const { ethereum } = window;
-    if (ethereum) {
-      const provider = new ethers.providers.Web3Provider(ethereum);
-      const signer = provider.getSigner();
-      const crowdsaleContract = new ethers.Contract(
-        contractAddressCrowdsale,
-        contractABIcrowdsale.abi,
-        signer
-      );
-      const withdrawal = await crowdsaleContract.withdraw();
-      await withdrawal.wait();
-    }
-  } catch (e) {
+  async function withdrawDappFunds() {
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const rebelContract = new ethers.Contract(
+          contractAddressRebel,
+          contractABIrebel.abi,
+          signer
+        );
+        const withdrawal = await rebelContract.withdraw();
+        await withdrawal.wait();
+      }
+    } catch (e) {
       console.log("e", e);
-}
-}
-
-async function withdrawDappFunds() {
-  try {
-    const { ethereum } = window;
-    if (ethereum) {
-      const provider = new ethers.providers.Web3Provider(ethereum);
-      const signer = provider.getSigner();
-      const rebelContract = new ethers.Contract(
-        contractAddressRebel,
-        contractABIrebel.abi,
-        signer
-      );
-      const withdrawal = await rebelContract.withdraw();
-      await withdrawal.wait();
     }
-  } catch (e) {
-      console.log("e", e);
-}
-}
+  }
 
   async function unlikePost(postId) {
     try {
@@ -429,7 +496,10 @@ async function withdrawDappFunds() {
         console.log("Unliked post successfully", unlike.hash);
       }
     } catch (e) {
-      if (!e.message=="MetaMask Tx Signature: User denied transaction signature.") {
+      if (
+        !e.message ==
+        "MetaMask Tx Signature: User denied transaction signature."
+      ) {
         console.log("e", e);
       }
     }
@@ -450,7 +520,10 @@ async function withdrawDappFunds() {
         likedAddressesArray.value = likedAddresses;
       }
     } catch (e) {
-      if (!e.message=="MetaMask Tx Signature: User denied transaction signature.") {
+      if (
+        !e.message ==
+        "MetaMask Tx Signature: User denied transaction signature."
+      ) {
         console.log("e", e);
       }
     }
@@ -471,7 +544,10 @@ async function withdrawDappFunds() {
         likedArray.value = liked;
       }
     } catch (e) {
-      if (!e.message=="MetaMask Tx Signature: User denied transaction signature.") {
+      if (
+        !e.message ==
+        "MetaMask Tx Signature: User denied transaction signature."
+      ) {
         console.log("e", e);
       }
     }
@@ -495,7 +571,10 @@ async function withdrawDappFunds() {
         await getPostsByOwner(account.value);
       }
     } catch (e) {
-      if (!e.message=="MetaMask Tx Signature: User denied transaction signature.") {
+      if (
+        !e.message ==
+        "MetaMask Tx Signature: User denied transaction signature."
+      ) {
         console.log("e", e);
       }
     }
@@ -534,6 +613,7 @@ async function withdrawDappFunds() {
     getAmtRaised,
     getUserAmtDonated,
     withdrawCrowdsaleFunds,
-    withdrawDappFunds
+    withdrawDappFunds,
+    donationToUser,
   };
 });
