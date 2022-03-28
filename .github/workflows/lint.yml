@@ -17,12 +17,9 @@ jobs: # list of things to do
         uses: actions/setup-node@v2
         with:
           node-version: "16"
-
-- name: Code Checkout
-  uses: actions/checkout@v2
-
-- name: Install Dependencies
-  run: npm ci
-
-- name: Code Linting
-  run: npm run lint-check
+      - name: Code Checkout
+        uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: npm ci
+      - name: Code Linting
+        run: npm run lint-check
