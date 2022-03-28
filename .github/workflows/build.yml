@@ -18,7 +18,5 @@ jobs: # list of things to do
         uses: actions/checkout@v2
       - name: Install Dependencies
         run: npm ci
-      - name: Compile Smart Contracts
-        run: npm run compile-solidity
       - name: Code Build
         run: npm run build
