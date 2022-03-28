@@ -32,7 +32,9 @@
           <span v-if="!this.tokenCountValid" class="warningTextCrowdsale">
             (must be between 1-1MM)
           </span>
-          <span v-if="this.tokenCountValid" class="successfulTextCrowdsale"> ✓ </span>
+          <span v-if="this.tokenCountValid" class="successfulTextCrowdsale">
+            ✓
+          </span>
         </label>
       </div>
       <div class="purchaseButton">
@@ -83,7 +85,7 @@ export default {
       if (this.tokenCountValid) {
         this.loading = true;
         const { sendCrowdsaleTokens } = useRebelStore();
-        console.log(this.tokenCount.toString())
+        console.log(this.tokenCount.toString());
         await sendCrowdsaleTokens(this.tokenCount.toString());
         this.getCrowdsaleDetails();
       } else {
@@ -130,7 +132,6 @@ export default {
 </script>
 
 <style lang="scss">
-
 @-webkit-keyframes MOVE-BG {
   from {
     -webkit-transform: translateX(0);

@@ -11,6 +11,7 @@
     "deploy-service-prod": "source deploy.sh",
     "dev": "vite",
     "format": "prettier .  --write",
+    "format-check": "prettier .  --check",
     "lint-save": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
     "lint-check": "eslint --ext .js,.vue --ignore-path .gitignore --fix-dry-run src",
     "preview": "vite preview --port 8080",

@@ -1,4 +1,4 @@
-name: Lint # name of the action (displayed in the github interface)
+name: Formatting # name of the action (displayed in the github interface)
 
 on: # event list
   pull_request: # on a pull request to each of these branches
@@ -9,8 +9,8 @@ env: # environment variables (available in any part of the action)
   TEST_VAR: testing
 
 jobs: # list of things to do
-  linting:
-    name: Linting # job name (unique id)
+  formatting:
+    name: Formatting # job name (unique id)
     runs-on: ubuntu-latest # on which machine to run
     steps: # list of steps
       - name: Install NodeJS
@@ -22,4 +22,4 @@ jobs: # list of things to do
       - name: Install Dependencies
         run: npm ci
       - name: Code Linting
-        run: npm run lint-check
+        run: npm run format-check

@@ -231,7 +231,7 @@ export default {
   },
   setup() {
     const rebelStore = useRebelStore();
-    const { individualPost, user, account, likedArray, latestPosts } =
+    const { individualPost, user, account, likedArray } =
       storeToRefs(rebelStore);
 
     const NotfyProvider = new Notyf({

@@ -86,7 +86,7 @@ export default {
       const { getUserByOwner } = useRebelStore();
       const rebelStore = useRebelStore();
       const { account } = storeToRefs(rebelStore);
-      if (localStorage.getItem('accountStorage')) {
+      if (localStorage.getItem("accountStorage")) {
         await getUserByOwner(account.value);
         this.ready = true;
       }
@@ -97,9 +97,9 @@ export default {
     const { connectWallet } = useRebelStore();
     const { account, user } = storeToRefs(rebelStore);
 
-    const accountLocalStorage = localStorage.getItem('accountStorage');
+    const accountLocalStorage = localStorage.getItem("accountStorage");
     if (accountLocalStorage) {
-      account.value = accountLocalStorage
+      account.value = accountLocalStorage;
     }
 
     const NotfyProvider = new Notyf({
@@ -127,7 +127,7 @@ export default {
     return {
       connectWallet,
       account,
-      user
+      user,
     };
   },
 };
