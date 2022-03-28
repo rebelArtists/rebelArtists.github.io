@@ -39,7 +39,6 @@
 <script>
 import { useRebelStore } from "@src/store/index";
 import { storeToRefs } from "pinia";
-import { getImgUrl } from "@src/services/helpers";
 import { createAvatar } from "@dicebear/avatars";
 import * as style from "@dicebear/avatars-bottts-sprites";
 
@@ -121,7 +120,6 @@ export default {
       account,
       postedItems,
       user,
-      getImgUrl,
       getAvatar,
       createUserLink,
     };

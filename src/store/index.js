@@ -564,6 +564,9 @@ export const useRebelStore = defineStore("rebel", () => {
         method: "eth_requestAccounts",
       });
 
+      localStorage.setItem('accountStorage', myAccounts[0])
+      console.log(localStorage.getItem('accountStorage'));
+
       console.log("Connected: ", myAccounts[0]);
       account.value = myAccounts[0];
       await getUserByOwner(account.value);

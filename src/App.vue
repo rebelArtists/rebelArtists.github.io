@@ -31,6 +31,18 @@
     </router-view>
     <ReloadPrompt />
   </div>
+  <div v-else class="testing">
+    <AppHeader />
+    <div class="divConnect">
+      <a v-if="!account" class="testButton" @click="fireConnectWallet">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        connect wallet
+      </a>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -54,6 +66,11 @@ export default {
       ready: false,
     };
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.getUserContent();
+    });
+  },
   methods: {
     async fireConnectWallet() {
       const { connectWallet } = useRebelStore();
@@ -65,11 +82,25 @@ export default {
       }
       this.ready = true;
     },
+    async getUserContent() {
+      const { getUserByOwner } = useRebelStore();
+      const rebelStore = useRebelStore();
+      const { account } = storeToRefs(rebelStore);
+      if (localStorage.getItem('accountStorage')) {
+        await getUserByOwner(account.value);
+        this.ready = true;
+      }
+    },
   },
   setup() {
     const rebelStore = useRebelStore();
     const { connectWallet } = useRebelStore();
     const { account, user } = storeToRefs(rebelStore);
+
+    const accountLocalStorage = localStorage.getItem('accountStorage');
+    if (accountLocalStorage) {
+      account.value = accountLocalStorage
+    }
 
     const NotfyProvider = new Notyf({
       duration: 2000,
@@ -96,7 +127,7 @@ export default {
     return {
       connectWallet,
       account,
-      user,
+      user
     };
   },
 };
