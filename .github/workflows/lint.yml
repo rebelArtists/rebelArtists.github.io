@@ -6,6 +6,7 @@ on: # event list
     - main
 
 env: # environment variables (available in any part of the action)
+  TEST_VAR: testing
 
 jobs: # list of things to do
   linting:
@@ -15,7 +16,7 @@ jobs: # list of things to do
       - name: Install NodeJS
         uses: actions/setup-node@v2
         with:
-          node-version: '16'
+          node-version: "16"
 
 - name: Code Checkout
   uses: actions/checkout@v2
