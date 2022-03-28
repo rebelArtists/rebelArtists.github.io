@@ -1,7 +1,6 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { isRunningOnPWA } from "@src/services/helpers";
-import { createHead } from "@vueuse/head";
 
 import App from "@src/App.vue";
 import router from "@src/router";
@@ -14,7 +13,7 @@ import "notyf/notyf.min.css";
 const app = createApp(App);
 const pinia = createPinia();
 
-app.use(pinia).use(router).use(WaveSurferVue).use(createHead());
+app.use(pinia).use(router).use(WaveSurferVue);
 
 if (isRunningOnPWA()) window.resizeTo(985, 677);
 
