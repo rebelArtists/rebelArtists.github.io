@@ -6,7 +6,7 @@ on: # event list
     - main
 
 env: # environment variables (available in any part of the action)
-  NODE_VERSION: 17
+  NODE_VERSION: 16
 
 jobs: # list of things to do
   linting:
@@ -16,7 +16,7 @@ jobs: # list of things to do
       - name: Install NodeJS
         uses: actions/setup-node@v2
         with:
-          node-version: '${{ env.NODE_VERSION }}'
+          node-version: ${{ env.NODE_VERSION }}
 
 - name: Code Checkout
   uses: actions/checkout@v2
