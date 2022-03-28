@@ -3,7 +3,7 @@ name: Lint # name of the action (displayed in the github interface)
 on: # event list
   pull_request: # on a pull request to each of these branches
     branches:
-    - main
+      - main
 
 jobs: # list of things to do
   linting:
