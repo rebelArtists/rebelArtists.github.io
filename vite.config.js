@@ -32,7 +32,6 @@ export default defineConfig({
         description: "Full ownership of your content via NFTs",
         theme_color: "#212121",
         registerType: "autoUpdate",
-        includeAssets: ["/favicon.svg"],
         icons: [
           {
             src: "/icons/icon-192x192.png",

@@ -138,7 +138,6 @@ import { ref } from "vue";
 import UploadModal from "@src/components/VUpload/Modal.vue";
 import { storeToRefs } from "pinia";
 import { useRebelStore } from "@src/store/index";
-import { getImgUrl } from "@src/services/helpers";
 import { createAvatar } from "@dicebear/avatars";
 import * as style from "@dicebear/avatars-bottts-sprites";
 
@@ -180,7 +179,6 @@ export default {
       toggleTheme,
       user,
       account,
-      getImgUrl,
       url,
     };
   },

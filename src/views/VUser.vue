@@ -60,7 +60,6 @@ export default {
       postReady: false,
       stateLoaded: false,
       showLikedPosts: false,
-      title: "SLAPPTASTIC",
     };
   },
   mounted() {
