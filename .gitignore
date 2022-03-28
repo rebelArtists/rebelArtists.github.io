@@ -18,4 +18,4 @@ typechain
 
 #Hardhat files
 cache
-artifacts/build-info
+artifacts/build-info/
