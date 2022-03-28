@@ -1,5 +1,3 @@
-# .github/workflows/lint.yml
-
 name: Lint # name of the action (displayed in the github interface)
 
 on: # event list
