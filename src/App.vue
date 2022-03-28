@@ -31,18 +31,6 @@
     </router-view>
     <ReloadPrompt />
   </div>
-  <div v-else class="testing">
-    <AppHeader />
-    <div class="divConnect">
-      <a v-if="!account" class="testButton" @click="fireConnectWallet">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        connect wallet
-      </a>
-    </div>
-  </div>
 </template>
 
 <script>
