@@ -8,7 +8,7 @@
     "deploy-crowdsale-dev": "npx hardhat run scripts/deploy-crowdsale.js --network mumbai",
     "deploy-rebel-dev": "npx hardhat run scripts/deploy-rebel.js --network mumbai",
     "deploy-rebel-mainnet": "npx hardhat run scripts/deploy-rebel.js --network mainnet",
-    "deploy-service-prod": "source deploy.sh",
+    "deploy-service-prod": ". ./deploy.sh",
     "dev": "vite",
     "format": "prettier .  --write",
     "format-check": "prettier .  --check",
