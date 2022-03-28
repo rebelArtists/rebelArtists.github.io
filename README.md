@@ -1,4 +1,5 @@
 # REBEL ARTIST
+
 ## _Decentralized Creator Payments Platform_
 
 REBEL is an easy-to-use minting and peer-to-peer creator payments system. Artists earn directly from their fans via crypto without needing any disbursement from social media or streaming institutions. Gone are the days of giant corporations taking billions and leaving their creators with fractions. Take control of your content. Own what's yours as a Rebel Artist!
@@ -9,7 +10,7 @@ REBEL is an easy-to-use minting and peer-to-peer creator payments system. Artist
 - All media/metadata pinned to IPFS for permanent storage (censorship-resistant)
 - Near-zero gas fees for all actions in dApp (Polygon network)
 - Artists paid per "like" of their content (instant payouts)
-    - Direct fan-to-creator donations also possible
+  - Direct fan-to-creator donations also possible
 - Unlock valuable ERC20 tokens as "like milestones" reached (top creator rewards)
 - Creators take 98% of all profits (transparent)
 
@@ -35,26 +36,26 @@ Learn more about our mission, architecture, and roadmap in our whitepaper [here]
 ## Installation
 
 1. clone this repo
-```git clone https://github.com/rebelArtists/rebelArtists.github.io.git```
+   `git clone https://github.com/rebelArtists/rebelArtists.github.io.git`
 2. enter root directory of project
-```cd rebelArtists.github.io```
+   `cd rebelArtists.github.io`
 3. install all dependencies
-```npm i```
+   `npm i`
 4. start app locally
-```npm run dev```
+   `npm run dev`
 
 ## Helper Commands
 
 - compile all solidity code
-```npm run compile-solidity```
+  `npm run compile-solidity`
 - deploy smart contract code to Polygon testnet
-```npm run deploy-rebel-dev```
+  `npm run deploy-rebel-dev`
 - build project
-```npm run build```
+  `npm run build`
 - preview build locally
-```npm run preview```
+  `npm run preview`
 - run suite of smart contract tests
-```npm run test```
+  `npm run test`
 
 ## Developer Notes
 
@@ -67,7 +68,6 @@ Learn more about our mission, architecture, and roadmap in our whitepaper [here]
 Want to contribute? Great!
 
 Feel free to submit a new pull request or file an issue [here](https://github.com/rebelArtists/rebelArtists.github.io/issues)!
-
 
 ## License
 

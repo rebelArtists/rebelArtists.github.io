@@ -1,4 +1,3 @@
-
 <template>
   <Transition name="modal">
     <div v-if="show" class="modal-donation-mask">
@@ -17,7 +16,9 @@
               <span v-if="!this.donationValid" class="warningTextDonation">
                 (must be greater than 0)
               </span>
-              <span v-if="this.donationValid" class="successfulTextDonation"> ✓ </span>
+              <span v-if="this.donationValid" class="successfulTextDonation">
+                ✓
+              </span>
             </label>
           </div>
           <div class="donateButton">
@@ -134,7 +135,6 @@ export default {
 </script>
 
 <style>
-
 .warningTextDonation {
   font-size: 9px;
   color: red;

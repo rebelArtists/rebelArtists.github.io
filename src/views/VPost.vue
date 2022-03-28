@@ -260,7 +260,7 @@ export default {
         scale: 80,
         translateY: -3,
       });
-
+      /// TESTING ///
       let blob = new Blob([svgAvatar], { type: "image/svg+xml" });
       let url = URL.createObjectURL(blob);
       return url;
