@@ -106,10 +106,10 @@ export const useRebelStore = defineStore("rebel", () => {
           postObj.id = userPosts.idArray[i];
           postsArray.value.push(userPosts.idArray[i]);
           postedItems.value.push(postObj);
-          // reverse so most recent items first in list
-          postsArray.value = postsArray.value.reverse();
-          postedItems.value = postedItems.value.reverse();
         }
+        // reverse so most recent items first in list
+        postsArray.value = postsArray.value.reverse();
+        postedItems.value = postedItems.value.reverse();
       }
     } catch (e) {
       if (
@@ -151,10 +151,10 @@ export const useRebelStore = defineStore("rebel", () => {
           postObj.id = getLikedPostsResp.idArray[i];
           likedPostArray.value.push(getLikedPostsResp.idArray[i]);
           likedPostItems.value.push(postObj);
-          // reverse so most recent items first in list
-          likedPostArray.value = likedPostArray.value.reverse();
-          likedPostItems.value = likedPostItems.value.reverse();
         }
+        // reverse so most recent items first in list
+        likedPostArray.value = likedPostArray.value.reverse();
+        likedPostItems.value = likedPostItems.value.reverse();
       }
     } catch (e) {
       if (
@@ -191,11 +191,11 @@ export const useRebelStore = defineStore("rebel", () => {
             postObj.id = latestPostsResp.idArray[i];
             latestPostsArray.value.push(latestPostsResp.idArray[i]);
             latestPosts.value.push(postObj);
-            // reverse so most recent is first in list
-            latestPostsArray.value = latestPostsArray.value.reverse();
-            latestPosts.value = latestPosts.value.reverse();
           }
         }
+        // reverse so most recent is first in list
+        latestPostsArray.value = latestPostsArray.value.reverse();
+        latestPosts.value = latestPosts.value.reverse();
       }
     } catch (e) {
       if (

@@ -68,7 +68,7 @@ export default {
       const rebelStore = useRebelStore();
       const { account } = storeToRefs(rebelStore);
       await connectWallet();
-      if (this.$route.fullPath == "/" || this.$route.fullPath == "/connect") {
+      if (this.$route.fullPath == "/" || this.$route.name == "connect") {
         router.push({ path: `/user/${account.value}` });
       }
       this.ready = true;

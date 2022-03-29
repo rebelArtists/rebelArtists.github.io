@@ -157,6 +157,7 @@ export default {
 .likerItem {
   padding-top: 10px;
   padding-left: 20px;
+  width: 120px;
   display: flex;
   color: white;
   font-size: 12px;
