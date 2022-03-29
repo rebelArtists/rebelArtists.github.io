@@ -155,12 +155,10 @@
       active-class="active"
       title="Connect new wallet"
       exact
-      >
-    	<i></i>
+    >
+      <i></i>
       <div class="connectedText">
-        {{ account.substring(0, 4) }}...{{
-                account.slice(-4)
-              }} connected
+        {{ account.substring(0, 4) }}...{{ account.slice(-4) }} connected
       </div>
     </router-link>
   </div>
@@ -534,13 +532,13 @@ body.dark-theme {
 }
 
 @keyframes anim-glow {
-	0% {
-		box-shadow: 0 0 rgba(#61EF61, 1);
-	}
-	100% {
-		box-shadow: 0 0 10px 8px transparent;
-		border-width: 2px;
-	}
+  0% {
+    box-shadow: 0 0 rgba(#61ef61, 1);
+  }
+  100% {
+    box-shadow: 0 0 10px 8px transparent;
+    border-width: 2px;
+  }
 }
 
 .connectLink {
@@ -556,28 +554,27 @@ body.dark-theme {
   width: 150px;
 }
 
-.icon-connected	{
-	border-radius: 50%;
-	border: 2px solid #61EF61;
-	width: 10px;
-	height: 10px;
-	text-align: center;
-	position: absolute;
+.icon-connected {
+  border-radius: 50%;
+  border: 2px solid #61ef61;
+  width: 10px;
+  height: 10px;
+  text-align: center;
+  position: absolute;
   bottom: 30px;
   left: 30px;
-	animation: anim-glow 2s ease infinite;
+  animation: anim-glow 2s ease infinite;
   cursor: pointer;
   z-index: 11111;
 
-	i {
-		border-radius: 50%;
-		border: 2px solid #61EF61;
-		width: 3px;
-		height: 3px;
-		display: inline-block;
-		vertical-align: 8px;
-		background-color: #61EF61;
-	}
+  i {
+    border-radius: 50%;
+    border: 2px solid #61ef61;
+    width: 3px;
+    height: 3px;
+    display: inline-block;
+    vertical-align: 8px;
+    background-color: #61ef61;
+  }
 }
-
 </style>

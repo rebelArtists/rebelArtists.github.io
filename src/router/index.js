@@ -4,7 +4,8 @@ import { createRouter, createWebHistory } from "vue-router";
 const VAbout = () => import("@src/views/VAbout.vue");
 
 // Async Component
-const VConnectWallet = () => import("@src/components/VUpload/ConnectWallet.vue")
+const VConnectWallet = () =>
+  import("@src/components/VUpload/ConnectWallet.vue");
 
 // Async Component
 const VCrowdsale = () => import("@src/components/VUpload/CrowdsaleComp.vue");

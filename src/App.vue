@@ -1,5 +1,8 @@
 <template>
-  <div v-if="(!account && $route.name != 'about') || $route.name == 'connect'" class="testing">
+  <div
+    v-if="(!account && $route.name != 'about') || $route.name == 'connect'"
+    class="testing"
+  >
     <AppHeader />
     <div class="divConnect">
       <a class="testButton" @click="fireConnectWallet">
