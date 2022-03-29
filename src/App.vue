@@ -1,8 +1,11 @@
 <template>
-  <div v-if="!account && $route.name != 'about'" class="testing">
+  <div
+    v-if="(!account && $route.name != 'about') || $route.name == 'connect'"
+    class="testing"
+  >
     <AppHeader />
     <div class="divConnect">
-      <a v-if="!account" class="testButton" @click="fireConnectWallet">
+      <a class="testButton" @click="fireConnectWallet">
         <span></span>
         <span></span>
         <span></span>
@@ -21,7 +24,7 @@
     </router-view>
     <ReloadPrompt />
   </div>
-  <div v-if="account && this.ready">
+  <div v-if="account && this.ready && $route.name != 'connect'">
     <AppHeader />
     <div></div>
     <router-view v-slot="{ Component }">
@@ -65,7 +68,7 @@ export default {
       const rebelStore = useRebelStore();
       const { account } = storeToRefs(rebelStore);
       await connectWallet();
-      if (this.$route.fullPath == "/") {
+      if (this.$route.fullPath == "/" || this.$route.name == "connect") {
         router.push({ path: `/user/${account.value}` });
       }
       this.ready = true;

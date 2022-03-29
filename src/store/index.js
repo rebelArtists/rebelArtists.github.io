@@ -7,8 +7,8 @@ import contractABIrebel from "../artifacts/contracts/rebel.sol/Rebel.json";
 import contractABIcrowdsale from "../artifacts/contracts/crowdsale.sol/RebelTokenCrowdsale.json";
 
 const db = new Storage("app");
-const contractAddressRebel = "0xe42a4Ec5f9ae77888c74EA06BbFCBcb8caEdE709";
-const contractAddressCrowdsale = "0x7b1Ee4F6a5b2dBA7c381f7e6eC830F8707794D1D";
+const contractAddressRebel = "0x1eFA85705190F1A5F31A40E06D6CA8d16B88fa45";
+const contractAddressCrowdsale = "0x68D71622AF8a51A5a79a0919d2e003646f93Bce5";
 
 db.read();
 db.data || { version: "0.0.1" };
@@ -106,10 +106,10 @@ export const useRebelStore = defineStore("rebel", () => {
           postObj.id = userPosts.idArray[i];
           postsArray.value.push(userPosts.idArray[i]);
           postedItems.value.push(postObj);
-          // reverse so most recent items first in list
-          postsArray.value = postsArray.value.reverse();
-          postedItems.value = postedItems.value.reverse();
         }
+        // reverse so most recent items first in list
+        postsArray.value = postsArray.value.reverse();
+        postedItems.value = postedItems.value.reverse();
       }
     } catch (e) {
       if (
@@ -151,10 +151,10 @@ export const useRebelStore = defineStore("rebel", () => {
           postObj.id = getLikedPostsResp.idArray[i];
           likedPostArray.value.push(getLikedPostsResp.idArray[i]);
           likedPostItems.value.push(postObj);
-          // reverse so most recent items first in list
-          likedPostArray.value = likedPostArray.value.reverse();
-          likedPostItems.value = likedPostItems.value.reverse();
         }
+        // reverse so most recent items first in list
+        likedPostArray.value = likedPostArray.value.reverse();
+        likedPostItems.value = likedPostItems.value.reverse();
       }
     } catch (e) {
       if (
@@ -191,11 +191,11 @@ export const useRebelStore = defineStore("rebel", () => {
             postObj.id = latestPostsResp.idArray[i];
             latestPostsArray.value.push(latestPostsResp.idArray[i]);
             latestPosts.value.push(postObj);
-            // reverse so most recent is first in list
-            latestPostsArray.value = latestPostsArray.value.reverse();
-            latestPosts.value = latestPosts.value.reverse();
           }
         }
+        // reverse so most recent is first in list
+        latestPostsArray.value = latestPostsArray.value.reverse();
+        latestPosts.value = latestPosts.value.reverse();
       }
     } catch (e) {
       if (
@@ -565,7 +565,6 @@ export const useRebelStore = defineStore("rebel", () => {
       });
 
       localStorage.setItem("accountStorage", myAccounts[0]);
-      console.log(localStorage.getItem("accountStorage"));
 
       console.log("Connected: ", myAccounts[0]);
       account.value = myAccounts[0];

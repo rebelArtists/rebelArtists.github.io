@@ -7,6 +7,7 @@ REBEL is an easy-to-use minting and peer-to-peer creator payments system. Artist
 ## Features
 
 - Art uploads automatically converted to ERC721 tokens (dead-simple minting)
+- 1st class audio, image, video file support (universal media support)
 - All media/metadata pinned to IPFS for permanent storage (censorship-resistant)
 - Near-zero gas fees for all actions in dApp (Polygon network)
 - Artists paid per "like" of their content (instant payouts)
