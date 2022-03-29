@@ -309,8 +309,8 @@ export default {
   height: 64px;
   margin: 8px;
   border-radius: 50%;
-  border: 6px solid #fff;
-  border-color: #fff transparent #fff transparent;
+  border: 6px solid var(--icon-color);
+  border-color: var(--icon-color) transparent var(--icon-color) transparent;
   animation: lds-dual-ring 1.2s linear infinite;
 }
 @keyframes lds-dual-ring {
@@ -365,7 +365,7 @@ wave {
 }
 
 .card-img-style-post-audio audio {
-  margin-top: 37px;
+  margin-top: 54px;
 }
 
 .card-style figure {

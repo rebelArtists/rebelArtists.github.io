@@ -2,6 +2,8 @@
 
 ## _Decentralized Creator Payments Platform_
 
+<img src="https://user-images.githubusercontent.com/100106211/160684827-19458222-e5e0-4e18-9260-3232abcaa129.png" width="30%"></img> <img src="https://user-images.githubusercontent.com/100106211/160684829-b4b5786f-3f29-4495-80cd-3fa99a91281c.png" width="30%"></img> <img src="https://user-images.githubusercontent.com/100106211/160684830-60cd8e14-2ef7-4885-b61a-d7b372d506e8.png" width="30%"></img> <img src="https://user-images.githubusercontent.com/100106211/160684833-cf1505ef-4ade-41cb-835c-cfcd20af9897.png" width="30%"></img> <img src="https://user-images.githubusercontent.com/100106211/160684834-db75fe32-13e0-4e29-a78c-65437f41bffe.png" width="30%"></img> <img src="https://user-images.githubusercontent.com/100106211/160685081-a17f30ad-0091-4890-ad77-2afd5810ca00.png" width="30%"></img>
+
 REBEL is an easy-to-use minting and peer-to-peer creator payments system. Artists earn directly from their fans via crypto without needing any disbursement from social media or streaming institutions. Gone are the days of giant corporations taking billions and leaving their creators with fractions. Take control of your content. Own what's yours as a Rebel Artist!
 
 ## Features
