@@ -1,5 +1,5 @@
 <template>
-  <section id="content">
+  <section id="content" :key="componentKey">
     <div v-if="account" class="main animated">
       <div class="main-content">
         <div class="feedHeader">
@@ -45,12 +45,20 @@ export default {
   },
   data() {
     return {
+      componentKey: 0,
       showRandomPosts: false,
     };
   },
   methods: {
     toggleShowRandomItems() {
       this.showRandomPosts = !this.showRandomPosts;
+    },
+  },
+  watch: {
+    $route(to, from) {
+      if (to !== from && to.name == "feed") {
+        this.componentKey += 1;
+      }
     },
   },
   setup() {

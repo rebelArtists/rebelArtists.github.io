@@ -77,3 +77,7 @@ Feel free to submit a new pull request or file an issue [here](https://github.co
 ## License
 
 MIT
+
+## Sponsor
+
+To sponsor development send ETH :) 0xBd7367Acc570AB6fcAb39a00ef479765065a2709
