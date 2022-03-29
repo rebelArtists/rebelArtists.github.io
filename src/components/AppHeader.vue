@@ -148,7 +148,7 @@
       </nav>
     </div>
   </header>
-  <div class="icon-connected">
+  <div v-if="account" class="icon-connected">
     <router-link
       class="connectLink"
       :to="{ name: 'connect' }"
