@@ -565,7 +565,6 @@ export const useRebelStore = defineStore("rebel", () => {
       });
 
       localStorage.setItem("accountStorage", myAccounts[0]);
-      console.log(localStorage.getItem("accountStorage"));
 
       console.log("Connected: ", myAccounts[0]);
       account.value = myAccounts[0];

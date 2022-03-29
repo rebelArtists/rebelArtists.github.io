@@ -148,6 +148,22 @@
       </nav>
     </div>
   </header>
+  <div class="icon-connected">
+    <router-link
+      class="connectLink"
+      :to="{ name: 'connect' }"
+      active-class="active"
+      title="Connect new wallet"
+      exact
+      >
+    	<i></i>
+      <div class="connectedText">
+        {{ account.substring(0, 4) }}...{{
+                account.slice(-4)
+              }} connected
+      </div>
+    </router-link>
+  </div>
 </template>
 
 <script>
@@ -516,4 +532,52 @@ body.dark-theme {
   border-radius: 50%;
   background: var(--icon-color);
 }
+
+@keyframes anim-glow {
+	0% {
+		box-shadow: 0 0 rgba(#61EF61, 1);
+	}
+	100% {
+		box-shadow: 0 0 10px 8px transparent;
+		border-width: 2px;
+	}
+}
+
+.connectLink {
+  text-decoration: none;
+  color: var(--icon-color);
+}
+
+.connectedText {
+  position: absolute;
+  bottom: 0px;
+  left: 5px;
+  font-size: 8px;
+  width: 150px;
+}
+
+.icon-connected	{
+	border-radius: 50%;
+	border: 2px solid #61EF61;
+	width: 10px;
+	height: 10px;
+	text-align: center;
+	position: absolute;
+  bottom: 30px;
+  left: 30px;
+	animation: anim-glow 2s ease infinite;
+  cursor: pointer;
+  z-index: 11111;
+
+	i {
+		border-radius: 50%;
+		border: 2px solid #61EF61;
+		width: 3px;
+		height: 3px;
+		display: inline-block;
+		vertical-align: 8px;
+		background-color: #61EF61;
+	}
+}
+
 </style>

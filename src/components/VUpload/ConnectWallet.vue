@@ -1,63 +1,22 @@
 <template>
-  <div v-if="(!account && $route.name != 'about') || $route.name == 'connect'" class="testing">
-    <AppHeader />
-    <div class="divConnect">
-      <a class="testButton" @click="fireConnectWallet">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        connect wallet
-      </a>
-    </div>
-  </div>
-  <div v-if="$route.name == 'about' && !this.ready">
-    <AppHeader />
-    <div></div>
-    <router-view v-slot="{ Component }">
-      <keep-alive>
-        <component :is="Component" :key="$route.name" :ready="true" />
-      </keep-alive>
-    </router-view>
-    <ReloadPrompt />
-  </div>
-  <div v-if="account && this.ready && $route.name != 'connect'">
-    <AppHeader />
-    <div></div>
-    <router-view v-slot="{ Component }">
-      <keep-alive>
-        <component :is="Component" :key="$route.name" />
-      </keep-alive>
-    </router-view>
-    <ReloadPrompt />
+  <div class="testing">
   </div>
 </template>
 
 <script>
 import AppHeader from "@src/components/AppHeader.vue";
-import ReloadPrompt from "@src/components/ReloadPrompt.vue";
 import { storeToRefs } from "pinia";
 import { useRebelStore } from "@src/store/index";
-import { provide } from "vue";
-import { Notyf } from "notyf";
 import router from "@src/router";
 
 export default {
-  name: "App",
+  name: "ConnectWallet",
   components: {
-    AppHeader,
-    ReloadPrompt,
+    AppHeader
   },
   data() {
     return {
-      componentKey: 0,
-      ready: false,
     };
-  },
-  mounted() {
-    this.$nextTick(() => {
-      this.getUserContent();
-    });
   },
   methods: {
     async fireConnectWallet() {
@@ -65,67 +24,20 @@ export default {
       const rebelStore = useRebelStore();
       const { account } = storeToRefs(rebelStore);
       await connectWallet();
-      if (this.$route.fullPath == "/" || this.$route.fullPath == "/connect") {
+      if (this.$route.fullPath == "/") {
         router.push({ path: `/user/${account.value}` });
-      }
-      this.ready = true;
-    },
-    async getUserContent() {
-      const { getUserByOwner } = useRebelStore();
-      const rebelStore = useRebelStore();
-      const { account } = storeToRefs(rebelStore);
-      if (localStorage.getItem("accountStorage")) {
-        await getUserByOwner(account.value);
-        this.ready = true;
       }
     },
   },
   setup() {
-    const rebelStore = useRebelStore();
-    const { connectWallet } = useRebelStore();
-    const { account, user } = storeToRefs(rebelStore);
-
-    const accountLocalStorage = localStorage.getItem("accountStorage");
-    if (accountLocalStorage) {
-      account.value = accountLocalStorage;
-    }
-
-    const NotfyProvider = new Notyf({
-      duration: 2000,
-      position: {
-        x: "center",
-        y: "bottom",
-      },
-      types: [
-        {
-          type: "loading",
-          background: "orange",
-          duration: 0,
-          dismissible: true,
-          icon: {
-            className: "icon icon-loading",
-            tagName: "i",
-          },
-        },
-      ],
-    });
-
-    provide("notyf", NotfyProvider);
 
     return {
-      connectWallet,
-      account,
-      user,
     };
   },
 };
 </script>
 
 <style lang="scss">
-@font-face {
-  font-family: "Rebel";
-  src: local("RebelNew"), url(./fonts/Rebel/RebelNew.ttf) format("truetype");
-}
 
 .bottomMargin {
   margin-bottom: 50px;
