@@ -105,12 +105,21 @@
           </div>
           <div class="numberedList">
             <span class="bulletNumber">2</span>
+            Add Polygon testnet network (Mumbai) to your MetaMask
+            <a
+              href="https://docs.polygon.technology/docs/develop/metamask/config-polygon-on-metamask/#using-polygonscan"
+              >following these steps</a
+            >
+          </div>
+          <div class="numberedList">
+            <span class="bulletNumber">3</span>
             Get some test MATIC (use the
             <a href="https://faucet.polygon.technology/">Polygon faucet</a>)
           </div>
           <div class="numberedList">
-            <span class="bulletNumber">3</span>
-            Connect your wallet to Rebel and get posting!
+            <span class="bulletNumber">4</span>
+            Connect your wallet to Rebel (home page here) and get posting and
+            liking!
           </div>
         </div>
         <div class="pdfWrapper">
