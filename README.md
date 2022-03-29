@@ -36,7 +36,7 @@ REBEL itself is open source and located on github here: [public repository](http
 
 Learn more about our mission, architecture, and roadmap in our whitepaper [here](https://rebelartists.github.io/about)
 
-## Installation
+## Installation and Getting Started
 
 1. clone this repo
    `git clone https://github.com/rebelArtists/rebelArtists.github.io.git`
@@ -44,7 +44,9 @@ Learn more about our mission, architecture, and roadmap in our whitepaper [here]
    `cd rebelArtists.github.io`
 3. install all dependencies
    `npm i`
-4. start app locally
+4. add polygon test network to your MetaMask, following steps [here](https://docs.polygon.technology/docs/develop/metamask/config-polygon-on-metamask/#using-polygonscan)
+5. send some free polygon testnet MATIC to your wallet, using faucet [here](https://faucet.polygon.technology/)
+6. start app locally
    `npm run dev`
 
 ## Helper Commands
