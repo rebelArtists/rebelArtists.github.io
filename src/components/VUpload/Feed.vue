@@ -164,7 +164,7 @@ export default {
 }
 
 wave {
-  z-index: 0;
+  z-index: 10000 !important;
   display: flex;
   cursor: pointer !important;
 }
@@ -186,15 +186,10 @@ wave {
   border-radius: 50%;
 }
 
-.audioCardFeed audio::-webkit-media-controls-volume-slider {
-  border-radius: 25px;
-}
-
 .audioCardFeed audio::-webkit-media-controls-enclosure {
   position: absolute;
   height: 40px;
-  width: 100%;
-  margin-left: auto;
+  border-radius: 0%;
   border-bottom-left-radius: 0.6rem;
   border-bottom-right-radius: 0.6rem;
 }

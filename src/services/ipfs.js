@@ -34,9 +34,9 @@ export const uploadBlob = async (file, name, description, attributes) => {
     return { error: new Error(`Unsupported file type`), data: detail };
   }
 
-  // Max 100MB Upload
-  if (file.size > 104857600) {
-    return { error: new Error(`Maximum file size is 100 MB`), data: detail };
+  // Max 25MB Upload... 100MB fully possible with larger Cloudinary tier
+  if (file.size > 26214400) {
+    return { error: new Error(`Maximum file size is 25 MB`), data: detail };
   }
 
   try {

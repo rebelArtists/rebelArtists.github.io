@@ -7,8 +7,9 @@ import contractABIrebel from "../artifacts/contracts/rebel.sol/Rebel.json";
 import contractABIcrowdsale from "../artifacts/contracts/crowdsale.sol/RebelTokenCrowdsale.json";
 
 const db = new Storage("app");
-const contractAddressRebel = "0x1eFA85705190F1A5F31A40E06D6CA8d16B88fa45";
-const contractAddressCrowdsale = "0x68D71622AF8a51A5a79a0919d2e003646f93Bce5";
+const contractAddressRebel = "0xf317E2167dd339EFb4Aca2A6D387c341c51C6aF5";
+const contractAddressCrowdsale = "0xf4CB625b3fB73Ef71b4e2D42827Df4901Ffee7fa";
+// const contractAddressToken = "0xB360213F397D531c4C9a9381d951052F2d76A3ae";
 
 db.read();
 db.data || { version: "0.0.1" };
