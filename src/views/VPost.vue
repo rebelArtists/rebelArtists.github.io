@@ -301,7 +301,7 @@ export default {
   margin-right: auto;
   justify-content: center;
   text-align: center;
-  margin-top: 150px;
+  margin-top: 270px;
 }
 
 .lds-dual-ring {
