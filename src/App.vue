@@ -61,13 +61,13 @@ export default {
     const { connectWallet } = useRebelStore();
     const rebelStore = useRebelStore();
     const { account } = storeToRefs(rebelStore);
-    if(window.ethereum) {
+    if (window.ethereum) {
       const handler = async (accounts) => {
         await connectWallet();
         router.push({ path: `/user/${account.value}` });
-      }
-      window.ethereum.on('accountsChanged', handler)
-    };
+      };
+      window.ethereum.on("accountsChanged", handler);
+    }
     this.$nextTick(() => {
       this.getUserContent();
     });
@@ -145,10 +145,17 @@ export default {
 }
 
 div.testing {
-  background: var(--landing-gradient);
+  background-color: #ffffff;
+  transition: background-color 0.5s ease;
   background-size: 400% 400%;
-  animation: gradient 15s ease infinite;
+  // animation: gradient 15s ease infinite;
   height: 100%;
+}
+
+body.dark-theme {
+  div.testing {
+    background-color: rgb(17, 24, 39);
+  }
 }
 
 @keyframes gradient {
@@ -168,7 +175,7 @@ div.testing {
   display: flex;
   justify-content: center;
   vertical-align: center;
-  margin-top: 125px;
+  margin-top: 270px;
 }
 
 .testButton {

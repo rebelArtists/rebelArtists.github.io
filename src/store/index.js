@@ -555,34 +555,36 @@ export const useRebelStore = defineStore("rebel", () => {
   }
 
   const toHex = (num) => {
-    return '0x' + num.toString(16);
+    return "0x" + num.toString(16);
   };
 
   async function addNetwork() {
     try {
-
-      const params = [{
-        chainId: toHex(80001),
-        chainName: 'Matic Mumbai',
-        nativeCurrency: {
-          name: 'Matic Token',
-          symbol: 'MATIC',
-          decimals: 18
+      const params = [
+        {
+          chainId: toHex(80001),
+          chainName: "Matic Mumbai",
+          nativeCurrency: {
+            name: "Matic Token",
+            symbol: "MATIC",
+            decimals: 18,
+          },
+          rpcUrls: ["https://rpc-mumbai.maticvigil.com/"],
+          blockExplorerUrls: ["https://mumbai.polygonscan.com/"],
         },
-        rpcUrls: ['https://rpc-mumbai.maticvigil.com/'],
-        blockExplorerUrls: ['https://mumbai.polygonscan.com/']
-      }]
+      ];
 
       const { ethereum } = window;
       if (!ethereum) {
         alert("Must connect to MetaMask!");
         return;
       }
-      const connectedMaticNetwork = await ethereum.request(
-        { method: 'wallet_addEthereumChain', params: params}
-      );
+      const connectedMaticNetwork = await ethereum.request({
+        method: "wallet_addEthereumChain",
+        params: params,
+      });
     } catch (e) {
-        console.log("e", e);
+      console.log("e", e);
     }
   }
 

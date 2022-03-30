@@ -9,11 +9,15 @@ const cld = new Cloudinary({
 });
 
 export const getCloudinaryUrlVideo = (ifpsHash) => {
-  return `https://res.cloudinary.com/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/video/upload/h_500,w_500/v1/ipfs_signed/${ifpsHash}`
+  return `https://res.cloudinary.com/${
+    import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+  }/video/upload/h_500,w_500/v1/ipfs_signed/${ifpsHash}`;
 };
 
 export const getCloudinaryUrlImage = (ifpsHash) => {
-  return `https://res.cloudinary.com/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload/c_fill,g_north,h_500,w_500/v1/ipfs_signed/${ifpsHash}`
+  return `https://res.cloudinary.com/${
+    import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+  }/image/upload/c_fill,g_north,h_500,w_500/v1/ipfs_signed/${ifpsHash}`;
 };
 
 /**

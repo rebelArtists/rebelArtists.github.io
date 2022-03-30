@@ -1,4 +1,5 @@
 <template>
+  <section id="contentPost">
   <div v-if="!this.postReady" class="loaderWrapper">
     <div class="lds-dual-ring"></div>
     <div class="loaderText">loading IPFS metadata...</div>
@@ -154,6 +155,7 @@
       </div>
     </div>
   </div>
+</section>
 </template>
 
 <script>
@@ -283,6 +285,11 @@ export default {
 </script>
 
 <style lang="scss">
+
+#contentPost {
+  margin-top: 150px;
+}
+
 .loaderText {
   font-size: 10px;
   margin-top: 30px;
@@ -365,7 +372,7 @@ wave {
 }
 
 .card-img-style-post-audio audio {
-  margin-top: 54px;
+  margin-top: 57px;
 }
 
 .card-style figure {

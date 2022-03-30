@@ -23,7 +23,163 @@
         <span>Top Creator Rewards</span>
       </div>
     </div>
-    <div class="header-menu">
+    <nav class="hamburgerNav">
+      <div id="sidemenu">
+        <button
+          class="sidemenu__btn"
+          v-on:click="navOpen = !navOpen"
+          v-bind:class="{ active: navOpen }"
+        >
+          <span class="top"></span>
+          <span class="mid"></span>
+          <span class="bottom"></span>
+        </button>
+        <transition name="translateX">
+          <nav v-show="navOpen">
+            <div class="sidemenu__wrapper">
+              <ul class="sidemenu__list">
+                <li class="sidemenu__item">
+                  <router-link
+                    v-if="account && user"
+                    :to="`/user/${account}`"
+                    active-class="active"
+                    title="Profile"
+                    exact
+                  >
+                    <img :src="url" class="round-image-header-hamburger" />
+                  </router-link>
+                </li>
+                <li class="sidemenu__item">
+                  <router-link
+                    v-if="account && user"
+                    :to="{ name: 'feed' }"
+                    active-class="active"
+                    title="Discover Feed"
+                    exact
+                  >
+                    <svg
+                      class="svgNavHamburger"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="36"
+                      height="36"
+                      viewBox="0 0 24 24"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
+                      ></path>
+                      <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                  </router-link>
+                </li>
+                <li class="sidemenu__item">
+                  <div>
+                    <button
+                      class="mintButton"
+                      v-if="account && user"
+                      id="show-modal"
+                      @click="showModal = true"
+                      title="Mint New Post"
+                    >
+                      <svg
+                        class="mintContentHamburger"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="36"
+                        height="36"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="16"></line>
+                        <line x1="8" y1="12" x2="16" y2="12"></line>
+                      </svg>
+                    </button>
+                    <Teleport to="body">
+                      <!-- use the modal component, pass in the prop -->
+                      <UploadModal
+                        :show="showModal"
+                        @close="showModal = false"
+                      >
+                        <template #header>
+                          <h3>custom header</h3>
+                        </template>
+                      </UploadModal>
+                    </Teleport>
+                  </div>
+                </li>
+                <li class="sidemenu__item">
+                  <router-link
+                    v-if="account && user"
+                    :to="{ name: 'crowdsale' }"
+                    active-class="active"
+                    title="Crowdsale"
+                    exact
+                  >
+                    <svg
+                      class="crowdsaleIconHamburger"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                      role="img"
+                      style="vertical-align: -0.125em"
+                      width="42"
+                      height="42"
+                      preserveAspectRatio="xMidYMid meet"
+                      viewBox="0 0 48 48"
+                    >
+                      <path
+                        d="M24.04 6c-4.517 0-8.633 1.492-11.068 2.711c-.22.11-.425.218-.616.322c-.378.206-.7.398-.956.567l2.77 4.078l1.304.519c5.096 2.571 11.93 2.571 17.027 0l1.48-.768l2.62-3.829a15.503 15.503 0 0 0-1.69-.957C32.489 7.437 28.472 6 24.04 6Zm-6.443 4.616a24.579 24.579 0 0 1-2.901-.728C16.977 8.875 20.377 7.8 24.039 7.8c2.537 0 4.936.516 6.92 1.17c-2.325.327-4.806.882-7.17 1.565c-1.86.538-4.034.48-6.192.081Zm15.96 5.064l-.245.124c-5.607 2.828-13.043 2.828-18.65 0l-.232-.118C6.008 24.927-.422 41.997 24.04 41.997c24.46 0 17.873-17.389 9.517-26.317ZM23 24a2 2 0 0 0 0 4v-4Zm2-2v-1h-2v1a4 4 0 0 0 0 8v4a2 2 0 0 1-1.886-1.333a1 1 0 1 0-1.886.666A4.001 4.001 0 0 0 23 36v1h2v-1a4 4 0 1 0 0-8v-4c.87 0 1.611.555 1.887 1.333a1 1 0 1 0 1.885-.666A4.001 4.001 0 0 0 25 22Zm0 8v4a2 2 0 1 0 0-4Z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </router-link>
+                </li>
+                <li class="sidemenu__item">
+                  <router-link
+                    :to="{ name: 'about' }"
+                    active-class="active"
+                    title="About"
+                    exact
+                  >
+                    <svg
+                      class="aboutIconHamburger"
+                      xmlns="http://www.w3.org/2000/svg"
+                      x="0px"
+                      y="0px"
+                      width="36"
+                      height="36"
+                      viewBox="0 0 30 30"
+                    >
+                      <path
+                        d="M 15 3 C 7.82 3 2 7.925 2 14 C 2 16.676142 3.1322222 19.126093 5.0097656 21.033203 C 5.0476793 21.127522 6.0110131 23.606674 3.1582031 26.134766 A 0.5 0.5 0 0 0 3 26.5 A 0.5 0.5 0 0 0 3.5 27 A 0.5 0.5 0 0 0 3.6074219 26.988281 C 6.4832831 26.817905 8.9434573 25.390739 10.445312 24.291016 C 11.864706 24.741137 13.394827 25 15 25 C 22.18 25 28 20.075 28 14 C 28 7.925 22.18 3 15 3 z M 15 7.5 C 15.828 7.5 16.5 8.172 16.5 9 C 16.5 9.828 15.828 10.5 15 10.5 C 14.172 10.5 13.5 9.828 13.5 9 C 13.5 8.172 14.172 7.5 15 7.5 z M 14 13 L 16 13 L 16 20 L 14 20 L 14 13 z"
+                      ></path>
+                    </svg>
+                  </router-link>
+                </li>
+                <li class="sidemenu__item">
+                  <i :title="`Switch to ${isDark ? 'Light' : 'Dark'} Theme`">
+                    <i-mdi-brightness-7
+                      v-if="isDark"
+                      class="icon-color-hamburger"
+                      @click="toggleTheme"
+                    />
+                    <i-mdi-brightness-4
+                      v-else
+                      class="icon-color-hamburger"
+                      @click="toggleTheme"
+                    />
+                  </i>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </transition>
+      </div>
+    </nav>
+    <div class="header-menu" id="header-menu">
       <nav class="header-navbar">
         <router-link
           v-if="account && user"
@@ -148,6 +304,7 @@
       </nav>
     </div>
   </header>
+  <div class="connectedWrapper" v-if="account">
   <div v-if="account" class="icon-connected">
     <router-link
       class="connectLink"
@@ -161,6 +318,7 @@
         {{ account.substring(0, 4) }}...{{ account.slice(-4) }} connected
       </div>
     </router-link>
+  </div>
   </div>
 </template>
 
@@ -181,6 +339,7 @@ export default {
     return {
       componentKey: 0,
       showModal: false,
+      navOpen: true,
     };
   },
   watch: {
@@ -236,6 +395,133 @@ export default {
 </script>
 
 <style lang="scss">
+
+
+#header {
+  position: absolute;
+  top: -20px;
+  z-index: 100000;
+  // background-color: var(--background-color);
+  // transition: background-color 0.5s ease;
+  width: calc(100vw - 55px);
+  border: none;
+}
+
+@media (min-width: 625px) {
+   #sidemenu {
+     display: none;
+   }
+}
+
+@media (max-width: 625px) {
+   #header-menu {
+     display: none;
+   }
+}
+
+#sidemenu {
+  nav {
+    width: 90px;
+    // height: calc(100% - #{$headerHeight} - #{$footerHeight});
+    background: var(--crowdsale-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    margin-top: -25px;
+    // box-shadow: 2px 0 3px$grey-6;
+    // overflow-y: scroll;
+  }
+
+  .sidemenu {
+    &__btn {
+      display: block;
+      width: 50px;
+      height: 50px;
+      background: var(--crowdsale-color);
+      border: none;
+      position: relative;
+      z-index: 100;
+      appearance: none;
+      cursor: pointer;
+      outline: none;
+
+      span {
+        display: block;
+        width: 20px;
+        height: 2px;
+        margin: auto;
+        background: var(--icon-color);
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        transition: all 0.4s ease;
+
+        &.top {
+          transform: translateY(-8px);
+        }
+
+        &.bottom {
+          transform: translateY(8px);
+        }
+      }
+      &.active {
+        .top {
+          transform: rotate(-45deg);
+        }
+        .mid {
+          transform: translateX(-20px) rotate(360deg);
+          opacity: 0;
+        }
+        .bottom {
+          transform: rotate(45deg);
+        }
+      }
+    }
+
+    &__wrapper {
+      padding-top: 50px;
+    }
+
+    &__list {
+      padding-top: 50px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    &__item {
+      a {
+        text-decoration: none;
+        line-height: 1.6em;
+        font-size: 1.6em;
+        padding: 0.5em;
+        display: block;
+        color: white;
+        transition: 0.4s ease;
+      }
+    }
+  }
+}
+
+.translateX-enter {
+  transform: translateX(-200px);
+  opacity: 0;
+}
+
+.translateX-enter-active,
+.translateX-leave-active {
+  transform-origin: top left 0;
+  transition: 0.2s ease;
+}
+
+.translateX-leave-to {
+  transform: translateX(-200px);
+  opacity: 0;
+}
+
 .rw-words-1 span {
   display: inline-block;
   position: absolute;
@@ -447,8 +733,35 @@ export default {
   fill: var(--icon-color);
 }
 
+.aboutIconHamburger {
+  fill: var(--icon-color);
+  margin-right: 0px;
+  margin-top: -10px;
+}
+
+.icon-color-hamburger {
+  color: var(--icon-color);
+  width: 35px;
+  height: 35px;
+  margin-left: 27px;
+  display: block;
+  background-position: center;
+  background-size: contain;
+  cursor: pointer;
+  margin-bottom: 35px;
+  margin-top: 2px;
+}
+
 .crowdsaleIcon {
   margin-left: -4px;
+}
+
+.crowdsaleIconHamburger {
+  margin-left: 0px;
+  margin-top: 5px;
+  margin-right: 0px;
+  fill: var(--icon-color);
+  fill-rule: evenodd;
 }
 
 .mintButton {
@@ -461,8 +774,9 @@ export default {
   justify-content: space-between;
   align-items: center;
   margin-top: 20px;
+  background-color: #ffffff;
 
-  transition: border-bottom 0.5s ease;
+  transition: background-color 0.5s ease;
 
   padding: 1.3em 64px;
 
@@ -518,11 +832,15 @@ export default {
 
 body.dark-theme {
   #header {
-    border-bottom: 1px solid #1c2435;
+    background-color: rgb(17, 24, 39);
 
     .header-title h1 {
       color: #ffffff;
     }
+  }
+  .connectedWrapper {
+    background-color: rgb(17, 24, 39);
+
   }
 }
 
@@ -533,10 +851,25 @@ body.dark-theme {
   fill: transparent;
 }
 
+.svgNavHamburger {
+  stroke: var(--icon-color);
+  margin-right: 0px;
+  fill: transparent;
+  margin-top: -10px;
+}
+
 .mintContent {
   stroke: var(--icon-color);
   padding-top: 7px;
   margin-right: 15px;
+  fill: transparent;
+}
+
+.mintContentHamburger {
+  stroke: var(--icon-color);
+  padding-top: 7px;
+  margin-right: 0px;
+  margin-top: -3px;
   fill: transparent;
 }
 
@@ -550,6 +883,16 @@ body.dark-theme {
   background: var(--icon-color);
 }
 
+.round-image-header-hamburger {
+  object-fit: cover;
+  width: 35px;
+  height: 35px;
+  margin-top: -10px;
+  margin-right: -2px;
+  border-radius: 50%;
+  background: var(--icon-color);
+}
+
 @keyframes anim-glow {
   0% {
     box-shadow: 0 0 rgba(#61ef61, 1);
@@ -558,6 +901,18 @@ body.dark-theme {
     box-shadow: 0 0 10px 8px transparent;
     border-width: 2px;
   }
+}
+
+.connectedWrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: #ffffff;
+  transition: background-color 0.5s ease;
+  height: 40px;
+  width: 180px;
+  z-index: 10000;
+  border-top-right-radius: 15px;
 }
 
 .connectLink {
@@ -580,8 +935,8 @@ body.dark-theme {
   height: 10px;
   text-align: center;
   position: absolute;
-  bottom: 30px;
-  left: 30px;
+  bottom: 14px;
+  left: 20px;
   animation: anim-glow 2s ease infinite;
   cursor: pointer;
   z-index: 11111;
