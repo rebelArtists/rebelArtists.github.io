@@ -579,7 +579,8 @@ export const useRebelStore = defineStore("rebel", () => {
         alert("Must connect to MetaMask!");
         return;
       }
-      const connectedMaticNetwork = await ethereum.request({
+      // automatically request to add Polygon network to user's metamask
+      await ethereum.request({
         method: "wallet_addEthereumChain",
         params: params,
       });

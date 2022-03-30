@@ -100,10 +100,7 @@
                     </button>
                     <Teleport to="body">
                       <!-- use the modal component, pass in the prop -->
-                      <UploadModal
-                        :show="showModal"
-                        @close="showModal = false"
-                      >
+                      <UploadModal :show="showModal" @close="showModal = false">
                         <template #header>
                           <h3>custom header</h3>
                         </template>
@@ -305,20 +302,20 @@
     </div>
   </header>
   <div class="connectedWrapper" v-if="account">
-  <div v-if="account" class="icon-connected">
-    <router-link
-      class="connectLink"
-      :to="{ name: 'connect' }"
-      active-class="active"
-      title="Connect new wallet"
-      exact
-    >
-      <i></i>
-      <div class="connectedText">
-        {{ account.substring(0, 4) }}...{{ account.slice(-4) }} connected
-      </div>
-    </router-link>
-  </div>
+    <div v-if="account" class="icon-connected">
+      <router-link
+        class="connectLink"
+        :to="{ name: 'connect' }"
+        active-class="active"
+        title="Connect new wallet"
+        exact
+      >
+        <i></i>
+        <div class="connectedText">
+          {{ account.substring(0, 4) }}...{{ account.slice(-4) }} connected
+        </div>
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -346,7 +343,7 @@ export default {
     $route(to, from) {
       if (to !== from) {
         const rebelStore = useRebelStore();
-        const { account, user } = storeToRefs(rebelStore);
+        const { account } = storeToRefs(rebelStore);
         let svgAvatar = createAvatar(style, {
           seed: account.value,
           scale: 80,
@@ -395,8 +392,6 @@ export default {
 </script>
 
 <style lang="scss">
-
-
 #header {
   position: absolute;
   top: -20px;
@@ -408,15 +403,15 @@ export default {
 }
 
 @media (min-width: 625px) {
-   #sidemenu {
-     display: none;
-   }
+  #sidemenu {
+    display: none;
+  }
 }
 
 @media (max-width: 625px) {
-   #header-menu {
-     display: none;
-   }
+  #header-menu {
+    display: none;
+  }
 }
 
 #sidemenu {
@@ -840,7 +835,6 @@ body.dark-theme {
   }
   .connectedWrapper {
     background-color: rgb(17, 24, 39);
-
   }
 }
 

@@ -433,7 +433,6 @@ body,
       z-index: 1000;
       margin-top: 25px;
       padding-bottom: 90px;
-
     }
 
     .itemIpfs {
@@ -613,12 +612,9 @@ body,
   }
 }
 
-
 @media only screen and (max-width: 625px) {
   #app {
-
     #header {
-
       .header-menu {
         display: none;
       }
@@ -632,5 +628,4 @@ body,
       }
     }
   }
-
 }

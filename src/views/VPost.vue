@@ -1,161 +1,166 @@
 <template>
   <section id="contentPost">
-  <div v-if="!this.postReady" class="loaderWrapper">
-    <div class="lds-dual-ring"></div>
-    <div class="loaderText">loading IPFS metadata...</div>
-  </div>
-  <div v-if="this.postReady">
-    <div v-if="!individualPost">
-      <ErrorPage />
+    <div v-if="!this.postReady" class="loaderWrapper">
+      <div class="lds-dual-ring"></div>
+      <div class="loaderText">loading IPFS metadata...</div>
     </div>
-    <div v-if="individualPost" class="wrapper3">
-      <div class="box2 itemMedia">
-        <MDBCard class="card-style-post hover-overlay">
-          <figure class="figureClassPost">
-            <video
-              v-if="individualPost.mediaType == 'video'"
-              class="card-img-style-post"
-              controls
-              controlsList="nodownload"
-            >
-              <source :src="getCloudinaryUrlVideo(individualPost.mediaHash)" />
-            </video>
-            <div
-              class="card-img-style-post-audio"
-              v-if="individualPost.mediaType == 'audio'"
-            >
-              <wavesurfer
-                :src="getCloudinaryUrlVideo(individualPost.mediaHash)"
-                :options="waveformOptions"
-              ></wavesurfer>
-            </div>
-            <MDBCardImg
-              v-if="individualPost.mediaType == 'image'"
-              :src="getCloudinaryUrlImage(individualPost.mediaHash)"
-              top
-              hover
-              alt="..."
-              class="card-img-style-post"
+    <div v-if="this.postReady">
+      <div v-if="!individualPost">
+        <ErrorPage />
+      </div>
+      <div v-if="individualPost" class="wrapper3">
+        <div class="box2 itemMedia">
+          <MDBCard class="card-style-post hover-overlay">
+            <figure class="figureClassPost">
+              <video
+                v-if="individualPost.mediaType == 'video'"
+                class="card-img-style-post"
+                controls
+                controlsList="nodownload"
+              >
+                <source
+                  :src="getCloudinaryUrlVideo(individualPost.mediaHash)"
+                />
+              </video>
+              <div
+                class="card-img-style-post-audio"
+                v-if="individualPost.mediaType == 'audio'"
+              >
+                <wavesurfer
+                  :src="getCloudinaryUrlVideo(individualPost.mediaHash)"
+                  :options="waveformOptions"
+                ></wavesurfer>
+              </div>
+              <MDBCardImg
+                v-if="individualPost.mediaType == 'image'"
+                :src="getCloudinaryUrlImage(individualPost.mediaHash)"
+                top
+                hover
+                alt="..."
+                class="card-img-style-post"
+              />
+            </figure>
+          </MDBCard>
+        </div>
+        <div class="box2 userName">
+          <router-link :to="`/user/${individualPost.address}`" exact>
+            <img
+              :src="getAvatar(individualPost.address.toLowerCase())"
+              class="round-image-post"
             />
-          </figure>
-        </MDBCard>
-      </div>
-      <div class="box2 userName">
-        <router-link :to="`/user/${individualPost.address}`" exact>
-          <img
-            :src="getAvatar(individualPost.address.toLowerCase())"
-            class="round-image-post"
-          />
-        </router-link>
-        <div class="userName">
-          {{ individualPost.address.substring(0, 4) }}...{{
-            individualPost.address.slice(-4)
-          }}
+          </router-link>
+          <div class="userName">
+            {{ individualPost.address.substring(0, 4) }}...{{
+              individualPost.address.slice(-4)
+            }}
+          </div>
         </div>
-      </div>
-      <div class="box2 itemName">
-        <div class="bolded">
-          {{ individualPost.name }}
+        <div class="box2 itemName">
+          <div class="bolded">
+            {{ individualPost.name }}
+          </div>
         </div>
-      </div>
-      <div class="box2 itemDescription">
-        <div>
-          {{ individualPost.description }}
+        <div class="box2 itemDescription">
+          <div>
+            {{ individualPost.description }}
+          </div>
         </div>
-      </div>
-      <div class="box2 itemAttributes">
-        <table class="styled-table">
-          <thead class="roundedHeader">
-            <tr>
-              <th>Trait</th>
-              <th class="valueStyle">Value</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, index) in individualPost.attributes" :key="index">
-              <td>{{ item.trait_type }}</td>
-              <td class="valueStyle">{{ item.value }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="box2 itemLikes">
-        <a
-          class="likesHover"
-          @click="(showLikersModal = true), (idToCheck = individualPost.id)"
-        >
-          {{ individualPost.likes }} likes
-        </a>
+        <div class="box2 itemAttributes">
+          <table class="styled-table">
+            <thead class="roundedHeader">
+              <tr>
+                <th>Trait</th>
+                <th class="valueStyle">Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="(item, index) in individualPost.attributes"
+                :key="index"
+              >
+                <td>{{ item.trait_type }}</td>
+                <td class="valueStyle">{{ item.value }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="box2 itemLikes">
+          <a
+            class="likesHover"
+            @click="(showLikersModal = true), (idToCheck = individualPost.id)"
+          >
+            {{ individualPost.likes }} likes
+          </a>
 
-        <Teleport
-          v-if="showLikersModal && idToCheck == individualPost.id"
-          to="body"
-        >
-          <LikersModal
-            :show="showLikersModal"
-            :postId="individualPost.id"
-            @close="showLikersModal = false"
+          <Teleport
+            v-if="showLikersModal && idToCheck == individualPost.id"
+            to="body"
           >
-          </LikersModal>
-        </Teleport>
+            <LikersModal
+              :show="showLikersModal"
+              :postId="individualPost.id"
+              @close="showLikersModal = false"
+            >
+            </LikersModal>
+          </Teleport>
 
-        <div v-if="!likedArray[0]" id="favoriting" class="likeHeart">
-          <ToggleFavorite
-            class="faveButton"
-            :id="individualPost.id"
-            @like-event="updateparent"
-          />
-        </div>
-        <div v-if="likedArray[0]" id="favoriting" class="likeHeart">
-          <ToggleFavorite
-            class="faveButton"
-            :id="individualPost.id"
-            :intialFavorited="true"
-            @like-event="updateparent"
-          />
-        </div>
-      </div>
-      <div class="itemBackground"></div>
-      <div class="box2 itemIpfs">
-        <a :href="getImgUrl(individualPost.mediaHash)" title="IPFS Media">
-          <svg
-            class="svgIpfs"
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke-width="1"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <rect x="3" y="3" width="18" height="18" rx="2" />
-            <circle cx="8.5" cy="8.5" r="1.5" />
-            <path d="M20.4 14.5L16 10 4 20" />
-          </svg>
-        </a>
-        <a :href="getImgUrl(individualPost.metaHash)" title="IPFS Metadata">
-          <svg
-            class="svgIpfs"
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke-width="1"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path
-              d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z"
+          <div v-if="!likedArray[0]" id="favoriting" class="likeHeart">
+            <ToggleFavorite
+              class="faveButton"
+              :id="individualPost.id"
+              @like-event="updateparent"
             />
-            <path d="M14 3v5h5M16 13H8M16 17H8M10 9H8" />
-          </svg>
-        </a>
+          </div>
+          <div v-if="likedArray[0]" id="favoriting" class="likeHeart">
+            <ToggleFavorite
+              class="faveButton"
+              :id="individualPost.id"
+              :intialFavorited="true"
+              @like-event="updateparent"
+            />
+          </div>
+        </div>
+        <div class="itemBackground"></div>
+        <div class="box2 itemIpfs">
+          <a :href="getImgUrl(individualPost.mediaHash)" title="IPFS Media">
+            <svg
+              class="svgIpfs"
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke-width="1"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <circle cx="8.5" cy="8.5" r="1.5" />
+              <path d="M20.4 14.5L16 10 4 20" />
+            </svg>
+          </a>
+          <a :href="getImgUrl(individualPost.metaHash)" title="IPFS Metadata">
+            <svg
+              class="svgIpfs"
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke-width="1"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z"
+              />
+              <path d="M14 3v5h5M16 13H8M16 17H8M10 9H8" />
+            </svg>
+          </a>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 </template>
 
 <script>
@@ -285,7 +290,6 @@ export default {
 </script>
 
 <style lang="scss">
-
 #contentPost {
   margin-top: 150px;
 }

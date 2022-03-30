@@ -80,7 +80,7 @@ export default {
       name.value = $event.target.value;
       if (
         name.value.match(
-          /^(?=.{3,30}$)[A-Za-z0-9_\.\-\'\ \#\!\?]*[A-Za-z0-9][A-Za-z0-9_\.\-\'\ \#\!\?]*$/
+          /^(?=.{3,30}$)[A-Za-z0-9_.\-'#!? ]*[A-Za-z0-9][A-Za-z0-9_.\-'#!? ]*$/
         )
       ) {
         nameValid.value = true;
@@ -93,7 +93,7 @@ export default {
       description.value = $event.target.value;
       if (
         description.value.match(
-          /^(?=.{3,90}$)[A-Za-z0-9_\.\-\'\ \#\!\?]*[A-Za-z0-9][A-Za-z0-9_\.\-\'\ \#\!\?]*$/
+          /^(?=.{3,90}$)[A-Za-z0-9_.\-'#!? ]*[A-Za-z0-9][A-Za-z0-9_.\-'#!? ]*$/
         )
       ) {
         descValid.value = true;

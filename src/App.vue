@@ -62,7 +62,7 @@ export default {
     const rebelStore = useRebelStore();
     const { account } = storeToRefs(rebelStore);
     if (window.ethereum) {
-      const handler = async (accounts) => {
+      const handler = async () => {
         await connectWallet();
         router.push({ path: `/user/${account.value}` });
       };
