@@ -1,0 +1,1 @@
+import{o as e,c as t}from"./vendor.45f5d20f.js";const n={name:"ConnectWallet",components:{},data:()=>({}),methods:{},setup:()=>({})},o={class:"connectWallets"};n.render=function(n,s,a,c,r,d){return e(),t("div",o)};export{n as default};
