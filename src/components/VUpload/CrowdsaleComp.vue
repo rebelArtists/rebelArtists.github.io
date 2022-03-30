@@ -206,7 +206,7 @@ export default {
 .adminWrapper {
   border-style: solid;
   position: absolute;
-  margin-top: 20px;
+  margin-top: 200px;
   width: 225px;
   height: 140px;
   text-align: center;

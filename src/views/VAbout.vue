@@ -207,7 +207,7 @@ section#content .main {
   section#about {
     width: 60vw;
     height: auto;
-    margin-top: 40px;
+    margin-top: 150px;
     margin-bottom: 100px;
     color: white;
 

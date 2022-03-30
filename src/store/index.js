@@ -554,6 +554,41 @@ export const useRebelStore = defineStore("rebel", () => {
     }
   }
 
+  const toHex = (num) => {
+    return "0x" + num.toString(16);
+  };
+
+  async function addNetwork() {
+    try {
+      const params = [
+        {
+          chainId: toHex(80001),
+          chainName: "Matic Mumbai",
+          nativeCurrency: {
+            name: "Matic Token",
+            symbol: "MATIC",
+            decimals: 18,
+          },
+          rpcUrls: ["https://rpc-mumbai.maticvigil.com/"],
+          blockExplorerUrls: ["https://mumbai.polygonscan.com/"],
+        },
+      ];
+
+      const { ethereum } = window;
+      if (!ethereum) {
+        alert("Must connect to MetaMask!");
+        return;
+      }
+      // automatically request to add Polygon network to user's metamask
+      await ethereum.request({
+        method: "wallet_addEthereumChain",
+        params: params,
+      });
+    } catch (e) {
+      console.log("e", e);
+    }
+  }
+
   async function connectWallet() {
     try {
       const { ethereum } = window;
@@ -566,9 +601,13 @@ export const useRebelStore = defineStore("rebel", () => {
       });
 
       localStorage.setItem("accountStorage", myAccounts[0]);
-
       console.log("Connected: ", myAccounts[0]);
       account.value = myAccounts[0];
+
+      // request to add polygon testnet to user's metamask and switch to that network
+      // if network already added, this step is skipped
+      await addNetwork();
+
       await getUserByOwner(account.value);
       if (user.value) {
         await getPostsByOwner(account.value);

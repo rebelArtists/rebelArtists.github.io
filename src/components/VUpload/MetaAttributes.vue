@@ -3,7 +3,7 @@
     <div class="attributes-span">
       <span>Attributes</span>
       <span v-if="!this.valid" class="warningText">
-        (given object keys req for each element)
+        (given object keys req for each element in array)
       </span>
       <span v-if="this.valid" class="successfulText"> ✓ </span>
     </div>

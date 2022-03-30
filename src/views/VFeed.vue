@@ -56,7 +56,7 @@ export default {
   },
   watch: {
     $route(to, from) {
-      if (to !== from && to.name == "feed") {
+      if (to !== from && (to.name == "feed" || to.name == "home")) {
         this.componentKey += 1;
       }
     },
