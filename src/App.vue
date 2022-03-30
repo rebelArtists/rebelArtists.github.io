@@ -58,6 +58,16 @@ export default {
     };
   },
   mounted() {
+    const { connectWallet } = useRebelStore();
+    const rebelStore = useRebelStore();
+    const { account } = storeToRefs(rebelStore);
+    if(window.ethereum) {
+      const handler = async (accounts) => {
+        await connectWallet();
+        router.push({ path: `/user/${account.value}` });
+      }
+      window.ethereum.on('accountsChanged', handler)
+    };
     this.$nextTick(() => {
       this.getUserContent();
     });

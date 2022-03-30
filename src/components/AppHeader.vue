@@ -1,5 +1,5 @@
 <template>
-  <header id="header">
+  <header id="header" :key="componentKey">
     <div class="header-title">
       <h1>
         <router-link
@@ -179,8 +179,27 @@ export default {
   },
   data() {
     return {
+      componentKey: 0,
       showModal: false,
     };
+  },
+  watch: {
+    $route(to, from) {
+      if (to !== from) {
+        const rebelStore = useRebelStore();
+        const { account, user } = storeToRefs(rebelStore);
+        let svgAvatar = createAvatar(style, {
+          seed: account.value,
+          scale: 80,
+          translateY: -3,
+        });
+
+        let blob = new Blob([svgAvatar], { type: "image/svg+xml" });
+        let url = URL.createObjectURL(blob);
+        this.url = url;
+        this.componentKey += 1;
+      }
+    },
   },
   setup() {
     const rebelStore = useRebelStore();

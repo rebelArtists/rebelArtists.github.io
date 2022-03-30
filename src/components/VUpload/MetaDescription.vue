@@ -3,7 +3,7 @@
     <div class="description-span">
       <span>Description</span>
       <span v-if="!this.valid" class="warningText">
-        (alphanumeric between 3-120 characters)
+        (alphanumeric between 3-90 characters)
       </span>
       <span v-if="this.valid" class="successfulText"> ✓ </span>
     </div>

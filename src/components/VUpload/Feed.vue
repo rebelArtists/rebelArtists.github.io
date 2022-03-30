@@ -111,7 +111,7 @@ export default {
         interact: false,
         barWidth: 2,
         responsive: true,
-        height: 145,
+        height: 195,
         hideScrollbar: true,
         cursorWidth: 0,
       },
@@ -165,7 +165,7 @@ export default {
 
 wave {
   z-index: 10000 !important;
-  display: flex;
+  position: relative;
   cursor: pointer !important;
 }
 
@@ -230,8 +230,8 @@ wave {
 }
 
 .cardName {
-  font-size: 13px;
-  font-weight: 999;
+  font-size: 11px;
+  font-weight: 900;
 }
 
 .bg,
