@@ -3,35 +3,35 @@
     <div v-if="show" class="modal-likers-mask">
       <div class="modal-likers-wrapper">
         <div class="modal-likers-container">
-            <div class="noLikesDiv" v-if="!likedAddressesArray[0]">
-              no likes yet.
-            </div>
-            <div
-              class="likers-list"
-              v-for="(item, index) in likedAddressesArray"
-              :key="index"
-            >
-              <tr>
-                <span class="singleLine">
-                  <router-link
-                    :to="`/user/${item}`"
-                    @click="$emit('close')"
-                    exact
-                  >
-                    <div>
-                      <img
-                        :src="getAvatar(item.toLowerCase())"
-                        class="round-image-likers"
-                      />
-                    </div>
-                  </router-link>
-                  <div class="likerItem">
-                    {{ item.substring(0, 4) }}...{{ item.slice(-4) }}
+          <div class="noLikesDiv" v-if="!likedAddressesArray[0]">
+            no likes yet.
+          </div>
+          <div
+            class="likers-list"
+            v-for="(item, index) in likedAddressesArray"
+            :key="index"
+          >
+            <tr>
+              <span class="singleLine">
+                <router-link
+                  :to="`/user/${item}`"
+                  @click="$emit('close')"
+                  exact
+                >
+                  <div>
+                    <img
+                      :src="getAvatar(item.toLowerCase())"
+                      class="round-image-likers"
+                    />
                   </div>
-                </span>
+                </router-link>
+                <div class="likerItem">
+                  {{ item.substring(0, 4) }}...{{ item.slice(-4) }}
+                </div>
+              </span>
             </tr>
-            </div>
-            <span class="closeOut">
+          </div>
+          <span class="closeOut">
             <div class="modal-likers-footer">
               <button
                 class="modal-likers-default-button"
@@ -134,7 +134,6 @@ export default {
 </script>
 
 <style>
-
 .addressLineItem {
   display: flex;
   align-items: center;
