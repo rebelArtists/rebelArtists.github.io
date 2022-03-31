@@ -2,7 +2,7 @@
   <section id="content">
     <div class="main animated">
       <div class="main-content">
-        <div v-if="!isAddress(this.$route.params.name)">
+        <div v-if="this.stateLoaded && !isAddress(this.$route.params.name)">
           <ErrorPage />
         </div>
         <div
