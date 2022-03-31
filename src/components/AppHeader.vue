@@ -35,7 +35,7 @@
           <span class="bottom"></span>
         </button>
         <transition name="translateX">
-          <nav v-show="navOpen">
+          <nav v-show="navOpen" v-on:click="navOpen = !navOpen">
             <div class="sidemenu__wrapper">
               <ul class="sidemenu__list">
                 <li class="sidemenu__item">
@@ -336,7 +336,7 @@ export default {
     return {
       componentKey: 0,
       showModal: false,
-      navOpen: true,
+      navOpen: false,
     };
   },
   watch: {
@@ -440,6 +440,7 @@ export default {
       appearance: none;
       cursor: pointer;
       outline: none;
+      margin-right: -15px;
 
       span {
         display: block;
@@ -835,6 +836,7 @@ body.dark-theme {
   }
   .connectedWrapper {
     background-color: rgb(17, 24, 39);
+    z-index: 10000000;
   }
 }
 
