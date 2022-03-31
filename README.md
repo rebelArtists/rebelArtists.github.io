@@ -6,6 +6,8 @@
 
 REBEL is an easy-to-use minting and peer-to-peer creator payments system. Artists earn directly from their fans via crypto without needing any disbursement from social media or streaming institutions. Gone are the days of giant corporations taking billions and leaving their creators with fractions. Take control of your content. Own what's yours as a Rebel Artist!
 
+See a video tutorial of the dApp [here](https://www.youtube.com/watch?v=YbVwKksCpA8)
+
 ## Features
 
 - Art uploads automatically converted to ERC721 tokens (dead-simple minting)
@@ -21,7 +23,7 @@ REBEL is an easy-to-use minting and peer-to-peer creator payments system. Artist
 
 ## Tech
 
-Build by COIN alums, we're leveraging the following tech stack:
+Built by COIN alums, we're leveraging the following tech stack:
 
 - [VueJs] - frontend framework
 - [Vite] - frontend tooling
@@ -82,4 +84,4 @@ MIT
 
 ## Sponsor
 
-To sponsor development send ETH :) 0xBd7367Acc570AB6fcAb39a00ef479765065a2709
+To sponsor development please send ETH :) 0xBd7367Acc570AB6fcAb39a00ef479765065a2709
