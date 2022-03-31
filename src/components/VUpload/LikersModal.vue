@@ -3,7 +3,6 @@
     <div v-if="show" class="modal-likers-mask">
       <div class="modal-likers-wrapper">
         <div class="modal-likers-container">
-          <span class="closeOut">
             <div class="noLikesDiv" v-if="!likedAddressesArray[0]">
               no likes yet.
             </div>
@@ -12,24 +11,27 @@
               v-for="(item, index) in likedAddressesArray"
               :key="index"
             >
-              <span class="singleLine">
-                <router-link
-                  :to="`/user/${item}`"
-                  @click="$emit('close')"
-                  exact
-                >
-                  <div>
-                    <img
-                      :src="getAvatar(item.toLowerCase())"
-                      class="round-image-likers"
-                    />
+              <tr>
+                <span class="singleLine">
+                  <router-link
+                    :to="`/user/${item}`"
+                    @click="$emit('close')"
+                    exact
+                  >
+                    <div>
+                      <img
+                        :src="getAvatar(item.toLowerCase())"
+                        class="round-image-likers"
+                      />
+                    </div>
+                  </router-link>
+                  <div class="likerItem">
+                    {{ item.substring(0, 4) }}...{{ item.slice(-4) }}
                   </div>
-                </router-link>
-                <div class="likerItem">
-                  {{ item.substring(0, 4) }}...{{ item.slice(-4) }}
-                </div>
-              </span>
+                </span>
+            </tr>
             </div>
+            <span class="closeOut">
             <div class="modal-likers-footer">
               <button
                 class="modal-likers-default-button"
@@ -132,6 +134,13 @@ export default {
 </script>
 
 <style>
+
+.addressLineItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .noLikesDiv {
   margin-top: 80%;
   justify-content: center;
@@ -141,7 +150,8 @@ export default {
 }
 
 .likers-list {
-  overflow: hidden;
+  display: grid;
+  overflow-y: auto;
 }
 
 .closeOut {
@@ -166,7 +176,7 @@ export default {
 
 .modal-likers-mask {
   position: fixed;
-  z-index: 9998;
+  z-index: 9999998;
   top: 0;
   left: 0;
   width: 100%;
