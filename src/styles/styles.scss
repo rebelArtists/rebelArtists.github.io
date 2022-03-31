@@ -326,7 +326,7 @@ body,
       font-weight: 900;
       font-size: 10px;
       margin-left: auto;
-      margin-right: auto;
+      margin-right: -5px;
       margin-top: 162px;
     }
 
@@ -611,7 +611,27 @@ body,
       font-weight: 900;
       margin-left: auto;
       margin-right: -10px;
-      margin-top: 170px;
+      margin-top: 180px;
+    }
+
+    .userAvatar {
+      grid-column: 1 / 4;
+      grid-row: 0 / 1;
+      justify-content: center;
+      align-content: end;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .shareButton {
+      font-size: 15px;
+      grid-column: 2 / 4;
+      grid-row: 2 / 2;
+      font-weight: 900;
+      font-size: 10px;
+      margin-left: auto;
+      margin-right: -5px;
+      margin-top: 175px;
     }
 
     #header {
@@ -629,7 +649,7 @@ body,
     }
 
     #content {
-      margin-top: 160px;
+      margin-top: 10px;
     }
   }
 }
