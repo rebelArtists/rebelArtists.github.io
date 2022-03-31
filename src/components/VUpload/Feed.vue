@@ -156,7 +156,6 @@ export default {
 </script>
 
 <style lang="scss">
-
 .containerFeed {
   height: 30vh;
   display: flex;
