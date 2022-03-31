@@ -447,7 +447,7 @@ wave {
   font-size: 13px;
   margin: 15px 0 35px 0;
   width: 100%;
-  height: 60vh;
+  height: 100%;
   display: grid;
   grid-gap: 10px;
   grid-template-columns: 250px 120px 250px;
@@ -470,6 +470,7 @@ wave {
   object-fit: cover;
   border-radius: 0.6rem;
   margin-top: 15%;
+  margin-bottom: -11%;
   margin-left: 40px;
 }
 
