@@ -1,5 +1,5 @@
 <template>
-  <div v-if="this.stateLoaded">
+  <div v-if="this.stateLoaded" class="containerFeed">
     <div class="noPostsDiv" v-if="!latestPosts[0]">no posts yet.</div>
     <div class="wrapperFeed">
       <div
@@ -156,6 +156,15 @@ export default {
 </script>
 
 <style lang="scss">
+.containerFeed {
+  height: 30vh;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0px;
+}
+
 .noPostsDiv {
   align-content: center;
   text-align: center;

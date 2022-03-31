@@ -10,6 +10,8 @@ REBEL is an easy-to-use minting and peer-to-peer creator payments system. Artist
 
 - Art uploads automatically converted to ERC721 tokens (dead-simple minting)
 - 1st class audio, image, video file support (universal media support)
+- Fully functional on web and mobile
+  - For mobile, navigate to https://rebelartists.github.io/ in Metamask's mobile browser, [see how here](https://consensys.net/blog/news/metamask-mobile-now-available-on-android-and-ios/)
 - All media/metadata pinned to IPFS for permanent storage (censorship-resistant)
 - Near-zero gas fees for all actions in dApp (Polygon network)
 - Artists paid per "like" of their content (instant payouts)
