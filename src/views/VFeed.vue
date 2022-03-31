@@ -149,15 +149,15 @@ section#content {
     font-size: 14px;
     font-weight: 999;
   }
-
-  @media only screen and (max-width: 815px) {
-    .feedHeader {
-      display: flex;
-      margin-top: 50px;
-      font-size: 14px;
-      font-weight: 999;
-    }
-  }
+  //
+  // @media only screen and (max-width: 815px) {
+  //   .feedHeader {
+  //     display: flex;
+  //     margin-top: 50px;
+  //     font-size: 14px;
+  //     font-weight: 999;
+  //   }
+  // }
 
   .feedToggle {
     cursor: pointer;
