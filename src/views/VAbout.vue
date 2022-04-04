@@ -119,7 +119,7 @@
           <div class="numberedList">
             <span class="bulletNumber">4</span>
             Connect your wallet to Spread LUV NFT  (home page here) and get posting and
-            luving!
+            spread LUV!
           </div>
         </div>
         <div class="pdfWrapper">
