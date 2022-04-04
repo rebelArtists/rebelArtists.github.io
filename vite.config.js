@@ -27,9 +27,9 @@ export default defineConfig({
     Icons(),
     VitePWA({
       manifest: {
-        name: "REBEL - Own What's Yours",
-        short_name: "REBEL",
-        description: "Full ownership of your content via NFTs",
+        name: "LUV - Content Ownership",
+        short_name: "LUV",
+        description: "Full ownership of your content via LUV NFTs",
         theme_color: "#212121",
         registerType: "autoUpdate",
         icons: [
