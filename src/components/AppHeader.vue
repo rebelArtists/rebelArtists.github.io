@@ -8,7 +8,7 @@
           active-class="active"
           title="Home"
           exact
-          >Spread LUV
+          >LUV
         </router-link>
       </h1>
       <span v-if="(account && user) || $route.name == 'about'"
