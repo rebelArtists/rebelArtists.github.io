@@ -1,6 +1,6 @@
 <template>
   <div v-if="this.stateLoaded">
-    <div class="container" v-if="!likedPostItems[0]">no liked posts yet.</div>
+    <div class="container" v-if="!likedPostItems[0]">no LUVed posts yet.</div>
 
     <div class="wrapper">
       <div
