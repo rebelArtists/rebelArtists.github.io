@@ -828,14 +828,14 @@ export default {
 
 body.dark-theme {
   #header {
-    background-color: rgb(17, 24, 39);
+    background-color: #242325;
 
     .header-title h1 {
       color: #ffffff;
     }
   }
   .connectedWrapper {
-    background-color: rgb(17, 24, 39);
+    background-color: #242325;
     z-index: 10000000;
   }
 }
