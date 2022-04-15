@@ -4,7 +4,7 @@
       <div class="modal-likers-wrapper">
         <div class="modal-likers-container">
           <div class="noLikesDiv" v-if="!likedAddressesArray[0]">
-            no likes yet.
+            no LUV yet.
           </div>
           <div
             class="likers-list"

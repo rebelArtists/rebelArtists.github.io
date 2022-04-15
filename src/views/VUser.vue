@@ -16,9 +16,9 @@
             <div v-if="!showLikedPosts" class="createdActive">created</div>
             <div class="divider">|</div>
             <a @click="toggleShowLikedItems">
-              <div v-if="!showLikedPosts" class="likedInactive">liked</div>
+              <div v-if="!showLikedPosts" class="likedInactive">LUVd</div>
             </a>
-            <div v-if="showLikedPosts" class="likedActive">liked</div>
+            <div v-if="showLikedPosts" class="likedActive">LUVd</div>
           </div>
           <UserGallery v-if="!showLikedPosts" @like-event="updateparent" />
           <UserLikedGallery v-if="showLikedPosts" @like-event="updateparent" />

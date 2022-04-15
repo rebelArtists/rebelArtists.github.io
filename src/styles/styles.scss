@@ -1,5 +1,7 @@
-* {
-  font-family: "IBM Plex Mono", monospace;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+*{
+  font-family: poppins;
   letter-spacing: 0.05786em;
 }
 
@@ -57,8 +59,8 @@ body {
   color: var(--contrast-color);
 
   &.dark-theme {
-    background-color: rgb(17, 24, 39);
-    --background-color: rgb(17, 24, 39);
+    background-color: #242325;
+    --background-color: #242325;
 
     --darken-color: rgb(49, 36, 200);
     --crowdsale-color: rgb(49, 56, 73);
@@ -594,7 +596,7 @@ body,
       .main-content {
         section {
           &#panel-result {
-            background-color: rgb(9, 16, 29);
+            background-color: #242325;
           }
         }
       }

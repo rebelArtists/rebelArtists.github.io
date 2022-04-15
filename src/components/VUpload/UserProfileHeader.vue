@@ -30,7 +30,7 @@
         </DonationModal>
       </Teleport>
     </div>
-    <div class="box likeCount">{{ user.totalLikes }} likes</div>
+    <div class="box likeCount">{{ user.totalLikes }} LUV</div>
     <div class="box postCount">{{ user.postCount }} posts</div>
     <div class="box amtEarned">{{ user.amtEarned }} earned</div>
   </div>

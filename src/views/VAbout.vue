@@ -7,10 +7,10 @@
           <ul class="auto-grid" role="list">
             <li class="lineItem">
               <a target="_blank" class="profile">
-                <h2 class="profile__name">Dead-Simple Minting</h2>
+                <h2 class="profile__name">Easy NFT Minting</h2>
                 <p class="mintingAbout">
                   Minting videos, photos, and music is seamless; Simply upload
-                  your content and an NFT will be auto-created on Polygon
+                  your content and an LUV NFT will be auto-created on Polygon
                   (Ethereum L2). Gas fees are near zero, transactions are
                   lightning fast.
                 </p>
@@ -19,10 +19,10 @@
             </li>
             <li>
               <a target="_blank" class="profile">
-                <h2 class="profile__name">Get Paid Per Like</h2>
+                <h2 class="profile__name">Get Paid Per LUV</h2>
                 <p>
                   No more waiting months for social media giants to shell out
-                  your earnings, or them taking the lion's share. Rebel Artists
+                  your earnings, or them taking the lion's share. 5D LUVRS
                   take 98% of profits and are paid within seconds to their
                   crypto wallet.
                 </p>
@@ -33,9 +33,9 @@
               <a target="_blank" class="profile">
                 <h2 class="profile__name">Instant Payouts</h2>
                 <p>
-                  For every like receiced, you earn 0.0196 MATIC (98% of
+                  For the LUV you receive, you earn 0.0196 MATIC (98% of
                   transaction value), sent direct to your crypto wallet in
-                  seconds. A 2% fee is taken by Rebel, meant entirely to keep
+                  seconds. A 2% fee is taken by LUV NFT, meant entirely to keep
                   our systems alive and thriving.
                 </p>
                 <img src="../components/FAST_PAYMENT.png" />
@@ -45,29 +45,29 @@
               <a target="_blank" class="profile">
                 <h2 class="profile__name">Top Creator Rewards</h2>
                 <p>
-                  Unlock ERC20 REBEL tokens as your cumulative like count grows:
+                  Unlock ERC20 LUV tokens as your cumulative LUV count grows:
                   <br />
-                  100 Likes -> 100 REBEL
+                  100 LUV -> 100 LUV
                   <br />
-                  1K Likes -> 1K REBEL
+                  1K LUV -> 1K LUV
                   <br />
-                  10K Likes -> 10K REBEL
+                  10K LUV -> 10K LUV
                   <br />
-                  100K Likes -> 100K REBEL
+                  100K LUV -> 100K LUV
                   <br />
-                  1MM Likes -> 1MM REBEL
+                  1MM LUV -> 1MM LUV
                 </p>
                 <img src="../components/REWARDS_SQUARE.png" />
               </a>
             </li>
             <li>
               <a target="_blank" class="profile">
-                <h2 class="profile__name">Built by COIN Alums</h2>
+                <h2 class="profile__name">Built with LUV</h2>
                 <p>
-                  Designed for the masses by industry experts, all the
-                  blockchain complexities have been stripped away. While Rebel
-                  is fully decentralized, artists will find its as easy to use
-                  as Instagram or TikTok
+                  Designed for the masses by our blockchain non-profit
+                  with the motto of purpose over profit. While LUV NFT
+                  is fully decentralized, 5D LUVRS will find its as easy
+                  to use as Instagram or TikTok
                 </p>
                 <img
                   alt="Profile shot for Marc Dixon"
@@ -77,12 +77,12 @@
             </li>
             <li>
               <a target="_blank" class="profile">
-                <h2 class="profile__name">Join the Rebellion</h2>
+                <h2 class="profile__name">Join our Tribe</h2>
                 <p>
                   Enough of big business profiting off of your hard work. Gone
                   are the days of them taking billions and you're left with
                   fractions. Take control of your content. Own what's yours as a
-                  Rebel Artist!
+                  5D LUVR!
                 </p>
                 <img
                   alt="Profile shot for Chad"
@@ -118,14 +118,14 @@
           </div>
           <div class="numberedList">
             <span class="bulletNumber">4</span>
-            Connect your wallet to Rebel (home page here) and get posting and
-            liking!
+            Connect your wallet to Spread LUV NFT  (home page here) and get posting and
+            spread LUV!
           </div>
         </div>
         <div class="pdfWrapper">
           <div class="whitepaperHeader">Whitepaper</div>
           <embed
-            src="rebel_whitepaper.pdf"
+            src=""
             type="application/pdf"
             width="100%"
             height="600px"

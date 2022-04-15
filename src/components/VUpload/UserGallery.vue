@@ -65,7 +65,7 @@
                   class="likesHover"
                   @click="(showLikersModal = true), (idToCheck = item.id)"
                 >
-                  {{ item.likes }} likes
+                  {{ item.likes }} LUV
                 </a>
 
                 <Teleport

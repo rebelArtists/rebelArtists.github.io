@@ -8,17 +8,17 @@
           active-class="active"
           title="Home"
           exact
-          >Rebel
+          >LUV
         </router-link>
       </h1>
       <span v-if="(account && user) || $route.name == 'about'"
         >Own What's Yours</span
       >
       <div v-else class="rw-sentence rw-words rw-words-1">
-        <span>Own What's Yours</span>
-        <span>Dead-Simple Minting</span>
+        <span>Own Your Content</span>
+        <span>Monetize Your Content</span>
         <span>Near-Zero Gas Fees</span>
-        <span>Get Paid Per Like</span>
+        <span>Get Paid Per LUV</span>
         <span>Instant Payouts</span>
         <span>Top Creator Rewards</span>
       </div>
@@ -828,14 +828,14 @@ export default {
 
 body.dark-theme {
   #header {
-    background-color: rgb(17, 24, 39);
+    background-color: #242325;
 
     .header-title h1 {
       color: #ffffff;
     }
   }
   .connectedWrapper {
-    background-color: rgb(17, 24, 39);
+    background-color: #242325;
     z-index: 10000000;
   }
 }
